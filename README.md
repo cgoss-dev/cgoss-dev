@@ -3,6 +3,7 @@
 Seattle-based front-end developer using AI to build for humans.
 
 I design with joy in mind -- projects that are practical and playful.
+Find me on [LinkedIn](https://www.linkedin.com/in/chrisgoss206)
 
 <p>
   <img alt="HTML5" src="https://img.shields.io/badge/-HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" />
@@ -22,9 +23,9 @@ Using AI      As a build partner for planning, refactoring, debugging, and itera
 ```
 <br><br>
 
-## Featured Projects
+## FEATURED PROJECTS
 
-#### Sparkle Seeker
+#### ⭐️Sparkle Seeker
 
 A canvas game with falling sparkles, hazards, effects, and accessibility-minded controls.
 
@@ -34,7 +35,7 @@ Focus         Game interaction / animation / keyboard-friendly play
 Live          https://cgoss-dev.github.io/sparkle-seeker/embed.html
 ```
 
-#### Perfect Planner
+#### 📝Perfect Planner
 
 A planning workspace for turning busy ideas into calm, useful structure.
 
@@ -44,7 +45,7 @@ Focus         Layout systems / interface design / planning tools
 Live          https://cgoss-dev.github.io/perfect-planner/
 ```
 
-#### Tender Tails
+#### 💖Tender Tails
 
 A pet adoption website concept for showcasing available pets, certifications, and care details.
 
@@ -55,18 +56,16 @@ Status        In progress
 ```
 <br><br>
 
-## Accessibility Focus
+## ACCESSIBILITY FOCUS
 
-I approach projects accessibility-first by prioritizing intuitive design, legible interfaces, inclusive controls, and reduced-friction user flows.
-
-Resources I reference:
+I approach projects accessibility-first by prioritizing intuitive design, legible interfaces, inclusive controls, and reduced-friction user flows. Resources I reference:
 
 - [Game Accessibility Guidelines](https://gameaccessibilityguidelines.com/)
 - [Designing Accessible Video Games](https://uxdesign.cc/designing-accessible-video-games-f4c9824a9182)
 - [WCAG 3.0 Working Draft](https://www.w3.org/TR/wcag-3.0/)
 <br><br>
 
-## Connect
+## CONNECT
 
 - Portfolio: [cgoss-dev.github.io](https://cgoss-dev.github.io/)
 - LinkedIn: [Chris Goss](https://www.linkedin.com/in/chrisgoss206)
