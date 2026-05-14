@@ -9,9 +9,11 @@ Find me on [LinkedIn](https://www.linkedin.com/in/chrisgoss206)
   <img alt="HTML5" src="https://img.shields.io/badge/-HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" />
   <img alt="CSS3" src="https://img.shields.io/badge/-CSS3-1572B6?style=flat-square&logo=css&logoColor=white" />
   <img alt="JavaScript" src="https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" />
-  <img alt="C Sharp" src="images/csharp-badge.svg" />
+  <img alt="C Sharp" src="https://img.shields.io/badge/-C%23-68217A?style=flat-square&logo=csharp&logoColor=white" />
+  <img alt="C++" src="https://img.shields.io/badge/-C%2B%2B-00599C?style=flat-square&logo=cplusplus&logoColor=white" />
   <img alt="Python" src="https://img.shields.io/badge/-Python-FFD43B?style=flat-square&logo=python&logoColor=black" />
   <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" />
+  <img alt="JSON" src="https://img.shields.io/badge/-JSON-2F855A?style=flat-square&logo=json&logoColor=white" />
 </p>
 <br><br>
 
@@ -25,9 +27,9 @@ Using AI      As a build partner for planning, refactoring, debugging, and itera
 
 ## FEATURED PROJECTS
 
-#### ⭐️Sparkle Seeker
+#### sparkle.seeker
 
-A canvas game with falling sparkles, hazards, effects, and accessibility-minded controls.
+A canvas game with accessibility-minded controls.
 
 ```text
 Tech          JavaScript / HTML Canvas / CSS
@@ -35,9 +37,9 @@ Focus         Game interaction / animation / keyboard-friendly play
 Live          https://cgoss-dev.github.io/sparkle-seeker/embed.html
 ```
 
-#### 📝Perfect Planner
+#### pretty.planner
 
-A planning workspace for turning busy ideas into calm, useful structure.
+Digital planner with configurable widgets and storage.
 
 ```text
 Tech          HTML / CSS / JavaScript
@@ -45,13 +47,43 @@ Focus         Layout systems / interface design / planning tools
 Live          https://cgoss-dev.github.io/perfect-planner/
 ```
 
-#### 💖Tender Tails
+#### tender.tails
 
-A pet adoption website concept for showcasing available pets, certifications, and care details.
+Site template with data storage and search parameters.
 
 ```text
 Tech          C# / Python / JavaScript
 Focus         Structured content / friendly UI / service-oriented design
+Status        In progress
+```
+
+#### game.gui
+
+Universal interface package with window responsiveness and inclusive navigation.
+
+```text
+Tech          TypeScript / HTML / CSS
+Focus         Reusable UI systems / responsive windows / inclusive navigation
+Status        In progress
+```
+
+#### bitmap.builder
+
+Spritesheet builder for game maps, characters, or profile pics.
+
+```text
+Tech          Python / JavaScript / JSON
+Focus         Asset pipelines / sprite metadata / creator tools
+Status        In progress
+```
+
+#### quest.queue
+
+Quest tracker for sorting tasks, goals, and side missions into a playable queue.
+
+```text
+Tech          TypeScript / HTML / JSON
+Focus         Structured game data / task states / player-facing progression
 Status        In progress
 ```
 <br><br>
