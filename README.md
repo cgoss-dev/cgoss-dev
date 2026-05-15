@@ -44,7 +44,7 @@ Digital planner with configurable widgets and storage.
 ```text
 Tech          HTML / CSS / JavaScript
 Focus         Layout systems / interface design / planning tools
-Live          https://cgoss-dev.github.io/perfect-planner/
+Live          https://cgoss-dev.github.io/pretty-planner/
 ```
 
 #### tender.tails
