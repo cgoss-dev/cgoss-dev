@@ -27,14 +27,14 @@ Using AI      As a build partner for planning, refactoring, debugging, and itera
 
 ## FEATURED PROJECTS
 
-#### sparkle.seeker
+#### star.shower
 
 A canvas game with accessibility-minded controls.
 
 ```text
 Tech          JavaScript / HTML Canvas / CSS
 Focus         Game interaction / animation / keyboard-friendly play
-Live          https://cgoss-dev.github.io/sparkle-seeker/embed.html
+Live          https://cgoss-dev.github.io/star-shower/embed.html
 ```
 
 #### pretty.planner
