@@ -1,6 +1,6 @@
 # Artificial Intelligence 🤝 Human Intuition
 
-Hi, I'm $\textcolor{purple}{Chris}$, a junior developer. I use `Artificial Intelligence` to build for `Human Intiution`.
+Hi, I'm $\textcolor{purple}{Chris}$, a junior developer. I use `Artificial Intelligence` to build for `Human Intuition`.
 <br>
 
 <p>
