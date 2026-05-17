@@ -1427,6 +1427,10 @@ a.project-preview:is(:hover, :active, :focus-visible) {
      pointer-events: none;
 }
 
+.project-preview-planner {
+     background: var(--color-white);
+}
+
 .project-preview:is(:hover, :active, :focus-visible) {
      filter: blur(0.7px);
 }
