@@ -1,4 +1,4 @@
-# $\textcolor{purple}{Hi \ I 'm \ Chris!}$
+# $\textcolor{purple}{Hi I'm Chris!}$
 
 A Seattle-based junior developer, using AI to build for human intiution.
 <p>
