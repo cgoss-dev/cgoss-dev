@@ -1,6 +1,6 @@
 # $\textcolor{purple}{Junior \ Front \ End \ Developer}$
 
-Hi, I'm Chris, a junior developer. I use Artificial Intelligence to build for **human intiution**.
+Hi, I'm Chris, a junior developer. I use Artificial Intelligence to build for **Human Intiution**.
 <p>
 I design with joy in mind -- products that are practical, playful, and accessible.
 </p>
