@@ -4,7 +4,7 @@ Hi, I'm $\textcolor{magenta}{CHRIS}$, a junior developer. I use `Artificial Inte
 <br>
 
 *“Programming isn’t about what you know; it’s about what you can figure out.”*<br>
-*🗣️ Chris Pine, author of [Learn to Program](https://pine.fm/LearnToProgram/)*
+🗣️ Chris Pine, author of [Learn to Program](https://pine.fm/LearnToProgram/)
 
 <br>
 <p>
@@ -13,8 +13,8 @@ Hi, I'm $\textcolor{magenta}{CHRIS}$, a junior developer. I use `Artificial Inte
   <img alt="Sass" src="https://img.shields.io/badge/-Sass-CC6699?style=flat-square&logo=sass&logoColor=white" />
   <img alt="Figma" src="https://img.shields.io/badge/-Figma-F24E1E?style=flat-square&logo=figma&logoColor=white" />
   <img alt="JavaScript" src="https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" />
-<br>
   <img alt="React" src="https://img.shields.io/badge/-React-61DAFB?style=flat-square&logo=react&logoColor=black" />
+<br>
   <img alt="C Sharp" src="images/csharp-badge.svg" />
   <img alt="C++" src="https://img.shields.io/badge/-C%2B%2B-00599C?style=flat-square&logo=cplusplus&logoColor=white" />
   <img alt="Python" src="https://img.shields.io/badge/-Python-FFD43B?style=flat-square&logo=python&logoColor=black" />
