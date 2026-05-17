@@ -4,7 +4,6 @@ Hi, I'm $\textcolor{magenta}{CHRIS}$, a junior developer. I use `Artificial Inte
 <br>
 
 *“Programming isn’t about what you know; it’s about what you can figure out.”* 
-<p>
 - Chris Pine, author of [Learn to Program](https://pine.fm/LearnToProgram/)
 
 <p>
