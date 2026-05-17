@@ -15,7 +15,7 @@ Hi, I'm $\textcolor{magenta}{CHRIS}$, a junior developer. I use `Artificial Inte
 </p>
 <br>
 
-## Featured Project: [Star Shower](https://cgoss-dev.github.io/star-shower/)
+## ⭐️Featured Project: [Star Shower](https://cgoss-dev.github.io/star-shower/)
 
 A canvas arcade-style game with accessibility-minded UI and inclusive keyboard controls.
 
@@ -23,7 +23,7 @@ A canvas arcade-style game with accessibility-minded UI and inclusive keyboard c
 - Focus: game interaction, animation, visual feedback, and game theory
 <br><br><br>
 
-## Currently Learning
+## 📝 Currently Learning
 
 I am growing through the stack while keeping my front-end foundation strong.
 
@@ -33,7 +33,7 @@ I am growing through the stack while keeping my front-end foundation strong.
 <br><br><br>
 
 
-## Accessibility Focus
+## ♿️ Accessibility Focus
 
 I prioritize accessible design, legible interfaces, inclusive control. Resources I reference:
 
@@ -43,7 +43,7 @@ I prioritize accessible design, legible interfaces, inclusive control. Resources
 - [WCAG 3.0 Working Draft](https://www.w3.org/TR/wcag-3.0/)
 <br><br><br>
 
-## Connect
+## ☎️ Connect
 
 - Portfolio: [cgoss-dev.github.io](https://cgoss-dev.github.io/)
 - GitHub: [cgoss-dev](https://github.com/cgoss-dev)
