@@ -51,7 +51,7 @@ I prioritize accessible design, legible interfaces, inclusive control. Resources
 
 ## ☎️ Connect
 
-- Portfolio: [cgoss-dev.github.io](https://cgoss-dev.github.io/)
+- Portfolio: [cgoss-dev.github.io/cgoss-dev](https://cgoss-dev.github.io/cgoss-dev/)
 - GitHub: [cgoss-dev](https://github.com/cgoss-dev)
 - LinkedIn: [Chris Goss](https://www.linkedin.com/in/chrisgoss206)
 <br><br><br>
