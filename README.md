@@ -1,9 +1,9 @@
 # $\textcolor{purple}{Junior \ Front \ End \ Developer}$
 
-Hi, I"m Chris! A juinior developer using AI to build for human intiution.
+Hi, I'm Chris! A juinior developer using AI to build for human intiution.
 <p>
 I design with joy in mind -- products that are practical, playful, and accessible.
-<br>
+</p>
 
 <p>
   <img alt="HTML5" src="https://img.shields.io/badge/-HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" />
