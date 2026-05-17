@@ -15,15 +15,15 @@ I design with joy in mind -- products that are practical, playful, and accessibl
   <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" />
   <img alt="JSON" src="https://img.shields.io/badge/-JSON-2F855A?style=flat-square&logo=json&logoColor=white" />
 </p>
-<br><br>
+<br>
 
-## Featured Project
+## Featured Project: [Star Shower](https://cgoss-dev.github.io/star-shower/)
 
-[Star Shower](https://cgoss-dev.github.io/star-shower/): A canvas arcade-style game with accessibility-minded UI and inclusive keyboard controls.
+A canvas arcade-style game with accessibility-minded UI and inclusive keyboard controls.
 
 - Tech: JavaScript, HTML Canvas, CSS
 - Focus: game interaction, animation, visual feedback, and game theory
-<br><br><br>
+<br><br>
 
 ## Currently Learning
 
@@ -32,7 +32,7 @@ I am growing through the stack while keeping my front-end foundation strong.
 - Accessible UI design
 - Python and C# fundamentals
 - Git, GitHub, and shared project documentation
-<br><br><br>
+<br><br>
 
 ## Accessibility Focus
 
@@ -42,7 +42,7 @@ I approach projects accessibility-first by prioritizing intuitive design, legibl
 - [Designing Accessible Video Games](https://uxdesign.cc/designing-accessible-video-games-f4c9824a9182)
 - [5 Big Ideas for Designing Accessible Video Games](https://medium.com/@ruthieee/5-big-ideas-for-designing-accessible-video-games-e403a2c5d4d7)
 - [WCAG 3.0 Working Draft](https://www.w3.org/TR/wcag-3.0/)
-<br><br><br>
+<br><br>
 
 ## Connect
 
