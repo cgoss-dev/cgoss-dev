@@ -37,7 +37,7 @@ I am growing through the stack while keeping my front-end foundation strong.
 
 ## Accessibility Focus
 
-I approach projects accessibility-first by prioritizing intuitive design, legible interfaces, inclusive controls, and reduced-friction user flows. Accessibility resources I reference:
+I prioritize accessible design, legible interfaces, inclusive control. Resources I reference:
 
 - [Game Accessibility Guidelines](https://gameaccessibilityguidelines.com/)
 - [Designing Accessible Video Games](https://uxdesign.cc/designing-accessible-video-games-f4c9824a9182)
