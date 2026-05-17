@@ -1,4 +1,4 @@
-# $\textcolor{purple}{Junior / Front / End / Developer}$
+# $\textcolor{purple}{Junior \ Front \ End \ Developer}$
 
 Hi, I"m Chris! A juinior developer using AI to build for human intiution.
 <p>
