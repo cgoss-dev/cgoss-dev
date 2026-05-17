@@ -1,9 +1,13 @@
-# HELLO WORLD
+<img width="1000" height="500" alt="Portfolio desk preview" src="images/rgbDesk.jpeg" />
 
-Seattle-based front-end developer using AI to build for humans.
+# Chris Goss | Portfolio
 
-I design with joy in mind -- projects that are practical and playful.
-Find me on [LinkedIn](https://www.linkedin.com/in/chrisgoss206)
+## $\textcolor{darkred}{Dev \ Notes}$
+
+Seattle-based front-end developer, using AI to build for humans.
+<p>
+I design with joy in mind -- products that are practical, playful, and accessible.
+<br><br>
 
 <p>
   <img alt="HTML5" src="https://img.shields.io/badge/-HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" />
@@ -15,90 +19,83 @@ Find me on [LinkedIn](https://www.linkedin.com/in/chrisgoss206)
   <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" />
   <img alt="JSON" src="https://img.shields.io/badge/-JSON-2F855A?style=flat-square&logo=json&logoColor=white" />
 </p>
-<br><br>
 
-```text
-Building      Portfolio projects, playful UI experiments, and accessibility-minded tools
-Learning      TypeScript patterns, Python, C#, GitHub workflows, and responsive design
-Practicing    Clean markup, readable CSS, keyboard-friendly interfaces, and project docs
-Using AI      As a build partner for planning, refactoring, debugging, and iteration
-```
-<br><br>
+## Featured Projects
 
-## FEATURED PROJECTS
-
-#### star.shower
+### star.shower
 
 A canvas game with accessibility-minded controls.
 
-```text
-Tech          JavaScript / HTML Canvas / CSS
-Focus         Game interaction / animation / keyboard-friendly play
-Live          https://cgoss-dev.github.io/sparkle-seeker/embed.html
-```
+- Tech: JavaScript, HTML Canvas, CSS
+- Focus: game interaction, animation, keyboard-friendly play, visual feedback
+- Live: [Star Shower](https://cgoss-dev.github.io/star-shower/)
 
-#### pretty.planner
+### pretty.planner
 
 Digital planner with configurable widgets and storage.
 
-```text
-Tech          HTML / CSS / JavaScript
-Focus         Layout systems / interface design / planning tools
-Live          https://cgoss-dev.github.io/pretty-planner/
-```
+- Tech: HTML, CSS, JavaScript
+- Focus: layout systems, interface design, planning tools
+- Live: [pretty-planner](https://cgoss-dev.github.io/pretty-planner/)
 
-#### tender.tails
+### tender.tails
 
 Site template with data storage and search parameters.
 
-```text
-Tech          C# / Python / JavaScript
-Focus         Structured content / friendly UI / service-oriented design
-Status        In progress
-```
+- Tech: C#, Python, JavaScript
+- Focus: structured content, friendly UI, service-oriented design
+- Status: in progress
 
-#### game.gui
+### game.gui
 
 Universal interface package with window responsiveness and inclusive navigation.
 
-```text
-Tech          TypeScript / HTML / CSS
-Focus         Reusable UI systems / responsive windows / inclusive navigation
-Status        In progress
-```
+- Tech: TypeScript, HTML, CSS
+- Focus: reusable UI systems, responsive windows, inclusive navigation
+- Status: in progress
 
-#### bitmap.builder
+### bitmap.builder
 
 Spritesheet builder for game maps, characters, or profile pics.
 
-```text
-Tech          Python / JavaScript / JSON
-Focus         Asset pipelines / sprite metadata / creator tools
-Status        In progress
-```
+- Tech: Python, JavaScript, JSON
+- Focus: asset pipelines, sprite metadata, creator tools
+- Status: in progress
 
-#### quest.queue
+### quest.queue
 
 Quest tracker for sorting tasks, goals, and side missions into a playable queue.
 
-```text
-Tech          TypeScript / HTML / JSON
-Focus         Structured game data / task states / player-facing progression
-Status        In progress
-```
+- Tech: TypeScript, HTML, JSON
+- Focus: structured game data, task states, player-facing progression
+- Status: in progress
 <br><br>
 
-## ACCESSIBILITY FOCUS
+## Currently Learning
 
-I approach projects accessibility-first by prioritizing intuitive design, legible interfaces, inclusive controls, and reduced-friction user flows. Resources I reference:
+I am growing through the stack while keeping my front-end foundation strong.
+
+- JavaScript and TypeScript patterns
+- Python and C# fundamentals
+- Accessible UI design
+- Responsive layouts
+- Git, GitHub, and project documentation
+- AI-assisted development workflows
+
+## Accessibility Focus
+
+I approach projects accessibility-first by prioritizing intuitive design, legible interfaces, inclusive controls, and reduced-friction user flows.
+
+Accessibility resources I reference:
 
 - [Game Accessibility Guidelines](https://gameaccessibilityguidelines.com/)
 - [Designing Accessible Video Games](https://uxdesign.cc/designing-accessible-video-games-f4c9824a9182)
+- [5 Big Ideas for Designing Accessible Video Games](https://medium.com/@ruthieee/5-big-ideas-for-designing-accessible-video-games-e403a2c5d4d7)
 - [WCAG 3.0 Working Draft](https://www.w3.org/TR/wcag-3.0/)
-<br><br>
 
-## CONNECT
+## Connect
 
 - Portfolio: [cgoss-dev.github.io](https://cgoss-dev.github.io/)
+- GitHub: [cgoss-dev](https://github.com/cgoss-dev)
 - LinkedIn: [Chris Goss](https://www.linkedin.com/in/chrisgoss206)
 <br><br>
