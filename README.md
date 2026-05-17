@@ -3,7 +3,7 @@
 Hi, I'm $\textcolor{magenta}{CHRIS}$, a junior developer. I use `Artificial Intelligence` to build for `Human Intuition`.
 <br>
 
-*“Programming isn’t about what you know; it’s about what you can figure out.” Chris Pine, author of [Learn to Program](https://pine.fm/LearnToProgram/)*
+*“Programming isn’t about what you know; it’s about what you can figure out.” - Chris Pine, author of [Learn to Program](https://pine.fm/LearnToProgram/)*
 
 <p>
   <img alt="HTML5" src="https://img.shields.io/badge/-HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" />
