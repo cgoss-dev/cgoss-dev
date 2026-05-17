@@ -1,6 +1,6 @@
-# $\textcolor{purple}{Hi I'm Chris!}$
+# $\textcolor{purple}{Junior / Front / End / Developer}$
 
-A Seattle-based junior developer, using AI to build for human intiution.
+Hi, I"m Chris! A juinior developer using AI to build for human intiution.
 <p>
 I design with joy in mind -- products that are practical, playful, and accessible.
 <br>
