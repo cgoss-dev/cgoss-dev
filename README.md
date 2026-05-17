@@ -19,22 +19,19 @@ I design with joy in mind -- products that are practical, playful, and accessibl
 
 ## Featured Project
 
-[Star Shower](https://cgoss-dev.github.io/star-shower/): A canvas game with accessibility-minded controls.
+[Star Shower](https://cgoss-dev.github.io/star-shower/): A canvas arcade-style game with accessibility-minded UI and inclusive keyboard controls.
 
 - Tech: JavaScript, HTML Canvas, CSS
-- Focus: game interaction, animation, keyboard-friendly play, visual feedback
+- Focus: game interaction, animation, visual feedback, and game theory
 <br><br><br>
 
 ## Currently Learning
 
 I am growing through the stack while keeping my front-end foundation strong.
 
-- JavaScript and TypeScript patterns
-- Python and C# fundamentals
 - Accessible UI design
-- Responsive layouts
-- Git, GitHub, and project documentation
-- AI-assisted development workflows
+- Python and C# fundamentals
+- Git, GitHub, and shared project documentation
 <br><br><br>
 
 ## Accessibility Focus
