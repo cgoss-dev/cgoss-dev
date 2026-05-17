@@ -1,6 +1,6 @@
 # $\textcolor{purple}{Artificial \ Intelligence 🤝 Human \ Intuition}$
 
-Hi, I'm Chris, a junior developer. I use Artificial Intelligence to build for **Human Intiution**.
+Hi, I'm Chris, a junior developer. I use 'Artificial Intelligence' to build for `Human Intiution'.
 <p>
 I design with joy in mind -- products that are practical, playful, and accessible.
 </p>
