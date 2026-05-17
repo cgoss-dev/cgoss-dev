@@ -1,8 +1,6 @@
-<img width="1000" height="500" alt="Portfolio desk preview" src="images/rgbDesk.jpeg" />
-
 # Chris Goss | Portfolio
 
-## $\textcolor{darkred}{Dev \ Notes}$
+### $\textcolor{darkred}{Dev \ Notes}$
 
 Seattle-based front-end developer, using AI to build for humans.
 <p>
