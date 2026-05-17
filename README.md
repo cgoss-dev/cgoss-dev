@@ -1,4 +1,4 @@
-# $\textcolor{purple}{Junior \ Front \ End \ Developer}$
+# $\textcolor{purple}{Artificial \ Intelligence 🤝 Human \ Intuition}$
 
 Hi, I'm Chris, a junior developer. I use Artificial Intelligence to build for **Human Intiution**.
 <p>
