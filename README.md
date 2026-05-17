@@ -15,7 +15,7 @@ Hi, I'm $\textcolor{magenta}{CHRIS}$, a junior developer. I use `Artificial Inte
 </p>
 <br>
 
-## ⭐️Featured Project: [Star Shower](https://cgoss-dev.github.io/star-shower/)
+## ⭐️ Featured Project: [Star Shower](https://cgoss-dev.github.io/star-shower/)
 
 A canvas arcade-style game with accessibility-minded UI and inclusive keyboard controls.
 
