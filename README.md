@@ -1,9 +1,9 @@
-# $\textcolor{purple}{Chris \ Junior \ Dev}$
+# $\textcolor{purple}{Hi \ I'm \ Chris!}$
 
-Seattle-based front-end developer, using AI to build for humans.
+A Seattle-based junior developer, using AI to build for human intiution.
 <p>
 I design with joy in mind -- products that are practical, playful, and accessible.
-<br><br><br>
+<br>
 
 <p>
   <img alt="HTML5" src="https://img.shields.io/badge/-HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" />
@@ -15,15 +15,14 @@ I design with joy in mind -- products that are practical, playful, and accessibl
   <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" />
   <img alt="JSON" src="https://img.shields.io/badge/-JSON-2F855A?style=flat-square&logo=json&logoColor=white" />
 </p>
-<br><br><br>
+<br><br>
 
 ## Featured Project
 
-**star.shower** A canvas game with accessibility-minded controls.
+[Star Shower](https://cgoss-dev.github.io/star-shower/): A canvas game with accessibility-minded controls.
 
 - Tech: JavaScript, HTML Canvas, CSS
 - Focus: game interaction, animation, keyboard-friendly play, visual feedback
-- Live: [Star Shower](https://cgoss-dev.github.io/star-shower/)
 <br><br><br>
 
 ## Currently Learning
@@ -40,9 +39,7 @@ I am growing through the stack while keeping my front-end foundation strong.
 
 ## Accessibility Focus
 
-I approach projects accessibility-first by prioritizing intuitive design, legible interfaces, inclusive controls, and reduced-friction user flows.
-
-Accessibility resources I reference:
+I approach projects accessibility-first by prioritizing intuitive design, legible interfaces, inclusive controls, and reduced-friction user flows. Accessibility resources I reference:
 
 - [Game Accessibility Guidelines](https://gameaccessibilityguidelines.com/)
 - [Designing Accessible Video Games](https://uxdesign.cc/designing-accessible-video-games-f4c9824a9182)
