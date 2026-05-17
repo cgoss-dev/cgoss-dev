@@ -13,14 +13,14 @@ Hi, I'm $\textcolor{magenta}{CHRIS}$, a junior developer. I use `Artificial Inte
   <img alt="Sass" src="https://img.shields.io/badge/-Sass-CC6699?style=flat-square&logo=sass&logoColor=white" />
   <img alt="Figma" src="https://img.shields.io/badge/-Figma-F24E1E?style=flat-square&logo=figma&logoColor=white" />
   <img alt="JavaScript" src="https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" />
-<p>
+<br>
   <img alt="React" src="https://img.shields.io/badge/-React-61DAFB?style=flat-square&logo=react&logoColor=black" />
   <img alt="C Sharp" src="images/csharp-badge.svg" />
   <img alt="C++" src="https://img.shields.io/badge/-C%2B%2B-00599C?style=flat-square&logo=cplusplus&logoColor=white" />
   <img alt="Python" src="https://img.shields.io/badge/-Python-FFD43B?style=flat-square&logo=python&logoColor=black" />
   <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" />
   <img alt="JSON" src="https://img.shields.io/badge/-JSON-2F855A?style=flat-square&logo=json&logoColor=white" />
-</p></p>
+</p>
 <br>
 
 ## ⭐️ Featured Project: [Star Shower](https://cgoss-dev.github.io/star-shower/)
