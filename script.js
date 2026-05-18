@@ -899,6 +899,22 @@ function getDevLogIsoDate(post) {
      return post.date || dateCodeToIsoDate(post.dateCode);
 }
 
+function getDevLogReleaseTime(post) {
+     return /^\d{2}:\d{2}$/.test(post.releaseTime || "") ? post.releaseTime : "00:00";
+}
+
+function getDevLogReleaseDate(post) {
+     const isoDate = getDevLogIsoDate(post);
+
+     if (!isoDate) {
+          return null;
+     }
+
+     const releaseDate = new Date(`${isoDate}T${getDevLogReleaseTime(post)}`);
+
+     return Number.isNaN(releaseDate.getTime()) ? null : releaseDate;
+}
+
 function formatDevLogDisplayDate(dateValue) {
      const date = new Date(`${dateValue}T00:00:00`);
 
@@ -918,8 +934,9 @@ function setupDevLog() {
      const devLog = document.querySelector("[data-dev-log]");
      const latestContainer = document.querySelector("[data-dev-log-latest]");
      const archiveContainer = document.querySelector("[data-dev-log-archive]");
+     const archiveTitle = document.querySelector("[data-dev-log-archive-title]");
 
-     if (!devLog || !latestContainer || !archiveContainer) {
+     if (!devLog || !latestContainer || !archiveContainer || !archiveTitle) {
           return;
      }
 
@@ -935,27 +952,15 @@ function setupDevLog() {
           }
 
           item.innerHTML = `
-               <span class="dev-log-stamp">${displayDate}</span>
                <span class="dev-log-entry-title">${post.title || "untitled"}</span>
                <span class="dev-log-entry-content">${post.content || post.excerpt || ""}</span>
-               <span class="dev-log-tags">${tags.map((tag) => `<span>${tag}</span>`).join("")}</span>
+               <span class="dev-log-meta">
+                    <span class="dev-log-tags">${tags.map((tag) => `<span>${tag}</span>`).join("")}</span>
+                    <span class="dev-log-stamp">${displayDate}</span>
+               </span>
           `;
 
           return item;
-     }
-
-     function getArchiveKey(post) {
-          const date = new Date(`${getDevLogIsoDate(post)}T00:00:00`);
-
-          if (Number.isNaN(date.getTime())) {
-               return "undated";
-          }
-
-          return date.toLocaleString("en-US", {
-               month: "short",
-               timeZone: "UTC",
-               year: "numeric"
-          });
      }
 
      fetch("data/devlog.json")
@@ -968,40 +973,33 @@ function setupDevLog() {
           })
           .then((data) => {
                const posts = Array.isArray(data.posts) ? data.posts : [];
+               const now = new Date();
                const sortedPosts = posts
-                    .filter((post) => post && getDevLogIsoDate(post))
-                    .sort((firstPost, secondPost) => new Date(`${getDevLogIsoDate(secondPost)}T00:00:00`) - new Date(`${getDevLogIsoDate(firstPost)}T00:00:00`));
-               const latestPosts = sortedPosts.slice(0, 3);
-               const archiveGroups = new Map();
+                    .filter((post) => {
+                         const releaseDate = post && getDevLogReleaseDate(post);
+
+                         return releaseDate && releaseDate <= now;
+                    })
+                    .sort((firstPost, secondPost) => getDevLogReleaseDate(secondPost) - getDevLogReleaseDate(firstPost));
+               const latestPosts = sortedPosts.slice(0, 1);
+               const archivedPosts = sortedPosts.slice(1);
 
                latestContainer.replaceChildren(...latestPosts.map(createPostItem));
+               archiveContainer.closest(".dev-log-archive").hidden = archivedPosts.length === 0;
+               archiveContainer.replaceChildren(...archivedPosts.map(createPostItem));
 
-               const archivedPosts = sortedPosts.slice(1);
-               for (let i = 0; i < archivedPosts.length; i += 1) {                    
-                    const archiveKey = getArchiveKey(archivedPosts[i]);
-
-                    if (!archiveGroups.has(archiveKey)) {
-                         archiveGroups.set(archiveKey, []);
-                    }
-
-                    archiveGroups.get(archiveKey).push(archivedPosts[i]);
+               function updateArchiveTitleVisibility() {
+                    archiveTitle.hidden = archivedPosts.length === 0 || devLog.scrollHeight <= devLog.clientHeight + 1;
                }
 
-               archiveContainer.replaceChildren(
-                    ...Array.from(archiveGroups).map(([archiveKey, archivePosts]) => {
-                         const group = document.createElement("section");
-                         group.className = "dev-log-archive-group";
-                         group.innerHTML = `<p class="dev-log-archive-date">${archiveKey}</p>`;
-                         group.append(...archivePosts.map(createPostItem));
-                         return group;
-                    })
-               );
-
+               requestAnimationFrame(updateArchiveTitleVisibility);
+               window.addEventListener("resize", updateArchiveTitleVisibility);
                window.dispatchEvent(new Event("resize"));
           })
           .catch(() => {
                latestContainer.innerHTML = `<p class="box-text">dev.log archive unavailable.</p>`;
-               archiveContainer.closest(".dev-log-archive").hidden = archivedPosts.length === 0;
+               archiveTitle.hidden = true;
+               archiveContainer.closest(".dev-log-archive").hidden = true;
                archiveContainer.replaceChildren();
           });
 }

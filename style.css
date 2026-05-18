@@ -55,9 +55,9 @@
                --font-dancing: "Dancing Script", cursive;
                --font-symbol: "Segoe UI Symbol", "Noto Sans Symbols 2", "Noto Sans Symbols", sans-serif;
 
-               --font-size-lg: clamp(2rem, calc(-1rem + 8.75vw), 6rem);
-               --font-size-md: clamp(1.5rem, calc(1rem + 3vw), 3rem);
-               --font-size-sm: 1.25rem;
+               --font-size-lg: 3rem;
+               --font-size-md: 2rem;
+               --font-size-sm: 1rem;
                --font-weight: 400;
 
                --marquee-font-size-min: 2.5rem; /* ANCHOR: MARQUEE FONT SIZE*/
@@ -316,6 +316,7 @@ body::after {
 }
 
 .home-copy-panel {
+     --box-paragraph-gap: var(--font-size-md);
      position: relative;
      width: var(--home-panel-width);
      height: auto;
@@ -434,9 +435,12 @@ body::after {
      font: inherit;
 }
 
-.box-text + .box-text,
+.box-text + .box-text {
+     margin-top: var(--box-paragraph-gap);
+}
+
 .box-body + .skill-badges {
-     margin-top: var(--nav-btn-pad);
+     margin-top: var(--box-paragraph-gap);
 }
 
 .box-text a {
@@ -452,10 +456,27 @@ body::after {
      -webkit-text-fill-color: var(--color-white);
 }
 
+.box-text-secondary,
+.box-text-secondary a,
+.box-text-secondary a:is(:visited, :hover, :active, :focus-visible) {
+     color: var(--color-gray3);
+     -webkit-text-fill-color: var(--color-gray3);
+}
+
+.home-grid-about .box-body {
+     display: flex;
+     flex-direction: column;
+     gap: var(--box-paragraph-gap);
+}
+
+.home-grid-about .box-text + .box-text {
+     margin-top: 0;
+}
+
 .dev-log {
      display: flex;
      flex-direction: column;
-     gap: var(--nav-btn-pad);
+     gap: var(--box-paragraph-gap);
 }
 
 .dev-log-latest,
@@ -464,40 +485,54 @@ body::after {
 .dev-log-archive-group {
      display: flex;
      flex-direction: column;
-     gap: var(--nav-btn-pad);
+     gap: var(--box-paragraph-gap);
 }
 
-.dev-log-section-title,
-.dev-log-archive-date {
+.dev-log-section-title {
      margin: 0;
-     color: var(--color-gray3);
+     color: var(--color-white);
      font: inherit;
      line-height: 1.2;
 }
 
+.dev-log-section-title[hidden] {
+     display: none;
+}
+
 .dev-log-entry {
      display: grid;
-     grid-template-columns: max-content 1fr;
-     gap: 0.25rem var(--nav-btn-pad);
+     gap: var(--nav-btn-pad);
      color: var(--color-white);
      text-decoration: none;
 }
 
 .dev-log-stamp {
+     margin-left: auto;
      color: var(--color-gray3);
+     font-style: italic;
+     text-align: right;
 }
 
 .dev-log-entry-title {
+     width: 100%;
+     padding-bottom: var(--border-sm);
      color: var(--color-white);
-}
-
-.dev-log-entry-content,
-.dev-log-tags {
-     grid-column: 1 / -1;
+     border-bottom: var(--border-sm) solid var(--color-gray3);
+     font-size: var(--font-size-md);
+     line-height: 1.2;
 }
 
 .dev-log-entry-content {
-     color: var(--color-white);
+     color: var(--color-gray3);
+}
+
+.dev-log-meta {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 0.4rem var(--nav-btn-pad);
+     align-items: center;
+     color: var(--color-gray3);
+     font-style: italic;
 }
 
 .dev-log-tags {
@@ -568,7 +603,7 @@ body::after {
 .skill-badge {
      height: 20px;
      vertical-align: top;
-     filter: grayscale(1);
+     filter: none;
      transition: filter 0.2s ease-in-out;
 }
 
@@ -1443,35 +1478,37 @@ html::after {
      position: relative;
      z-index: 0;
      color: var(--color-white);
-     --title-cyan-opacity: 0.9;
-     --title-magenta-opacity: 0.85;
-     --title-yellow-opacity: 0.8;
      text-shadow:
-          0.08em 0.06em 0 rgba(0, 136, 255, var(--title-cyan-opacity)),
-          -0.06em 0.08em 0 rgba(255, 0, 255, var(--title-magenta-opacity)),
-          0.04em -0.05em 0 rgba(255, 255, 0, var(--title-yellow-opacity));
-     animation:
-          marqueeFlickerCyan 12s steps(1, end) infinite,
-          marqueeFlickerMagenta 12s steps(1, end) infinite,
-          marqueeFlickerYellow 12s steps(1, end) infinite;
+          0.08em 0.06em 0 rgba(0, 136, 255, 0.9),
+          -0.06em 0.08em 0 rgba(255, 0, 255, 0.85),
+          0.04em -0.05em 0 rgba(255, 255, 0, 0.8);
+     animation: marqueeGlitch 1.8s steps(1, end) infinite;
 }
 
-@keyframes marqueeFlickerCyan {
-     0%, 18%, 27%, 100% { --title-cyan-opacity: 0.9; }
-     19%, 22% { --title-cyan-opacity: 0.35; }
-     23%, 26% { --title-cyan-opacity: 1; }
-}
+@keyframes marqueeGlitch {
+     0%, 100% {
+          text-shadow:
+               0.08em 0.06em 0 rgba(0, 136, 255, 0.9),
+               -0.06em 0.08em 0 rgba(255, 0, 255, 0.85),
+               0.04em -0.05em 0 rgba(255, 255, 0, 0.8);
+          transform: translate(0, 0);
+     }
 
-@keyframes marqueeFlickerMagenta {
-     0%, 48%, 57%, 100% { --title-magenta-opacity: 0.85; }
-     49%, 52% { --title-magenta-opacity: 0.25; }
-     53%, 56% { --title-magenta-opacity: 1; }
-}
+     22% {
+          text-shadow:
+               -0.08em 0.04em 0 rgba(0, 136, 255, 1),
+               0.06em -0.05em 0 rgba(255, 0, 255, 0.8),
+               0.03em 0.08em 0 rgba(255, 255, 0, 0.65);
+          transform: translate(0.01em, -0.01em);
+     }
 
-@keyframes marqueeFlickerYellow {
-     0%, 78%, 87%, 100% { --title-yellow-opacity: 0.95; }
-     79%, 82% { --title-yellow-opacity: 0.35; }
-     83%, 86% { --title-yellow-opacity: 1; }
+     24% {
+          text-shadow:
+               0.1em -0.03em 0 rgba(0, 136, 255, 0.65),
+               -0.08em 0.06em 0 rgba(255, 0, 255, 1),
+               0.05em 0.03em 0 rgba(255, 255, 0, 0.9);
+          transform: translate(-0.01em, 0.01em);
+     }
 }
 
 .home-copy-panel,
@@ -1508,7 +1545,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 
 .project-preview {
      background: var(--color-black);
-     filter: grayscale(1) blur(0.7px);
+     filter: blur(0.7px);
      transition: filter 0.2s ease-in-out;
      cursor: default;
      pointer-events: none;
@@ -1572,7 +1609,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
      border: 0;
      clip-path: none;
      background: var(--home-copy-panel-fill);
-     filter: grayscale(1);
+     filter: none;
      transition: filter 0.2s ease-in-out;
      box-shadow:
           0 calc(var(--border-md) * -1) 0 0 var(--color-white),

@@ -3,6 +3,7 @@
           {
                "dateCode": "260518",
                "date": "2026-05-18",
+               "releaseTime": "00:00",
                "title": "Test Title 2",
                "content": "Lorem ipsum dolor sit amet",
                "tags": [
@@ -13,6 +14,7 @@
           {
                "dateCode": "260517",
                "date": "2026-05-17",
+               "releaseTime": "00:00",
                "title": "Test Title",
                "content": "Lorem ipsum...",
                "tags": [
