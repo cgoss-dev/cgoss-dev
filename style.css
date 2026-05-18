@@ -2018,6 +2018,14 @@ body:not(.star-shower-game-page) .home-grid {
           transition: max-height 0.24s ease-in-out;
      }
 
+     .home-grid-about .box-body,
+     .home-grid-devlog .dev-log {
+          max-height: calc(var(--home-preview-row-height) - var(--browser-frame-bar-height) - (var(--universalPadding) * 2));
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+          overscroll-behavior: contain;
+     }
+
      .home-grid .landing-titlebar {
           cursor: pointer;
      }
