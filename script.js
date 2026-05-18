@@ -758,11 +758,15 @@ function setupProjectPopups() {
      const projectTitlebars = Array.from(document.querySelectorAll(".project-titlebar"));
      const projectPreviews = Array.from(document.querySelectorAll("a.project-preview"));
 
-     for (let i = 0; i < projectTitlebars.length; i += 1) {
-          projectTitlebars[i].addEventListener("click", function () {
-               openProjectPopup(projectTitlebars[i].closest(".project-item"));
-          });
-     }
+     document.addEventListener("click", function (event) {
+          const titlebar = event.target.closest(".project-titlebar");
+
+          if (!titlebar) {
+               return;
+          }
+
+          openProjectPopup(titlebar.closest(".project-item"));
+     });
 
      document.addEventListener("pointerdown", function (event) {
           if (!event.target.closest(".project-item")) {
@@ -1004,9 +1008,25 @@ function setupProjectRailControls() {
      const rail = document.querySelector("[data-project-rail]");
      const previousButton = document.querySelector(".project-rail-button-prev");
      const nextButton = document.querySelector(".project-rail-button-next");
+     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+     let previousFrameTime = 0;
+     let isPaused = false;
 
      if (!rail || !previousButton || !nextButton) {
           return;
+     }
+
+     const originalItems = Array.from(rail.querySelectorAll(".project-item"));
+     const scrollSpeed = 72;
+
+     for (let i = 0; i < originalItems.length; i += 1) {
+          const clone = originalItems[i].cloneNode(true);
+
+          clone.setAttribute("aria-hidden", "true");
+          clone.querySelectorAll("a, button").forEach(function (element) {
+               element.tabIndex = -1;
+          });
+          rail.appendChild(clone);
      }
 
      function getRailStep() {
@@ -1020,19 +1040,55 @@ function setupProjectRailControls() {
           return firstItem.getBoundingClientRect().width + gap;
      }
 
+     function getLoopWidth() {
+          return rail.scrollWidth / 2;
+     }
+
+     function normalizeRailScroll() {
+          const loopWidth = getLoopWidth();
+
+          if (loopWidth <= 0) {
+               return;
+          }
+
+          if (rail.scrollLeft >= loopWidth) {
+               rail.scrollLeft -= loopWidth;
+          } else if (rail.scrollLeft < 0) {
+               rail.scrollLeft += loopWidth;
+          }
+     }
+
      function updateRailButtons() {
-          const railStyle = getComputedStyle(rail);
-          const startScrollLeft = parseFloat(railStyle.paddingLeft) || 0;
-          const maxScrollLeft = rail.scrollWidth - rail.clientWidth;
-          previousButton.disabled = rail.scrollLeft <= startScrollLeft + 1;
-          nextButton.disabled = rail.scrollLeft >= maxScrollLeft - 1;
+          previousButton.disabled = false;
+          nextButton.disabled = false;
+     }
+
+     function animateRail(timestamp) {
+          if (!previousFrameTime) {
+               previousFrameTime = timestamp;
+          }
+
+          const elapsedSeconds = (timestamp - previousFrameTime) / 1000;
+          previousFrameTime = timestamp;
+
+          if (!isPaused && !prefersReducedMotion.matches) {
+               rail.scrollLeft += scrollSpeed * elapsedSeconds;
+               normalizeRailScroll();
+          }
+
+          requestAnimationFrame(animateRail);
      }
 
      previousButton.addEventListener("click", function () {
+          if (rail.scrollLeft <= getRailStep()) {
+               rail.scrollLeft += getLoopWidth();
+          }
+
           rail.scrollBy({
                left: -getRailStep(),
                behavior: "smooth"
           });
+          window.setTimeout(normalizeRailScroll, 350);
      });
 
      nextButton.addEventListener("click", function () {
@@ -1040,11 +1096,33 @@ function setupProjectRailControls() {
                left: getRailStep(),
                behavior: "smooth"
           });
+          window.setTimeout(normalizeRailScroll, 350);
      });
 
-     rail.addEventListener("scroll", updateRailButtons, { passive: true });
+     rail.addEventListener("mouseenter", function () {
+          isPaused = true;
+     });
+
+     rail.addEventListener("mouseleave", function () {
+          isPaused = false;
+     });
+
+     rail.addEventListener("focusin", function () {
+          isPaused = true;
+     });
+
+     rail.addEventListener("focusout", function () {
+          isPaused = false;
+     });
+
+     rail.addEventListener("scroll", function () {
+          normalizeRailScroll();
+          updateRailButtons();
+     }, { passive: true });
+
      window.addEventListener("resize", updateRailButtons);
      updateRailButtons();
+     requestAnimationFrame(animateRail);
 }
 
 /* SHARED HELPERS FOR GAME PAGES */

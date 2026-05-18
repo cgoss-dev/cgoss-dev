@@ -436,7 +436,7 @@ body::after {
 }
 
 .box-text-primary {
-     font-size: var(--font-size-md);
+     font-size: calc(var(--font-size-sm) * 1.5);
 }
 
 .box-text + .box-text {
@@ -1965,7 +1965,7 @@ body:not(.star-shower-game-page) .home-grid {
      overflow-x: auto;
      overflow-y: hidden;
      padding: var(--border-md) var(--project-rail-edge-padding) var(--nav-btn-pad);
-     scroll-snap-type: x proximity;
+     scroll-snap-type: none;
      scroll-padding-inline: var(--project-rail-edge-padding);
      scrollbar-width: thin;
      -webkit-overflow-scrolling: touch;
@@ -1974,7 +1974,7 @@ body:not(.star-shower-game-page) .home-grid {
 .home-grid .project-item {
      min-width: 0;
      height: 100%;
-     scroll-snap-align: start;
+     scroll-snap-align: none;
 }
 
 .home-grid .project-preview {
