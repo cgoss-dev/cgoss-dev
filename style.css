@@ -467,6 +467,9 @@ body::after {
      display: flex;
      flex-direction: column;
      gap: var(--box-paragraph-gap);
+     min-height: 0;
+     overflow-y: auto;
+     padding-right: var(--nav-btn-pad);
 }
 
 .home-grid-about .box-text + .box-text {
@@ -477,6 +480,9 @@ body::after {
      display: flex;
      flex-direction: column;
      gap: var(--box-paragraph-gap);
+     min-height: 0;
+     overflow-y: auto;
+     padding-right: var(--nav-btn-pad);
 }
 
 .dev-log-latest,
