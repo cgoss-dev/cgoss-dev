@@ -452,6 +452,65 @@ body::after {
      -webkit-text-fill-color: var(--color-white);
 }
 
+.dev-log {
+     display: flex;
+     flex-direction: column;
+     gap: var(--nav-btn-pad);
+}
+
+.dev-log-latest,
+.dev-log-archive,
+.dev-log-archive-list,
+.dev-log-archive-group {
+     display: flex;
+     flex-direction: column;
+     gap: var(--nav-btn-pad);
+}
+
+.dev-log-section-title,
+.dev-log-archive-date {
+     margin: 0;
+     color: var(--color-gray3);
+     font: inherit;
+     line-height: 1.2;
+}
+
+.dev-log-entry {
+     display: grid;
+     grid-template-columns: max-content 1fr;
+     gap: 0.25rem var(--nav-btn-pad);
+     color: var(--color-white);
+     text-decoration: none;
+}
+
+.dev-log-stamp {
+     color: var(--color-gray3);
+}
+
+.dev-log-entry-title {
+     color: var(--color-white);
+}
+
+.dev-log-entry-excerpt,
+.dev-log-tags {
+     grid-column: 1 / -1;
+}
+
+.dev-log-entry-excerpt {
+     color: var(--color-white);
+}
+
+.dev-log-tags {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 0.4rem;
+     color: var(--color-gray3);
+}
+
+.dev-log-tags span::before {
+     content: "#";
+}
+
 .bio-statement-tagline {
      display: block;
      position: relative;
@@ -1815,7 +1874,7 @@ body:not(.star-shower-game-page) .home-grid {
      grid-row: 1 / 3;
 }
 
-.home-grid-devnotes {
+.home-grid-devlog {
      grid-column: 2 / 4;
      grid-row: 1 / 3;
      display: flex;
@@ -1902,7 +1961,7 @@ body:not(.star-shower-game-page) .home-grid {
      }
 
      .home-grid-about,
-     .home-grid-devnotes,
+     .home-grid-devlog,
      .home-grid-previews {
           grid-column: 1 / -1;
           grid-row: auto;

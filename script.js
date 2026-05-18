@@ -811,7 +811,7 @@ function setupScrollTopButton() {
 }
 
 function setupHomePanelToggles() {
-     const panels = Array.from(document.querySelectorAll(".home-grid-about, .home-grid-devnotes"));
+     const panels = Array.from(document.querySelectorAll(".home-grid-about, .home-grid-devlog"));
      const smallLayoutQuery = window.matchMedia("(max-width: 800px)");
 
      if (panels.length === 0) {
@@ -881,6 +881,127 @@ function setupHomePanelToggles() {
      } else if (typeof smallLayoutQuery.addListener === "function") {
           smallLayoutQuery.addListener(closePanelsOutsideSmallLayout);
      }
+}
+
+function isDevLogDateCode(value) {
+     return /^\d{6}$/.test(value);
+}
+
+function dateCodeToIsoDate(dateCode) {
+     if (!isDevLogDateCode(dateCode)) {
+          return "";
+     }
+
+     return `20${dateCode.slice(0, 2)}-${dateCode.slice(2, 4)}-${dateCode.slice(4, 6)}`;
+}
+
+function getDevLogIsoDate(post) {
+     return post.date || dateCodeToIsoDate(post.dateCode);
+}
+
+function formatDevLogDisplayDate(dateValue) {
+     const date = new Date(`${dateValue}T00:00:00`);
+
+     if (Number.isNaN(date.getTime())) {
+          return "";
+     }
+
+     const year = String(date.getFullYear()).slice(-2);
+     const month = date.toLocaleString("en-US", { month: "short", timeZone: "UTC" });
+     const day = String(date.getUTCDate()).padStart(2, "0");
+     const weekday = date.toLocaleString("en-US", { weekday: "short", timeZone: "UTC" });
+
+     return `${weekday}${day}${month}${year}`;
+}
+
+function setupDevLog() {
+     const devLog = document.querySelector("[data-dev-log]");
+     const latestContainer = document.querySelector("[data-dev-log-latest]");
+     const archiveContainer = document.querySelector("[data-dev-log-archive]");
+
+     if (!devLog || !latestContainer || !archiveContainer) {
+          return;
+     }
+
+     function createPostItem(post) {
+          const item = document.createElement(post.url ? "a" : "article");
+          const displayDate = formatDevLogDisplayDate(getDevLogIsoDate(post));
+          const tags = Array.isArray(post.tags) ? post.tags : [];
+
+          item.className = "dev-log-entry";
+
+          if (post.url) {
+               item.href = post.url;
+          }
+
+          item.innerHTML = `
+               <span class="dev-log-stamp">${displayDate}</span>
+               <span class="dev-log-entry-title">${post.title || "untitled"}</span>
+               <span class="dev-log-entry-excerpt">${post.excerpt || ""}</span>
+               <span class="dev-log-tags">${tags.map((tag) => `<span>${tag}</span>`).join("")}</span>
+          `;
+
+          return item;
+     }
+
+     function getArchiveKey(post) {
+          const date = new Date(`${getDevLogIsoDate(post)}T00:00:00`);
+
+          if (Number.isNaN(date.getTime())) {
+               return "undated";
+          }
+
+          return date.toLocaleString("en-US", {
+               month: "short",
+               timeZone: "UTC",
+               year: "numeric"
+          });
+     }
+
+     fetch("data/devlog.json")
+          .then((response) => {
+               if (!response.ok) {
+                    throw new Error("dev.log data could not be loaded");
+               }
+
+               return response.json();
+          })
+          .then((data) => {
+               const posts = Array.isArray(data.posts) ? data.posts : [];
+               const sortedPosts = posts
+                    .filter((post) => post && getDevLogIsoDate(post))
+                    .sort((firstPost, secondPost) => new Date(`${getDevLogIsoDate(secondPost)}T00:00:00`) - new Date(`${getDevLogIsoDate(firstPost)}T00:00:00`));
+               const latestPosts = sortedPosts.slice(0, 3);
+               const archiveGroups = new Map();
+
+               latestContainer.replaceChildren(...latestPosts.map(createPostItem));
+
+               for (let i = 0; i < sortedPosts.length; i += 1) {
+                    const archiveKey = getArchiveKey(sortedPosts[i]);
+
+                    if (!archiveGroups.has(archiveKey)) {
+                         archiveGroups.set(archiveKey, []);
+                    }
+
+                    archiveGroups.get(archiveKey).push(sortedPosts[i]);
+               }
+
+               archiveContainer.replaceChildren(
+                    ...Array.from(archiveGroups).map(([archiveKey, archivePosts]) => {
+                         const group = document.createElement("section");
+                         group.className = "dev-log-archive-group";
+                         group.innerHTML = `<p class="dev-log-archive-date">${archiveKey}</p>`;
+                         group.append(...archivePosts.map(createPostItem));
+                         return group;
+                    })
+               );
+
+               window.dispatchEvent(new Event("resize"));
+          })
+          .catch(() => {
+               latestContainer.innerHTML = `<p class="box-text">dev.log archive unavailable.</p>`;
+               archiveContainer.replaceChildren();
+          });
 }
 
 function setupProjectRailControls() {
@@ -975,6 +1096,7 @@ syncNavButtonGlow();
 setupProjectPopups();
 setupProjectRailControls();
 setupHomePanelToggles();
+setupDevLog();
 setupScrollTopButton();
 closeMenu();
 
