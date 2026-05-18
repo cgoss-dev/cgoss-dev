@@ -192,6 +192,11 @@ body::after {
      overflow: visible;
 }
 
+.home-body {
+     min-height: 0;
+     padding-bottom: 0;
+}
+
 /* BACKGROUND SPARKLE CANVAS */
 
 .site-bg-canvas {
@@ -407,6 +412,45 @@ body::after {
      -webkit-text-fill-color: var(--color-white);
 }
 
+.box-body {
+     width: 100%;
+     max-width: 100%;
+     color: var(--color-white);
+     font-family: var(--font-noto);
+     font-weight: var(--font-weight);
+     font-size: var(--font-size-sm);
+     line-height: 1.5;
+     text-align: left;
+     overflow-wrap: anywhere;
+}
+
+.box-text {
+     width: 100%;
+     max-width: 100%;
+     margin: 0;
+     padding: 0;
+     color: var(--color-white);
+     font: inherit;
+}
+
+.box-text + .box-text,
+.box-body + .skill-badges {
+     margin-top: var(--nav-btn-pad);
+}
+
+.box-text a {
+     color: var(--color-white);
+     -webkit-text-fill-color: var(--color-white);
+     text-decoration: underline;
+     text-decoration-thickness: var(--border-sm);
+     text-underline-offset: 0.18em;
+}
+
+.box-text a:is(:visited, :hover, :active, :focus-visible) {
+     color: var(--color-white);
+     -webkit-text-fill-color: var(--color-white);
+}
+
 .bio-statement-tagline {
      display: block;
      position: relative;
@@ -434,14 +478,30 @@ body::after {
 
 .skill-badges {
      display: flex;
-     flex-wrap: wrap;
-     justify-content: space-between;
+     flex-wrap: nowrap;
+     justify-content: flex-start;
      align-items: center;
-     gap: 0.35rem var(--nav-btn-pad);
      width: 100%;
      max-width: 100%;
      margin: 0;
      padding: 0;
+     overflow: hidden;
+}
+
+.skill-badges-track {
+     display: flex;
+     width: max-content;
+     min-width: max-content;
+     animation: skillBadgesMarquee 22s linear infinite;
+}
+
+.skill-badges-set {
+     display: flex;
+     flex: 0 0 auto;
+     align-items: center;
+     gap: var(--nav-btn-pad);
+     padding-right: var(--nav-btn-pad);
+     white-space: nowrap;
 }
 
 .skill-badges img,
@@ -483,6 +543,20 @@ body::after {
 .skill-badges img:hover,
 .skill-badge:is(:hover, :focus-visible) {
      filter: none;
+}
+
+.skill-badges:is(:hover, :focus-within) .skill-badges-track {
+     animation-play-state: paused;
+}
+
+@keyframes skillBadgesMarquee {
+     from {
+          transform: translateX(0);
+     }
+
+     to {
+          transform: translateX(-50%);
+     }
 }
 
 /* PROJECTS */
@@ -1520,7 +1594,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
      inset: 0 0 auto 0;
      z-index: 3;
      height: var(--browser-frame-bar-height);
-     padding: 0 4.5rem 0 var(--nav-btn-pad);
+     padding: 0 var(--nav-btn-pad);
      color: var(--color-black);
      background: var(--color-white);
      font-family: var(--font-noto);
@@ -1531,22 +1605,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
      pointer-events: none;
 }
 
-.window-control {
-     display: block;
-     position: absolute;
-     top: calc(var(--browser-frame-bar-height) / 2);
-     right: var(--nav-btn-pad);
-     z-index: 4;
-     color: var(--color-black);
-     font-family: var(--font-noto);
-     font-size: calc(var(--font-size-sm) * 1.5);
-     line-height: 1;
-     font-weight: 400;
-     transform: translateY(-50%);
-     pointer-events: none;
-}
-
-.landing-panel > :not(.landing-titlebar):not(.window-control) {
+.landing-panel > :not(.landing-titlebar) {
      position: relative;
      z-index: 1;
 }
@@ -1585,7 +1644,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
      z-index: 5;
      width: 100%;
      height: var(--project-frame-bar-height);
-     padding: 0 4.5rem 0 var(--nav-btn-pad);
+     padding: 0 var(--nav-btn-pad);
      color: var(--color-black);
      background: var(--color-white);
      border: 0;
@@ -1597,15 +1656,6 @@ a.project-preview:is(:hover, :active, :focus-visible) {
      white-space: nowrap;
      box-shadow: none;
      cursor: pointer;
-}
-
-.project-titlebar::after {
-     content: "+";
-     position: absolute;
-     top: 50%;
-     right: var(--nav-btn-pad);
-     font-size: calc(var(--font-size-sm) * 1.5);
-     transform: translateY(-50%);
 }
 
 .project-preview::after {
@@ -1670,7 +1720,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 .project-popup-titlebar {
      display: flex;
      align-items: center;
-     justify-content: space-between;
+     justify-content: flex-start;
      gap: var(--nav-btn-pad);
      position: absolute;
      inset: 0 0 auto 0;
@@ -1685,6 +1735,10 @@ a.project-preview:is(:hover, :active, :focus-visible) {
      line-height: 1;
      font-weight: 400;
      text-align: left;
+     cursor: pointer;
+}
+
+.project-popup-titlebar:disabled {
      cursor: default;
 }
 
@@ -1754,7 +1808,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 .scroll-top-button {
      display: block;
      width: max-content;
-     margin: 0 auto var(--universalPadding);
+     margin: var(--visual-gap) auto var(--universalPadding);
      padding: 0;
      color: var(--color-white);
      background: transparent;
@@ -1768,8 +1822,168 @@ a.project-preview:is(:hover, :active, :focus-visible) {
      cursor: pointer;
 }
 
+.scroll-top-button[hidden] {
+     display: none;
+}
+
 .scroll-top-button:visited,
 .scroll-top-button:hover,
 .scroll-top-button:focus-visible {
      color: var(--color-white);
+}
+
+/* ==================================================================================================== */
+/* NOTE: HOME 3X3 GRID */
+/* ==================================================================================================== */
+
+body:not(.star-shower-game-page) .home-grid {
+     width: var(--home-panel-width);
+     max-width: 100%;
+     min-height: 0;
+     margin: 0 auto;
+     display: grid;
+     grid-template-columns: repeat(3, minmax(0, 1fr));
+     grid-template-rows: repeat(3, clamp(18rem, 22vh, 20rem));
+     align-items: stretch;
+     gap: var(--visual-gap);
+     padding-bottom: 0;
+}
+
+.home-grid-about {
+     grid-column: 1 / 2;
+     grid-row: 1 / 3;
+}
+
+.home-grid-devnotes {
+     grid-column: 2 / 4;
+     grid-row: 1 / 3;
+     display: flex;
+     flex-direction: column;
+     justify-content: flex-start;
+     align-items: flex-start;
+}
+
+.home-grid-previews {
+     grid-column: 1 / 4;
+     grid-row: 3 / 4;
+     width: 100%;
+     min-width: 0;
+     position: relative;
+     overflow: visible;
+}
+
+.home-grid .home-copy-panel {
+     width: 100%;
+     min-width: 0;
+     height: auto;
+     margin: 0;
+}
+
+.home-grid .projects-list {
+     --project-rail-edge-padding: calc(var(--border-md) * 2);
+     display: grid;
+     grid-auto-flow: column;
+     grid-auto-columns: minmax(22rem, 1fr);
+     grid-template-columns: none;
+     gap: var(--visual-gap);
+     width: calc(100% + (var(--project-rail-edge-padding) * 2));
+     height: 100%;
+     margin-inline: calc(var(--project-rail-edge-padding) * -1);
+     overflow-x: auto;
+     overflow-y: hidden;
+     padding: var(--border-md) var(--project-rail-edge-padding) var(--nav-btn-pad);
+     scroll-snap-type: x proximity;
+     scroll-padding-inline: var(--project-rail-edge-padding);
+     scrollbar-width: thin;
+     -webkit-overflow-scrolling: touch;
+}
+
+.home-grid .project-item {
+     min-width: 0;
+     height: 100%;
+     scroll-snap-align: start;
+}
+
+.home-grid .project-preview {
+     height: 100%;
+     aspect-ratio: auto;
+}
+
+@media (min-width: 60rem) {
+     .home-grid .projects-list {
+          grid-auto-columns: calc((100% - (var(--visual-gap) * 2)) / 3);
+     }
+}
+
+@media (max-width: 42rem) {
+     body:not(.star-shower-game-page) .home-grid {
+          min-height: 0;
+          grid-template-columns: 1fr;
+          grid-template-rows: auto;
+     }
+
+     .home-grid-about,
+     .home-grid-devnotes,
+     .home-grid-previews {
+          grid-column: 1 / -1;
+          grid-row: auto;
+     }
+
+     .home-grid .home-copy-panel {
+          height: auto;
+     }
+
+     .home-grid .projects-list {
+          grid-auto-columns: minmax(min(82vw, 28rem), 1fr);
+     }
+
+     .home-grid .project-preview {
+          aspect-ratio: 4 / 3;
+     }
+}
+
+.project-rail-controls {
+     position: absolute;
+     inset: 50% 0 auto 0;
+     z-index: 8;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     pointer-events: none;
+     transform: translateY(-50%);
+}
+
+.project-rail-button {
+     display: grid;
+     width: 4.2rem;
+     aspect-ratio: 1;
+     place-items: center;
+     padding: 0;
+     color: var(--color-white);
+     background: transparent;
+     border: 0;
+     font-family: var(--font-noto);
+     line-height: 1;
+     pointer-events: auto;
+     cursor: pointer;
+}
+
+.project-rail-button-prev {
+     transform: translateX(-50%);
+}
+
+.project-rail-button-next {
+     transform: translateX(50%);
+}
+
+.project-rail-button img {
+     display: block;
+     width: 100%;
+     height: 100%;
+     filter: drop-shadow(0 0 0.4rem var(--color-black));
+}
+
+.project-rail-button:disabled {
+     opacity: 0.35;
+     cursor: default;
 }

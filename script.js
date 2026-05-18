@@ -639,8 +639,6 @@ function drawSparkleRain() {
 let projectPopup = null;
 let projectPopupTitlebar = null;
 let projectPopupTitle = null;
-let projectPopupOpenButton = null;
-let projectPopupCloseButton = null;
 let projectPopupBody = null;
 
 function getProjectPopup() {
@@ -653,33 +651,20 @@ function getProjectPopup() {
      projectPopup.setAttribute("role", "dialog");
      projectPopup.setAttribute("aria-modal", "true");
      projectPopup.setAttribute("aria-hidden", "true");
+     projectPopup.tabIndex = -1;
 
      const frame = document.createElement("div");
      frame.className = "project-popup-frame";
 
-     projectPopupTitlebar = document.createElement("div");
+     projectPopupTitlebar = document.createElement("button");
      projectPopupTitlebar.className = "project-popup-titlebar";
+     projectPopupTitlebar.type = "button";
+     projectPopupTitlebar.disabled = true;
 
      projectPopupTitle = document.createElement("span");
      projectPopupTitle.className = "project-popup-title";
 
-     const popupControls = document.createElement("span");
-     popupControls.className = "project-popup-controls";
-
-     projectPopupOpenButton = document.createElement("button");
-     projectPopupOpenButton.className = "project-popup-control project-popup-control-open";
-     projectPopupOpenButton.type = "button";
-     projectPopupOpenButton.textContent = "□";
-     projectPopupOpenButton.setAttribute("aria-label", "Open project in a new tab");
-
-     projectPopupCloseButton = document.createElement("button");
-     projectPopupCloseButton.className = "project-popup-control project-popup-control-close";
-     projectPopupCloseButton.type = "button";
-     projectPopupCloseButton.textContent = "x";
-     projectPopupCloseButton.setAttribute("aria-label", "Close project preview popup");
-
-     popupControls.append(projectPopupOpenButton, projectPopupCloseButton);
-     projectPopupTitlebar.append(projectPopupTitle, popupControls);
+     projectPopupTitlebar.append(projectPopupTitle);
 
      projectPopupBody = document.createElement("div");
      projectPopupBody.className = "project-popup-body";
@@ -694,15 +679,19 @@ function getProjectPopup() {
           }
      });
 
-     projectPopupOpenButton.addEventListener("click", function () {
-          const projectUrl = projectPopupOpenButton.dataset.projectUrl;
+     projectPopup.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") {
+               closeProjectPopup();
+          }
+     });
+
+     projectPopupTitlebar.addEventListener("click", function () {
+          const projectUrl = projectPopupTitlebar.dataset.projectUrl;
 
           if (projectUrl) {
                window.open(projectUrl, "_blank", "noopener,noreferrer");
           }
      });
-
-     projectPopupCloseButton.addEventListener("click", closeProjectPopup);
 
      return projectPopup;
 }
@@ -714,7 +703,8 @@ function closeProjectPopup() {
 
      projectPopup.classList.remove("is-open");
      projectPopup.setAttribute("aria-hidden", "true");
-     projectPopupOpenButton.removeAttribute("data-project-url");
+     projectPopupTitlebar.disabled = true;
+     projectPopupTitlebar.removeAttribute("data-project-url");
      projectPopupBody.replaceChildren();
 }
 
@@ -726,7 +716,7 @@ function openProjectPopup(projectItem) {
      const preview = projectItem.querySelector(".project-preview");
      const projectCopy = projectItem.querySelector(".project-copy");
      const projectUrl = preview ? preview.getAttribute("href") : "";
-
+     const projectTitle = projectItem.dataset.title || "project.preview";
      if (!preview) {
           return;
      }
@@ -741,14 +731,16 @@ function openProjectPopup(projectItem) {
      popupPreview.setAttribute("aria-hidden", "true");
      popupPreview.tabIndex = -1;
 
-     projectPopupTitle.textContent = projectItem.dataset.title || "project.preview";
+     projectPopupTitle.textContent = `open ${projectTitle} in new tab`;
 
      if (projectUrl) {
-          projectPopupOpenButton.disabled = false;
-          projectPopupOpenButton.dataset.projectUrl = projectUrl;
+          projectPopupTitlebar.disabled = false;
+          projectPopupTitlebar.dataset.projectUrl = projectUrl;
+          projectPopupTitlebar.setAttribute("aria-label", `Open ${projectTitle} in a new tab`);
      } else {
-          projectPopupOpenButton.disabled = true;
-          projectPopupOpenButton.removeAttribute("data-project-url");
+          projectPopupTitlebar.disabled = true;
+          projectPopupTitlebar.removeAttribute("data-project-url");
+          projectPopupTitlebar.setAttribute("aria-label", `${projectTitle} has no link to open`);
      }
 
      if (projectCopy) {
@@ -759,7 +751,7 @@ function openProjectPopup(projectItem) {
 
      projectPopup.classList.add("is-open");
      projectPopup.setAttribute("aria-hidden", "false");
-     projectPopupCloseButton.focus();
+     projectPopup.focus();
 }
 
 function setupProjectPopups() {
@@ -790,18 +782,18 @@ function setupProjectPopups() {
 
 function setupScrollTopButton() {
      const scrollTopButton = document.querySelector(".scroll-top-button");
+     const mainContent = document.querySelector(".main-squeeze");
 
      if (!scrollTopButton) {
           return;
      }
 
      function updateScrollTopVisibility() {
-          const pageHeight = Math.max(
-               document.documentElement.scrollHeight,
-               document.body.scrollHeight
-          );
+          const contentBottom = mainContent
+               ? mainContent.getBoundingClientRect().bottom + window.scrollY
+               : document.documentElement.scrollHeight;
 
-          scrollTopButton.hidden = pageHeight <= window.innerHeight + 1;
+          scrollTopButton.hidden = contentBottom <= window.innerHeight + 1;
      }
 
      scrollTopButton.addEventListener("click", function (event) {
@@ -816,6 +808,53 @@ function setupScrollTopButton() {
      updateScrollTopVisibility();
      window.addEventListener("load", updateScrollTopVisibility);
      window.addEventListener("resize", updateScrollTopVisibility);
+}
+
+function setupProjectRailControls() {
+     const rail = document.querySelector("[data-project-rail]");
+     const previousButton = document.querySelector(".project-rail-button-prev");
+     const nextButton = document.querySelector(".project-rail-button-next");
+
+     if (!rail || !previousButton || !nextButton) {
+          return;
+     }
+
+     function getRailStep() {
+          const firstItem = rail.querySelector(".project-item");
+          const gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
+
+          if (!firstItem) {
+               return rail.clientWidth;
+          }
+
+          return firstItem.getBoundingClientRect().width + gap;
+     }
+
+     function updateRailButtons() {
+          const railStyle = getComputedStyle(rail);
+          const startScrollLeft = parseFloat(railStyle.paddingLeft) || 0;
+          const maxScrollLeft = rail.scrollWidth - rail.clientWidth;
+          previousButton.disabled = rail.scrollLeft <= startScrollLeft + 1;
+          nextButton.disabled = rail.scrollLeft >= maxScrollLeft - 1;
+     }
+
+     previousButton.addEventListener("click", function () {
+          rail.scrollBy({
+               left: -getRailStep(),
+               behavior: "smooth"
+          });
+     });
+
+     nextButton.addEventListener("click", function () {
+          rail.scrollBy({
+               left: getRailStep(),
+               behavior: "smooth"
+          });
+     });
+
+     rail.addEventListener("scroll", updateRailButtons, { passive: true });
+     window.addEventListener("resize", updateRailButtons);
+     updateRailButtons();
 }
 
 /* SHARED HELPERS FOR GAME PAGES */
@@ -861,6 +900,7 @@ fitAllMarquees();
 setMarqueeTextToSolidColor(getCssColor("--color-gray3", "gray"));
 syncNavButtonGlow();
 setupProjectPopups();
+setupProjectRailControls();
 setupScrollTopButton();
 closeMenu();
 
