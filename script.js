@@ -810,6 +810,79 @@ function setupScrollTopButton() {
      window.addEventListener("resize", updateScrollTopVisibility);
 }
 
+function setupHomePanelToggles() {
+     const panels = Array.from(document.querySelectorAll(".home-grid-about, .home-grid-devnotes"));
+     const smallLayoutQuery = window.matchMedia("(max-width: 800px)");
+
+     if (panels.length === 0) {
+          return;
+     }
+
+     function setExpandedHeight(panel) {
+          panel.style.setProperty("--home-panel-expanded-height", `${panel.scrollHeight}px`);
+     }
+
+     function updatePanelHeights() {
+          for (let i = 0; i < panels.length; i += 1) {
+               setExpandedHeight(panels[i]);
+          }
+     }
+
+     function closePanelsOutsideSmallLayout() {
+          if (smallLayoutQuery.matches) {
+               updatePanelHeights();
+               return;
+          }
+
+          for (let i = 0; i < panels.length; i += 1) {
+               const titlebar = panels[i].querySelector(".landing-titlebar");
+
+               panels[i].classList.remove("is-open");
+
+               if (titlebar) {
+                    titlebar.setAttribute("aria-expanded", "false");
+               }
+          }
+     }
+
+     for (let i = 0; i < panels.length; i += 1) {
+          const panel = panels[i];
+          const titlebar = panel.querySelector(".landing-titlebar");
+
+          setExpandedHeight(panel);
+
+          if (!titlebar) {
+               continue;
+          }
+
+          titlebar.addEventListener("click", function () {
+               if (!smallLayoutQuery.matches) {
+                    return;
+               }
+
+               setExpandedHeight(panel);
+               panel.classList.toggle("is-open");
+               titlebar.setAttribute("aria-expanded", String(panel.classList.contains("is-open")));
+               window.dispatchEvent(new Event("resize"));
+          });
+
+          panel.addEventListener("transitionend", function (event) {
+               if (event.propertyName === "max-height") {
+                    window.dispatchEvent(new Event("resize"));
+               }
+          });
+     }
+
+     window.addEventListener("load", updatePanelHeights);
+     window.addEventListener("resize", updatePanelHeights);
+
+     if (typeof smallLayoutQuery.addEventListener === "function") {
+          smallLayoutQuery.addEventListener("change", closePanelsOutsideSmallLayout);
+     } else if (typeof smallLayoutQuery.addListener === "function") {
+          smallLayoutQuery.addListener(closePanelsOutsideSmallLayout);
+     }
+}
+
 function setupProjectRailControls() {
      const rail = document.querySelector("[data-project-rail]");
      const previousButton = document.querySelector(".project-rail-button-prev");
@@ -901,6 +974,7 @@ setMarqueeTextToSolidColor(getCssColor("--color-gray3", "gray"));
 syncNavButtonGlow();
 setupProjectPopups();
 setupProjectRailControls();
+setupHomePanelToggles();
 setupScrollTopButton();
 closeMenu();
 
