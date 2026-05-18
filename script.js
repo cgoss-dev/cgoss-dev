@@ -907,8 +907,7 @@ function setupDevLog() {
      const latestContainer = document.querySelector("[data-dev-log-latest]");
      const archiveContainer = document.querySelector("[data-dev-log-archive]");
      const archiveTitle = document.querySelector("[data-dev-log-archive-title]");
-     const blogUrl = "https://cgoss-dev.blogspot.com/";
-     const bloggerPreviewPosts = [];
+     const devLogPreviewPosts = [];
 
      if (!devLog || !latestContainer || !archiveContainer || !archiveTitle) {
           return;
@@ -947,18 +946,17 @@ function setupDevLog() {
           latestContainer.replaceChildren(...latestPosts.map(createPostItem));
 
           if (latestPosts.length === 0) {
-               const blogLink = document.createElement("a");
+               const placeholder = document.createElement("article");
 
-               blogLink.className = "dev-log-entry";
-               blogLink.href = blogUrl;
-               blogLink.innerHTML = `
-                    <span class="dev-log-entry-title">dev.log on Blogger</span>
+               placeholder.className = "dev-log-entry";
+               placeholder.innerHTML = `
+                    <span class="dev-log-entry-title">dev.log moving soon</span>
                     <span class="dev-log-entry-content">First article in progress.</span>
                     <span class="dev-log-meta">
-                         <span class="dev-log-tags"><span>blogger</span></span>
+                         <span class="dev-log-tags"><span>medium</span></span>
                     </span>
                `;
-               latestContainer.replaceChildren(blogLink);
+               latestContainer.replaceChildren(placeholder);
           }
 
           archiveContainer.closest(".dev-log-archive").hidden = archivedPosts.length === 0;
@@ -973,7 +971,7 @@ function setupDevLog() {
           window.dispatchEvent(new Event("resize"));
      }
 
-     renderDevLogPosts(bloggerPreviewPosts);
+     renderDevLogPosts(devLogPreviewPosts);
 }
 
 function setupProjectRailControls() {
