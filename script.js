@@ -884,7 +884,7 @@ function setupHomePanelToggles() {
 }
 
 function getDevLogIsoDate(post) {
-     return post.date || "";
+     return post.date || post.published || "";
 }
 
 function formatDevLogDisplayDate(dateValue) {
@@ -902,15 +902,25 @@ function formatDevLogDisplayDate(dateValue) {
      return `${weekday}${day}${month}${year}`;
 }
 
-function setupDevLog() {
+async function setupDevLog() {
      const devLog = document.querySelector("[data-dev-log]");
      const latestContainer = document.querySelector("[data-dev-log-latest]");
      const archiveContainer = document.querySelector("[data-dev-log-archive]");
      const archiveTitle = document.querySelector("[data-dev-log-archive-title]");
-     const devLogPreviewPosts = [];
+     const devLogFeedUrl = "data/medium-posts.json";
+     const mediumUrl = "https://medium.com/@chrisiscode";
 
      if (!devLog || !latestContainer || !archiveContainer || !archiveTitle) {
           return;
+     }
+
+     function escapeHtml(value) {
+          return String(value)
+               .replaceAll("&", "&amp;")
+               .replaceAll("<", "&lt;")
+               .replaceAll(">", "&gt;")
+               .replaceAll('"', "&quot;")
+               .replaceAll("'", "&#39;");
      }
 
      function createPostItem(post) {
@@ -922,13 +932,15 @@ function setupDevLog() {
 
           if (post.url) {
                item.href = post.url;
+               item.target = "_blank";
+               item.rel = "noopener noreferrer";
           }
 
           item.innerHTML = `
-               <span class="dev-log-entry-title">${post.title || "untitled"}</span>
-               <span class="dev-log-entry-content">${post.content || post.excerpt || ""}</span>
+               <span class="dev-log-entry-title">${escapeHtml(post.title || "untitled")}</span>
+               <span class="dev-log-entry-content">${escapeHtml(post.content || post.excerpt || "")}</span>
                <span class="dev-log-meta">
-                    <span class="dev-log-tags">${tags.map((tag) => `<span>${tag}</span>`).join("")}</span>
+                    <span class="dev-log-tags">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</span>
                     <span class="dev-log-stamp">${displayDate}</span>
                </span>
           `;
@@ -946,12 +958,15 @@ function setupDevLog() {
           latestContainer.replaceChildren(...latestPosts.map(createPostItem));
 
           if (latestPosts.length === 0) {
-               const placeholder = document.createElement("article");
+               const placeholder = document.createElement("a");
 
                placeholder.className = "dev-log-entry";
+               placeholder.href = mediumUrl;
+               placeholder.target = "_blank";
+               placeholder.rel = "noopener noreferrer";
                placeholder.innerHTML = `
-                    <span class="dev-log-entry-title">dev.log moving soon</span>
-                    <span class="dev-log-entry-content">First article in progress.</span>
+                    <span class="dev-log-entry-title">dev.log on Medium</span>
+                    <span class="dev-log-entry-content">Latest articles will appear here after the feed updates.</span>
                     <span class="dev-log-meta">
                          <span class="dev-log-tags"><span>medium</span></span>
                     </span>
@@ -971,7 +986,18 @@ function setupDevLog() {
           window.dispatchEvent(new Event("resize"));
      }
 
-     renderDevLogPosts(devLogPreviewPosts);
+     try {
+          const response = await fetch(devLogFeedUrl, { cache: "no-store" });
+
+          if (!response.ok) {
+               throw new Error(`Unable to load ${devLogFeedUrl}`);
+          }
+
+          const mediumPosts = await response.json();
+          renderDevLogPosts(Array.isArray(mediumPosts) ? mediumPosts : []);
+     } catch (error) {
+          renderDevLogPosts([]);
+     }
 }
 
 function setupProjectRailControls() {
