@@ -937,7 +937,7 @@ function setupDevLog() {
           item.innerHTML = `
                <span class="dev-log-stamp">${displayDate}</span>
                <span class="dev-log-entry-title">${post.title || "untitled"}</span>
-               <span class="dev-log-entry-excerpt">${post.excerpt || ""}</span>
+               <span class="dev-log-entry-content">${post.content || post.excerpt || ""}</span>
                <span class="dev-log-tags">${tags.map((tag) => `<span>${tag}</span>`).join("")}</span>
           `;
 
@@ -976,14 +976,15 @@ function setupDevLog() {
 
                latestContainer.replaceChildren(...latestPosts.map(createPostItem));
 
-               for (let i = 0; i < sortedPosts.length; i += 1) {
-                    const archiveKey = getArchiveKey(sortedPosts[i]);
+               const archivedPosts = sortedPosts.slice(1);
+               for (let i = 0; i < archivedPosts.length; i += 1) {                    
+                    const archiveKey = getArchiveKey(archivedPosts[i]);
 
                     if (!archiveGroups.has(archiveKey)) {
                          archiveGroups.set(archiveKey, []);
                     }
 
-                    archiveGroups.get(archiveKey).push(sortedPosts[i]);
+                    archiveGroups.get(archiveKey).push(archivedPosts[i]);
                }
 
                archiveContainer.replaceChildren(
@@ -1000,6 +1001,7 @@ function setupDevLog() {
           })
           .catch(() => {
                latestContainer.innerHTML = `<p class="box-text">dev.log archive unavailable.</p>`;
+               archiveContainer.closest(".dev-log-archive").hidden = archivedPosts.length === 0;
                archiveContainer.replaceChildren();
           });
 }

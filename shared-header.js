@@ -210,7 +210,7 @@ function renderSiteHeader(header, index) {
      <div class="header-top">
      <div class="header-brand">
      <h1 class="site-title">
-                         <span class="site-title-marquee" aria-label="Chris Goss">Chris Goss</span>
+                         <span class="site-title-marquee" aria-label="Chris Goss">Hello World</span>
                     </h1>
                </div>
           </div>

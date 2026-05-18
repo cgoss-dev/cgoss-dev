@@ -3,9 +3,22 @@
           {
                "dateCode": "260518",
                "date": "2026-05-18",
-               "title": "dev.log begins",
-               "excerpt": "Setting up an archive-first writing space for project notes, build decisions, and CMS-backed posts.",
-               "tags": ["cms", "portfolio"]
+               "title": "Test Title 2",
+               "content": "Lorem ipsum dolor sit amet",
+               "tags": [
+                    "2026",
+                    "test"
+               ]
+          },
+          {
+               "dateCode": "260517",
+               "date": "2026-05-17",
+               "title": "Test Title",
+               "content": "Lorem ipsum...",
+               "tags": [
+                    "2026",
+                    "devlog"
+               ]
           }
      ]
 }

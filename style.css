@@ -491,12 +491,12 @@ body::after {
      color: var(--color-white);
 }
 
-.dev-log-entry-excerpt,
+.dev-log-entry-content,
 .dev-log-tags {
      grid-column: 1 / -1;
 }
 
-.dev-log-entry-excerpt {
+.dev-log-entry-content {
      color: var(--color-white);
 }
 
