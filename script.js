@@ -883,36 +883,8 @@ function setupHomePanelToggles() {
      }
 }
 
-function isDevLogDateCode(value) {
-     return /^\d{6}$/.test(value);
-}
-
-function dateCodeToIsoDate(dateCode) {
-     if (!isDevLogDateCode(dateCode)) {
-          return "";
-     }
-
-     return `20${dateCode.slice(0, 2)}-${dateCode.slice(2, 4)}-${dateCode.slice(4, 6)}`;
-}
-
 function getDevLogIsoDate(post) {
-     return post.date || dateCodeToIsoDate(post.dateCode);
-}
-
-function getDevLogReleaseTime(post) {
-     return /^\d{2}:\d{2}$/.test(post.releaseTime || "") ? post.releaseTime : "00:00";
-}
-
-function getDevLogReleaseDate(post) {
-     const isoDate = getDevLogIsoDate(post);
-
-     if (!isoDate) {
-          return null;
-     }
-
-     const releaseDate = new Date(`${isoDate}T${getDevLogReleaseTime(post)}`);
-
-     return Number.isNaN(releaseDate.getTime()) ? null : releaseDate;
+     return post.date || "";
 }
 
 function formatDevLogDisplayDate(dateValue) {
@@ -935,6 +907,8 @@ function setupDevLog() {
      const latestContainer = document.querySelector("[data-dev-log-latest]");
      const archiveContainer = document.querySelector("[data-dev-log-archive]");
      const archiveTitle = document.querySelector("[data-dev-log-archive-title]");
+     const blogUrl = "https://cgoss-dev.blogspot.com/";
+     const bloggerPreviewPosts = [];
 
      if (!devLog || !latestContainer || !archiveContainer || !archiveTitle) {
           return;
@@ -963,45 +937,43 @@ function setupDevLog() {
           return item;
      }
 
-     fetch("data/devlog.json")
-          .then((response) => {
-               if (!response.ok) {
-                    throw new Error("dev.log data could not be loaded");
-               }
+     function renderDevLogPosts(posts) {
+          const sortedPosts = posts
+               .filter((post) => post && getDevLogIsoDate(post))
+               .sort((firstPost, secondPost) => new Date(`${getDevLogIsoDate(secondPost)}T00:00:00`) - new Date(`${getDevLogIsoDate(firstPost)}T00:00:00`));
+          const latestPosts = sortedPosts.slice(0, 1);
+          const archivedPosts = sortedPosts.slice(1);
 
-               return response.json();
-          })
-          .then((data) => {
-               const posts = Array.isArray(data.posts) ? data.posts : [];
-               const now = new Date();
-               const sortedPosts = posts
-                    .filter((post) => {
-                         const releaseDate = post && getDevLogReleaseDate(post);
+          latestContainer.replaceChildren(...latestPosts.map(createPostItem));
 
-                         return releaseDate && releaseDate <= now;
-                    })
-                    .sort((firstPost, secondPost) => getDevLogReleaseDate(secondPost) - getDevLogReleaseDate(firstPost));
-               const latestPosts = sortedPosts.slice(0, 1);
-               const archivedPosts = sortedPosts.slice(1);
+          if (latestPosts.length === 0) {
+               const blogLink = document.createElement("a");
 
-               latestContainer.replaceChildren(...latestPosts.map(createPostItem));
-               archiveContainer.closest(".dev-log-archive").hidden = archivedPosts.length === 0;
-               archiveContainer.replaceChildren(...archivedPosts.map(createPostItem));
+               blogLink.className = "dev-log-entry";
+               blogLink.href = blogUrl;
+               blogLink.innerHTML = `
+                    <span class="dev-log-entry-title">dev.log on Blogger</span>
+                    <span class="dev-log-entry-content">First article in progress.</span>
+                    <span class="dev-log-meta">
+                         <span class="dev-log-tags"><span>blogger</span></span>
+                    </span>
+               `;
+               latestContainer.replaceChildren(blogLink);
+          }
 
-               function updateArchiveTitleVisibility() {
-                    archiveTitle.hidden = archivedPosts.length === 0 || devLog.scrollHeight <= devLog.clientHeight + 1;
-               }
+          archiveContainer.closest(".dev-log-archive").hidden = archivedPosts.length === 0;
+          archiveContainer.replaceChildren(...archivedPosts.map(createPostItem));
 
-               requestAnimationFrame(updateArchiveTitleVisibility);
-               window.addEventListener("resize", updateArchiveTitleVisibility);
-               window.dispatchEvent(new Event("resize"));
-          })
-          .catch(() => {
-               latestContainer.innerHTML = `<p class="box-text">dev.log archive unavailable.</p>`;
-               archiveTitle.hidden = true;
-               archiveContainer.closest(".dev-log-archive").hidden = true;
-               archiveContainer.replaceChildren();
-          });
+          function updateArchiveTitleVisibility() {
+               archiveTitle.hidden = archivedPosts.length === 0 || devLog.scrollHeight <= devLog.clientHeight + 1;
+          }
+
+          requestAnimationFrame(updateArchiveTitleVisibility);
+          window.addEventListener("resize", updateArchiveTitleVisibility);
+          window.dispatchEvent(new Event("resize"));
+     }
+
+     renderDevLogPosts(bloggerPreviewPosts);
 }
 
 function setupProjectRailControls() {
