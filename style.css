@@ -66,7 +66,7 @@
                --marquee-font-color: var(--color-white);
                --marquee-letter-spacing: 0.25px;
           /* LAYOUT */
-               --universalPadding: var(--font-size-md); /* ANCHOR UNIVERSAL PADDING */
+               --universalPadding: 1rem; /* ANCHOR UNIVERSAL PADDING */
                --visual-gap: var(--universalPadding);
                --page-width-wide: 75rem;
                --nav-height: var(--font-size-lg);
@@ -473,7 +473,8 @@ body::after {
      gap: var(--box-paragraph-gap);
      min-height: 0;
      overflow-y: auto;
-     padding-right: var(--nav-btn-pad);
+     box-sizing: border-box;
+     padding: var(--universalPadding);
 }
 
 .home-grid-about .box-text + .box-text {
