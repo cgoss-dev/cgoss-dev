@@ -12,6 +12,11 @@ function getTagValue(xml, tagName) {
      return match ? cleanText(match[1]) : "";
 }
 
+function getRawTagValue(xml, tagName) {
+     const match = xml.match(new RegExp(`<${tagName}[^>]*>([\\s\\S]*?)<\\/${tagName}>`, "i"));
+     return match ? decodeEntities(match[1]) : "";
+}
+
 function getCategoryValues(xml) {
      return [...xml.matchAll(/<category[^>]*>([\s\S]*?)<\/category>/gi)]
           .map((match) => cleanText(match[1]))
@@ -82,6 +87,12 @@ function cleanUrl(value) {
      }
 }
 
+function getFirstImageUrl(html) {
+     const match = html.match(/<img\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/i);
+
+     return match ? cleanUrl(match[1]) : "";
+}
+
 async function main() {
      const response = await fetch(feedUrl, {
           headers: {
@@ -100,9 +111,11 @@ async function main() {
           const title = getTagValue(item, "title");
           const url = cleanUrl(getTagValue(item, "link"));
           const published = toIsoDate(getTagValue(item, "pubDate"));
-          const encodedContent = getTagValue(item, "content:encoded");
+          const rawEncodedContent = getRawTagValue(item, "content:encoded");
+          const encodedContent = cleanText(rawEncodedContent);
           const description = getTagValue(item, "description");
           const content = truncate(encodedContent || description, excerptLength);
+          const imageUrl = getFirstImageUrl(rawEncodedContent);
           const categories = getCategoryValues(item);
           const tags = categories.length > 0 ? categories.slice(0, 3) : ["medium"];
 
@@ -110,6 +123,7 @@ async function main() {
                title,
                url,
                content,
+               imageUrl,
                published,
                tags
           };

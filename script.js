@@ -931,6 +931,9 @@ async function setupDevLog() {
           const item = document.createElement(post.url ? "a" : "article");
           const displayDate = formatDevLogDisplayDate(getDevLogIsoDate(post));
           const tags = Array.isArray(post.tags) ? post.tags : [];
+          const imageMarkup = post.imageUrl
+               ? `<img class="dev-log-entry-image" src="${escapeHtml(post.imageUrl)}" alt="" loading="lazy">`
+               : "";
 
           item.className = "dev-log-entry";
 
@@ -941,6 +944,7 @@ async function setupDevLog() {
           }
 
           item.innerHTML = `
+               ${imageMarkup}
                <span class="dev-log-entry-title">${escapeHtml(post.title || "untitled")}</span>
                <span class="dev-log-entry-content">${escapeHtml(post.content || post.excerpt || "")}</span>
                <span class="dev-log-meta">
@@ -1008,16 +1012,13 @@ function setupProjectRailControls() {
      const rail = document.querySelector("[data-project-rail]");
      const previousButton = document.querySelector(".project-rail-button-prev");
      const nextButton = document.querySelector(".project-rail-button-next");
-     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-     let previousFrameTime = 0;
-     let isPaused = false;
+     let shouldNormalizeScroll = true;
 
      if (!rail || !previousButton || !nextButton) {
           return;
      }
 
      const originalItems = Array.from(rail.querySelectorAll(".project-item"));
-     const scrollSpeed = 72;
 
      for (let i = 0; i < originalItems.length; i += 1) {
           const clone = originalItems[i].cloneNode(true);
@@ -1045,6 +1046,10 @@ function setupProjectRailControls() {
      }
 
      function normalizeRailScroll() {
+          if (!shouldNormalizeScroll) {
+               return;
+          }
+
           const loopWidth = getLoopWidth();
 
           if (loopWidth <= 0) {
@@ -1063,25 +1068,15 @@ function setupProjectRailControls() {
           nextButton.disabled = false;
      }
 
-     function animateRail(timestamp) {
-          if (!previousFrameTime) {
-               previousFrameTime = timestamp;
-          }
-
-          const elapsedSeconds = (timestamp - previousFrameTime) / 1000;
-          previousFrameTime = timestamp;
-
-          if (!isPaused && !prefersReducedMotion.matches) {
-               rail.scrollLeft += scrollSpeed * elapsedSeconds;
-               normalizeRailScroll();
-          }
-
-          requestAnimationFrame(animateRail);
-     }
-
      previousButton.addEventListener("click", function () {
-          if (rail.scrollLeft <= getRailStep()) {
+          if (rail.scrollLeft <= 1) {
+               shouldNormalizeScroll = false;
                rail.scrollLeft += getLoopWidth();
+
+               window.setTimeout(function () {
+                    shouldNormalizeScroll = true;
+                    normalizeRailScroll();
+               }, 450);
           }
 
           rail.scrollBy({
@@ -1099,22 +1094,6 @@ function setupProjectRailControls() {
           window.setTimeout(normalizeRailScroll, 350);
      });
 
-     rail.addEventListener("mouseenter", function () {
-          isPaused = true;
-     });
-
-     rail.addEventListener("mouseleave", function () {
-          isPaused = false;
-     });
-
-     rail.addEventListener("focusin", function () {
-          isPaused = true;
-     });
-
-     rail.addEventListener("focusout", function () {
-          isPaused = false;
-     });
-
      rail.addEventListener("scroll", function () {
           normalizeRailScroll();
           updateRailButtons();
@@ -1122,7 +1101,6 @@ function setupProjectRailControls() {
 
      window.addEventListener("resize", updateRailButtons);
      updateRailButtons();
-     requestAnimationFrame(animateRail);
 }
 
 /* SHARED HELPERS FOR GAME PAGES */
