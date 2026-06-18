@@ -3,7 +3,7 @@
 Hi, I'm $\textcolor{magenta}{CHRIS}$, a junior developer. I use `Artificial Intelligence` to build for `Human Intuition`.
 <br>
 
-*“Programming isn’t about what you know; it’s about what you can figure out.”*<br>
+_“Programming isn’t about what you know; it’s about what you can figure out.”_<br>
 🗣️ Chris Pine, author of [Learn to Program](https://pine.fm/LearnToProgram/)
 
 <p>
@@ -27,7 +27,7 @@ A canvas arcade-style game with accessibility-minded UI and inclusive keyboard c
 
 - Tech: JavaScript, HTML Canvas, CSS
 - Focus: game interaction, animation, visual feedback, and game theory
-<br><br><br>
+  <br><br><br>
 
 ## 📝 Currently Learning
 
@@ -36,8 +36,7 @@ I am growing through the stack while keeping my front-end foundation strong.
 - Accessible UI design
 - Python and C# fundamentals
 - Git, GitHub, and shared project documentation
-<br><br><br>
-
+  <br><br><br>
 
 ## ♿️ Accessibility Focus
 
@@ -47,11 +46,11 @@ I prioritize accessible design, legible interfaces, inclusive control. Resources
 - [Designing Accessible Video Games](https://uxdesign.cc/designing-accessible-video-games-f4c9824a9182)
 - [5 Big Ideas for Designing Accessible Video Games](https://medium.com/@ruthieee/5-big-ideas-for-designing-accessible-video-games-e403a2c5d4d7)
 - [WCAG 3.0 Working Draft](https://www.w3.org/TR/wcag-3.0/)
-<br><br><br>
+  <br><br><br>
 
 ## ☎️ Connect
 
 - Portfolio: [cgoss-dev.github.io/cgoss-dev](https://cgoss-dev.github.io/cgoss-dev/)
 - GitHub: [cgoss-dev](https://github.com/cgoss-dev)
 - LinkedIn: [Chris Goss](https://www.linkedin.com/in/chrisgoss206)
-<br><br><br>
+  <br><br><br>

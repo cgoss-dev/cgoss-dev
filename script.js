@@ -1,41 +1,43 @@
 // NOTE: MAIN ROOT JS
 
 function getCssValue(variableName) {
-     return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(variableName)
+    .trim();
 }
 
 function getCssNumber(variableName, fallback = 0) {
-     const rawValue = getCssValue(variableName);
-     const value = parseFloat(rawValue);
-     return Number.isNaN(value) ? fallback : value;
+  const rawValue = getCssValue(variableName);
+  const value = parseFloat(rawValue);
+  return Number.isNaN(value) ? fallback : value;
 }
 
 function getCssColor(variableName, fallback = "#ffffff") {
-     const value = getCssValue(variableName);
-     return value || fallback;
+  const value = getCssValue(variableName);
+  return value || fallback;
 }
 
 function getSparkleSettings() {
-     return {
-          countMax: getCssNumber("--sparkle-count-max", 180),
-          sizeMin: getCssNumber("--sparkle-size-min", 16),
-          sizeMax: getCssNumber("--sparkle-size-max", 26),
-          speedMin: getCssNumber("--sparkle-speed-min", 0.2),
-          speedMax: getCssNumber("--sparkle-speed-max", 0.7),
-          density: getCssNumber("--sparkle-density", 0.00015),
-          wobbleSpeedMin: getCssNumber("--sparkle-wobble-speed-min", 0.005),
-          wobbleSpeedMax: getCssNumber("--sparkle-wobble-speed-max", 0.02),
-          wobbleAmountMin: getCssNumber("--sparkle-wobble-amount-min", 5),
-          wobbleAmountMax: getCssNumber("--sparkle-wobble-amount-max", 15),
-          opacityMin: getCssNumber("--sparkle-opacity-min", 0.2),
-          opacityMax: getCssNumber("--sparkle-opacity-max", 1),
-          respawnOffsetTop: getCssNumber("--sparkle-respawn-offset-top", -20),
-          respawnOffsetBottom: getCssNumber("--sparkle-respawn-offset-bottom", 24)
-     };
+  return {
+    countMax: getCssNumber("--sparkle-count-max", 180),
+    sizeMin: getCssNumber("--sparkle-size-min", 16),
+    sizeMax: getCssNumber("--sparkle-size-max", 26),
+    speedMin: getCssNumber("--sparkle-speed-min", 0.2),
+    speedMax: getCssNumber("--sparkle-speed-max", 0.7),
+    density: getCssNumber("--sparkle-density", 0.00015),
+    wobbleSpeedMin: getCssNumber("--sparkle-wobble-speed-min", 0.005),
+    wobbleSpeedMax: getCssNumber("--sparkle-wobble-speed-max", 0.02),
+    wobbleAmountMin: getCssNumber("--sparkle-wobble-amount-min", 5),
+    wobbleAmountMax: getCssNumber("--sparkle-wobble-amount-max", 15),
+    opacityMin: getCssNumber("--sparkle-opacity-min", 0.2),
+    opacityMax: getCssNumber("--sparkle-opacity-max", 1),
+    respawnOffsetTop: getCssNumber("--sparkle-respawn-offset-top", -20),
+    respawnOffsetBottom: getCssNumber("--sparkle-respawn-offset-bottom", 24),
+  };
 }
 
 function getSparklePalette() {
-     return ["#ffffff"];
+  return ["#ffffff"];
 }
 
 //====================================================================================================
@@ -43,210 +45,225 @@ function getSparklePalette() {
 //====================================================================================================
 
 function randomNumber(min, max) {
-     return Math.random() * (max - min) + min;
+  return Math.random() * (max - min) + min;
 }
 
 function randomWholeNumber(min, max) {
-     return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function randomItem(array) {
-     return array[randomWholeNumber(0, array.length - 1)];
+  return array[randomWholeNumber(0, array.length - 1)];
 }
 
 function randomItemExcept(array, previousItem) {
-     if (!array.length) {
-          return undefined;
-     }
+  if (!array.length) {
+    return undefined;
+  }
 
-     if (array.length === 1) {
-          return array[0];
-     }
+  if (array.length === 1) {
+    return array[0];
+  }
 
-     let nextItem = randomItem(array);
+  let nextItem = randomItem(array);
 
-     while (nextItem === previousItem) {
-          nextItem = randomItem(array);
-     }
+  while (nextItem === previousItem) {
+    nextItem = randomItem(array);
+  }
 
-     return nextItem;
+  return nextItem;
 }
 
 function shuffleArray(array) {
-     const shuffled = [...array];
+  const shuffled = [...array];
 
-     for (let i = shuffled.length - 1; i > 0; i -= 1) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-     }
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
 
-     return shuffled;
+  return shuffled;
 }
 
 function createColorEngine(colorsOrFactory) {
-     // Shared color engine for marquee + sparkles, uses either an array of colors OR a function that returns an array of colors.
+  // Shared color engine for marquee + sparkles, uses either an array of colors OR a function that returns an array of colors.
 
-     let previousColor = null;
-     // This remembers most recent single color used by .next().
+  let previousColor = null;
+  // This remembers most recent single color used by .next().
 
-     function resolvePalette() {
-          const rawPalette = typeof colorsOrFactory === "function"
-               ? colorsOrFactory()
-               : colorsOrFactory;
+  function resolvePalette() {
+    const rawPalette =
+      typeof colorsOrFactory === "function"
+        ? colorsOrFactory()
+        : colorsOrFactory;
 
-          if (!Array.isArray(rawPalette)) {
-               return [];
+    if (!Array.isArray(rawPalette)) {
+      return [];
+    }
+
+    return rawPalette.filter(Boolean);
+  }
+
+  function avoidImmediateRepeatInBatch(
+    colorBatch,
+    previousColorForSlot,
+    startIndex = 0,
+  ) {
+    if (colorBatch.length <= startIndex) {
+      return;
+    }
+
+    if (colorBatch[startIndex] !== previousColorForSlot) {
+      return;
+    }
+
+    let swapIndex = -1;
+
+    for (let i = startIndex + 1; i < colorBatch.length; i += 1) {
+      if (colorBatch[i] !== previousColorForSlot) {
+        swapIndex = i;
+        break;
+      }
+    }
+
+    if (swapIndex !== -1) {
+      const temp = colorBatch[startIndex];
+      colorBatch[startIndex] = colorBatch[swapIndex];
+      colorBatch[swapIndex] = temp;
+    }
+  }
+
+  return {
+    next() {
+      const palette = resolvePalette();
+
+      if (!palette.length) {
+        return undefined;
+      }
+
+      if (palette.length === 1) {
+        previousColor = palette[0];
+        return palette[0];
+      }
+
+      const nextColor = randomItemExcept(palette, previousColor);
+
+      previousColor = nextColor;
+      return nextColor;
+    },
+
+    nextCycle(count, previousCycleColors = []) {
+      const palette = resolvePalette();
+
+      if (!palette.length || count <= 0) {
+        return [];
+      }
+
+      if (palette.length === 1) {
+        return Array(count).fill(palette[0]);
+      }
+
+      const nextColors = [];
+      let availableColors = shuffleArray(palette);
+      let colorIndex = 0;
+
+      for (let i = 0; i < count; i += 1) {
+        if (colorIndex >= availableColors.length) {
+          availableColors = shuffleArray(palette);
+          colorIndex = 0;
+        }
+
+        const previousColorForSlot = previousCycleColors[i] || null;
+
+        avoidImmediateRepeatInBatch(
+          availableColors,
+          previousColorForSlot,
+          colorIndex,
+        );
+
+        const nextColor = availableColors[colorIndex];
+        colorIndex += 1;
+        nextColors.push(nextColor);
+      }
+
+      return nextColors;
+    },
+
+    nextCycleForText(text, previousCycleColors = []) {
+      const palette = resolvePalette();
+
+      if (!palette.length || !text) {
+        return [];
+      }
+
+      if (palette.length === 1) {
+        return Array(text.length).fill(palette[0]);
+      }
+
+      const nextColors = [];
+      let usedColorsInWord = new Set();
+      let availableColors = shuffleArray(palette);
+      let colorIndex = 0;
+
+      for (let i = 0; i < text.length; i += 1) {
+        const character = text[i];
+
+        if (/\s/.test(character)) {
+          usedColorsInWord.clear();
+          nextColors.push("");
+          continue;
+        }
+
+        if (usedColorsInWord.size >= palette.length) {
+          usedColorsInWord.clear();
+        }
+
+        let nextColor = null;
+        const previousColorForSlot = previousCycleColors[i] || null;
+
+        for (let attempts = 0; attempts < palette.length * 2; attempts += 1) {
+          if (colorIndex >= availableColors.length) {
+            availableColors = shuffleArray(palette);
+            colorIndex = 0;
           }
 
-          return rawPalette.filter(Boolean);
-     }
+          avoidImmediateRepeatInBatch(
+            availableColors,
+            previousColorForSlot,
+            colorIndex,
+          );
 
-     function avoidImmediateRepeatInBatch(colorBatch, previousColorForSlot, startIndex = 0) {
-          if (colorBatch.length <= startIndex) {
-               return;
+          const candidateColor = availableColors[colorIndex];
+          colorIndex += 1;
+
+          if (!usedColorsInWord.has(candidateColor)) {
+            nextColor = candidateColor;
+            break;
           }
+        }
 
-          if (colorBatch[startIndex] !== previousColorForSlot) {
-               return;
-          }
+        if (!nextColor) {
+          const fallbackColors = palette.filter(
+            (color) => !usedColorsInWord.has(color),
+          );
 
-          let swapIndex = -1;
+          nextColor = randomItemExcept(
+            fallbackColors.length ? fallbackColors : palette,
+            previousColorForSlot,
+          );
+        }
 
-          for (let i = startIndex + 1; i < colorBatch.length; i += 1) {
-               if (colorBatch[i] !== previousColorForSlot) {
-                    swapIndex = i;
-                    break;
-               }
-          }
+        usedColorsInWord.add(nextColor);
+        nextColors.push(nextColor);
+      }
 
-          if (swapIndex !== -1) {
-               const temp = colorBatch[startIndex];
-               colorBatch[startIndex] = colorBatch[swapIndex];
-               colorBatch[swapIndex] = temp;
-          }
-     }
+      return nextColors;
+    },
 
-     return {
-          next() {
-               const palette = resolvePalette();
-
-               if (!palette.length) {
-                    return undefined;
-               }
-
-               if (palette.length === 1) {
-                    previousColor = palette[0];
-                    return palette[0];
-               }
-
-               const nextColor = randomItemExcept(palette, previousColor);
-
-               previousColor = nextColor;
-               return nextColor;
-          },
-
-          nextCycle(count, previousCycleColors = []) {
-               const palette = resolvePalette();
-
-               if (!palette.length || count <= 0) {
-                    return [];
-               }
-
-               if (palette.length === 1) {
-                    return Array(count).fill(palette[0]);
-               }
-
-               const nextColors = [];
-               let availableColors = shuffleArray(palette);
-               let colorIndex = 0;
-
-               for (let i = 0; i < count; i += 1) {
-                    if (colorIndex >= availableColors.length) {
-                         availableColors = shuffleArray(palette);
-                         colorIndex = 0;
-                    }
-
-                    const previousColorForSlot = previousCycleColors[i] || null;
-
-                    avoidImmediateRepeatInBatch(availableColors, previousColorForSlot, colorIndex);
-
-                    const nextColor = availableColors[colorIndex];
-                    colorIndex += 1;
-                    nextColors.push(nextColor);
-               }
-
-               return nextColors;
-          },
-
-          nextCycleForText(text, previousCycleColors = []) {
-               const palette = resolvePalette();
-
-               if (!palette.length || !text) {
-                    return [];
-               }
-
-               if (palette.length === 1) {
-                    return Array(text.length).fill(palette[0]);
-               }
-
-               const nextColors = [];
-               let usedColorsInWord = new Set();
-               let availableColors = shuffleArray(palette);
-               let colorIndex = 0;
-
-               for (let i = 0; i < text.length; i += 1) {
-                    const character = text[i];
-
-                    if (/\s/.test(character)) {
-                         usedColorsInWord.clear();
-                         nextColors.push("");
-                         continue;
-                    }
-
-                    if (usedColorsInWord.size >= palette.length) {
-                         usedColorsInWord.clear();
-                    }
-
-                    let nextColor = null;
-                    const previousColorForSlot = previousCycleColors[i] || null;
-
-                    for (let attempts = 0; attempts < palette.length * 2; attempts += 1) {
-                         if (colorIndex >= availableColors.length) {
-                              availableColors = shuffleArray(palette);
-                              colorIndex = 0;
-                         }
-
-                         avoidImmediateRepeatInBatch(availableColors, previousColorForSlot, colorIndex);
-
-                         const candidateColor = availableColors[colorIndex];
-                         colorIndex += 1;
-
-                         if (!usedColorsInWord.has(candidateColor)) {
-                              nextColor = candidateColor;
-                              break;
-                         }
-                    }
-
-                    if (!nextColor) {
-                         const fallbackColors = palette.filter((color) => !usedColorsInWord.has(color));
-
-                         nextColor = randomItemExcept(
-                              fallbackColors.length ? fallbackColors : palette,
-                              previousColorForSlot
-                         );
-                    }
-
-                    usedColorsInWord.add(nextColor);
-                    nextColors.push(nextColor);
-               }
-
-               return nextColors;
-          },
-
-          reset() {
-               previousColor = null;
-          }
-     };
+    reset() {
+      previousColor = null;
+    },
+  };
 }
 
 /* COLLAPSIBLE NAV MENU */
@@ -254,101 +271,105 @@ function createColorEngine(colorsOrFactory) {
 const navButton = document.querySelector(".nav-button");
 const dropdownLow = document.querySelector(".dropdown-low");
 const navMenu = document.getElementById("navMenu");
-const navButtonOpen = navButton ? navButton.querySelector(".nav-button-open") : null;
-const navButtonClose = navButton ? navButton.querySelector(".nav-button-close") : null;
+const navButtonOpen = navButton
+  ? navButton.querySelector(".nav-button-open")
+  : null;
+const navButtonClose = navButton
+  ? navButton.querySelector(".nav-button-close")
+  : null;
 
 function syncNavButtonGlow() {
-     if (!navButton) {
-          return;
-     }
+  if (!navButton) {
+    return;
+  }
 
-     const currentColor = getCssColor("--color-white", "#ffffff");
+  const currentColor = getCssColor("--color-white", "#ffffff");
 
-     navButton.style.color = currentColor;
-     navButton.style.webkitTextFillColor = "currentColor";
-     navButton.style.textShadow = "none";
+  navButton.style.color = currentColor;
+  navButton.style.webkitTextFillColor = "currentColor";
+  navButton.style.textShadow = "none";
 
-     if (navButtonOpen) {
-          navButtonOpen.style.textShadow = "none";
-     }
+  if (navButtonOpen) {
+    navButtonOpen.style.textShadow = "none";
+  }
 
-     if (navButtonClose) {
-          navButtonClose.style.textShadow = "none";
-     }
+  if (navButtonClose) {
+    navButtonClose.style.textShadow = "none";
+  }
 }
 
 function openMenu() {
-     if (!dropdownLow || !navButton) {
-          return;
-     }
+  if (!dropdownLow || !navButton) {
+    return;
+  }
 
-     dropdownLow.classList.add("menu-open");
-     navButton.setAttribute("aria-expanded", "true");
-     syncNavButtonGlow();
+  dropdownLow.classList.add("menu-open");
+  navButton.setAttribute("aria-expanded", "true");
+  syncNavButtonGlow();
 }
 
 function closeMenu() {
-     if (!dropdownLow || !navButton) {
-          return;
-     }
+  if (!dropdownLow || !navButton) {
+    return;
+  }
 
-     dropdownLow.classList.remove("menu-open");
-     navButton.setAttribute("aria-expanded", "false");
-     syncNavButtonGlow();
+  dropdownLow.classList.remove("menu-open");
+  navButton.setAttribute("aria-expanded", "false");
+  syncNavButtonGlow();
 }
 
 function toggleMenu() {
-     if (!dropdownLow) {
-          return;
-     }
+  if (!dropdownLow) {
+    return;
+  }
 
-     if (dropdownLow.classList.contains("menu-open")) {
-          closeMenu();
-     } else {
-          openMenu();
-     }
+  if (dropdownLow.classList.contains("menu-open")) {
+    closeMenu();
+  } else {
+    openMenu();
+  }
 }
 
 if (navButton && dropdownLow) {
-     navButton.addEventListener("click", function (event) {
-          event.stopPropagation();
-          toggleMenu();
-     });
+  navButton.addEventListener("click", function (event) {
+    event.stopPropagation();
+    toggleMenu();
+  });
 
-     navButton.addEventListener("mouseenter", function () {
-          syncNavButtonGlow();
-     });
+  navButton.addEventListener("mouseenter", function () {
+    syncNavButtonGlow();
+  });
 
-     navButton.addEventListener("mouseleave", function () {
-          syncNavButtonGlow();
-     });
+  navButton.addEventListener("mouseleave", function () {
+    syncNavButtonGlow();
+  });
 
-     navButton.addEventListener("focus", function () {
-          syncNavButtonGlow();
-     });
+  navButton.addEventListener("focus", function () {
+    syncNavButtonGlow();
+  });
 
-     navButton.addEventListener("blur", function () {
-          syncNavButtonGlow();
-     });
+  navButton.addEventListener("blur", function () {
+    syncNavButtonGlow();
+  });
 }
 
 document.addEventListener("click", function (event) {
-     if (!navButton || !dropdownLow) {
-          return;
-     }
+  if (!navButton || !dropdownLow) {
+    return;
+  }
 
-     const clickedInsideDropdown = dropdownLow.contains(event.target);
+  const clickedInsideDropdown = dropdownLow.contains(event.target);
 
-     if (!clickedInsideDropdown) {
-          closeMenu();
-     }
+  if (!clickedInsideDropdown) {
+    closeMenu();
+  }
 });
 
 document.addEventListener("keydown", function (event) {
-     if (event.key === "Escape") {
-          closeMenu();
-          closeProjectPopup();
-     }
+  if (event.key === "Escape") {
+    closeMenu();
+    closeProjectPopup();
+  }
 });
 
 //====================================================================================================
@@ -358,15 +379,17 @@ document.addEventListener("keydown", function (event) {
 const marqueeElements = Array.from(document.querySelectorAll(".marquee"));
 
 const marqueeItems = marqueeElements.map(function (element) {
-     const lineNodes = Array.from(element.querySelectorAll(".marquee-word, .marquee-break"));
+  const lineNodes = Array.from(
+    element.querySelectorAll(".marquee-word, .marquee-break"),
+  );
 
-     return {
-          element: element,
-          lineNodes: lineNodes,
-          lineLetterSpans: [],
-          visibleSpans: [],
-          previousColorsByLine: []
-     };
+  return {
+    element: element,
+    lineNodes: lineNodes,
+    lineLetterSpans: [],
+    visibleSpans: [],
+    previousColorsByLine: [],
+  };
 });
 
 let headerColorCycleTimer = null;
@@ -378,110 +401,119 @@ let accentColorEngine = null;
 /* Existing line structure is preserved here, so first name and last name stay stacked. */
 
 function getMarqueeFitSettings() {
-     const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+  const rootFontSize =
+    parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 
-     return {
-          maxFontSize: 4 * rootFontSize,
-          minFontSize: 0.5 * rootFontSize,
-          step: 1
-     };
+  return {
+    maxFontSize: 4 * rootFontSize,
+    minFontSize: 0.5 * rootFontSize,
+    step: 1,
+  };
 }
 
 function resetMarqueeFitSize(marqueeElement) {
-     if (!marqueeElement) {
-          return;
-     }
+  if (!marqueeElement) {
+    return;
+  }
 
-     marqueeElement.style.removeProperty("--marquee-fit-size");
+  marqueeElement.style.removeProperty("--marquee-fit-size");
 }
 
 function fitMarqueeToContainer(marqueeElement) {
-     if (!marqueeElement) {
-          return;
-     }
+  if (!marqueeElement) {
+    return;
+  }
 
-     const fitSettings = getMarqueeFitSettings();
+  const fitSettings = getMarqueeFitSettings();
 
-     resetMarqueeFitSize(marqueeElement);
-     marqueeElement.style.setProperty("--marquee-fit-size", `${fitSettings.maxFontSize}px`);
+  resetMarqueeFitSize(marqueeElement);
+  marqueeElement.style.setProperty(
+    "--marquee-fit-size",
+    `${fitSettings.maxFontSize}px`,
+  );
 
-     let currentSize = fitSettings.maxFontSize;
+  let currentSize = fitSettings.maxFontSize;
 
-     while (currentSize > fitSettings.minFontSize) {
-          const marqueeTooWide = marqueeElement.scrollWidth > marqueeElement.clientWidth;
+  while (currentSize > fitSettings.minFontSize) {
+    const marqueeTooWide =
+      marqueeElement.scrollWidth > marqueeElement.clientWidth;
 
-          if (!marqueeTooWide) {
-               break;
-          }
+    if (!marqueeTooWide) {
+      break;
+    }
 
-          currentSize -= fitSettings.step;
-          marqueeElement.style.setProperty("--marquee-fit-size", `${currentSize}px`);
-     }
+    currentSize -= fitSettings.step;
+    marqueeElement.style.setProperty("--marquee-fit-size", `${currentSize}px`);
+  }
 }
 
 function fitAllMarquees() {
-     if (!marqueeItems.length) {
-          return;
-     }
+  if (!marqueeItems.length) {
+    return;
+  }
 
-     for (let i = 0; i < marqueeItems.length; i += 1) {
-          fitMarqueeToContainer(marqueeItems[i].element);
-     }
+  for (let i = 0; i < marqueeItems.length; i += 1) {
+    fitMarqueeToContainer(marqueeItems[i].element);
+  }
 }
 
 function setMarqueeTextToSolidColor(color) {
-     if (!marqueeItems.length || !color) {
-          return;
-     }
+  if (!marqueeItems.length || !color) {
+    return;
+  }
 
-     for (let i = 0; i < marqueeItems.length; i += 1) {
-          const marqueeItem = marqueeItems[i];
+  for (let i = 0; i < marqueeItems.length; i += 1) {
+    const marqueeItem = marqueeItems[i];
 
-          marqueeItem.element.style.color = color;
-          marqueeItem.element.style.textShadow = "none";
+    marqueeItem.element.style.color = color;
+    marqueeItem.element.style.textShadow = "none";
 
-          for (let lineIndex = 0; lineIndex < marqueeItem.lineNodes.length; lineIndex += 1) {
-               marqueeItem.lineNodes[lineIndex].style.color = color;
-               marqueeItem.lineNodes[lineIndex].style.textShadow = "none";
-          }
-     }
+    for (
+      let lineIndex = 0;
+      lineIndex < marqueeItem.lineNodes.length;
+      lineIndex += 1
+    ) {
+      marqueeItem.lineNodes[lineIndex].style.color = color;
+      marqueeItem.lineNodes[lineIndex].style.textShadow = "none";
+    }
+  }
 }
 
 function buildMarqueeSpans(marqueeItem) {
-     if (!marqueeItem || !marqueeItem.element || !marqueeItem.lineNodes.length) {
-          return;
-     }
+  if (!marqueeItem || !marqueeItem.element || !marqueeItem.lineNodes.length) {
+    return;
+  }
 
-     marqueeItem.lineLetterSpans = [];
-     marqueeItem.visibleSpans = [];
-     marqueeItem.previousColorsByLine = [];
+  marqueeItem.lineLetterSpans = [];
+  marqueeItem.visibleSpans = [];
+  marqueeItem.previousColorsByLine = [];
 
-     for (let i = 0; i < marqueeItem.lineNodes.length; i += 1) {
-          const lineNode = marqueeItem.lineNodes[i];
-          const originalText = lineNode.textContent.trim();
+  for (let i = 0; i < marqueeItem.lineNodes.length; i += 1) {
+    const lineNode = marqueeItem.lineNodes[i];
+    const originalText = lineNode.textContent.trim();
 
-          lineNode.innerHTML = "";
+    lineNode.innerHTML = "";
 
-          const letterSpans = [];
+    const letterSpans = [];
 
-          for (let j = 0; j < originalText.length; j += 1) {
-               const char = originalText[j];
-               const span = document.createElement("span");
+    for (let j = 0; j < originalText.length; j += 1) {
+      const char = originalText[j];
+      const span = document.createElement("span");
 
-               span.textContent = char === " " ? "\u00A0" : char;
-               span.style.display = "inline-block";
+      span.textContent = char === " " ? "\u00A0" : char;
+      span.style.display = "inline-block";
 
-               lineNode.appendChild(span);
-               letterSpans.push(span);
+      lineNode.appendChild(span);
+      letterSpans.push(span);
 
-               if (span.textContent !== "\u00A0") {
-                    marqueeItem.visibleSpans.push(span);
-               }
-          }
+      if (span.textContent !== "\u00A0") {
+        marqueeItem.visibleSpans.push(span);
+      }
+    }
 
-          marqueeItem.lineLetterSpans.push(letterSpans);
-          marqueeItem.previousColorsByLine.push([]);
-     }
+    marqueeItem.lineLetterSpans.push(letterSpans);
+    marqueeItem.previousColorsByLine.push([]);
+  }
 }
 
 //====================================================================================================
@@ -500,136 +532,145 @@ let resizeTimer = null;
 let sparkleColorEngine = null;
 
 function resizeBgCanvasFromCss(canvas) {
-     if (!canvas) {
-          return;
-     }
+  if (!canvas) {
+    return;
+  }
 
-     const rect = canvas.getBoundingClientRect();
-     const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
 
-     canvas.width = Math.round(rect.width * dpr);
-     canvas.height = Math.round(rect.height * dpr);
+  canvas.width = Math.round(rect.width * dpr);
+  canvas.height = Math.round(rect.height * dpr);
 
-     const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d");
 
-     if (ctx) {
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-     }
+  if (ctx) {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
 
-     bgWidth = rect.width;
-     bgHeight = rect.height;
+  bgWidth = rect.width;
+  bgHeight = rect.height;
 }
 
 function setBgParticleCount() {
-     const sparkleSettings = getSparkleSettings();
-     const screenArea = bgWidth * bgHeight;
+  const sparkleSettings = getSparkleSettings();
+  const screenArea = bgWidth * bgHeight;
 
-     bgParticleCount = Math.min(
-          sparkleSettings.countMax,
-          Math.floor(screenArea * sparkleSettings.density)
-     );
+  bgParticleCount = Math.min(
+    sparkleSettings.countMax,
+    Math.floor(screenArea * sparkleSettings.density),
+  );
 }
 
 function createBgParticle(startAboveScreen = false) {
-     const sparkleSettings = getSparkleSettings();
-     const x = Math.random() * bgWidth;
+  const sparkleSettings = getSparkleSettings();
+  const x = Math.random() * bgWidth;
 
-     if (!sparkleColorEngine) {
-          sparkleColorEngine = createColorEngine(getSparklePalette);
-     }
+  if (!sparkleColorEngine) {
+    sparkleColorEngine = createColorEngine(getSparklePalette);
+  }
 
-     return {
-          x: x,
-          baseX: x,
-          y: startAboveScreen
-               ? sparkleSettings.respawnOffsetTop
-               : Math.random() * bgHeight,
-          char: Math.random() < 0.5 ? "✦\uFE0E" : "✧\uFE0E",
-          color: sparkleColorEngine.next() || getCssColor("--color-white", "#ffffff"),
-          size: randomNumber(sparkleSettings.sizeMin, sparkleSettings.sizeMax),
-          speed: randomNumber(sparkleSettings.speedMin, sparkleSettings.speedMax),
-          wobbleOffset: randomNumber(0, Math.PI * 2),
-          wobbleSpeed: randomNumber(sparkleSettings.wobbleSpeedMin, sparkleSettings.wobbleSpeedMax),
-          wobbleAmount: randomNumber(sparkleSettings.wobbleAmountMin, sparkleSettings.wobbleAmountMax),
-          opacity: randomNumber(sparkleSettings.opacityMin, sparkleSettings.opacityMax)
-     };
+  return {
+    x: x,
+    baseX: x,
+    y: startAboveScreen
+      ? sparkleSettings.respawnOffsetTop
+      : Math.random() * bgHeight,
+    char: Math.random() < 0.5 ? "✦\uFE0E" : "✧\uFE0E",
+    color: sparkleColorEngine.next() || getCssColor("--color-white", "#ffffff"),
+    size: randomNumber(sparkleSettings.sizeMin, sparkleSettings.sizeMax),
+    speed: randomNumber(sparkleSettings.speedMin, sparkleSettings.speedMax),
+    wobbleOffset: randomNumber(0, Math.PI * 2),
+    wobbleSpeed: randomNumber(
+      sparkleSettings.wobbleSpeedMin,
+      sparkleSettings.wobbleSpeedMax,
+    ),
+    wobbleAmount: randomNumber(
+      sparkleSettings.wobbleAmountMin,
+      sparkleSettings.wobbleAmountMax,
+    ),
+    opacity: randomNumber(
+      sparkleSettings.opacityMin,
+      sparkleSettings.opacityMax,
+    ),
+  };
 }
 
 function initBgParticles(count) {
-     bgParticles.length = 0;
+  bgParticles.length = 0;
 
-     for (let i = 0; i < count; i += 1) {
-          bgParticles.push(createBgParticle());
-     }
+  for (let i = 0; i < count; i += 1) {
+    bgParticles.push(createBgParticle());
+  }
 }
 
 function setupSparkleRain() {
-     if (!siteBgCanvas || !siteBgCtx) {
-          return;
-     }
+  if (!siteBgCanvas || !siteBgCtx) {
+    return;
+  }
 
-     sparkleColorEngine = createColorEngine(getSparklePalette);
+  sparkleColorEngine = createColorEngine(getSparklePalette);
 
-     resizeBgCanvasFromCss(siteBgCanvas);
-     setBgParticleCount();
-     initBgParticles(bgParticleCount);
+  resizeBgCanvasFromCss(siteBgCanvas);
+  setBgParticleCount();
+  initBgParticles(bgParticleCount);
 }
 
 function updateBgParticles() {
-     const sparkleSettings = getSparkleSettings();
+  const sparkleSettings = getSparkleSettings();
 
-     for (let i = 0; i < bgParticles.length; i += 1) {
-          const p = bgParticles[i];
+  for (let i = 0; i < bgParticles.length; i += 1) {
+    const p = bgParticles[i];
 
-          p.y += p.speed;
-          p.wobbleOffset += p.wobbleSpeed;
-          p.x = p.baseX + Math.sin(p.wobbleOffset) * p.wobbleAmount;
+    p.y += p.speed;
+    p.wobbleOffset += p.wobbleSpeed;
+    p.x = p.baseX + Math.sin(p.wobbleOffset) * p.wobbleAmount;
 
-          if (p.y > bgHeight + sparkleSettings.respawnOffsetBottom) {
-               bgParticles[i] = createBgParticle(true);
-          }
-     }
+    if (p.y > bgHeight + sparkleSettings.respawnOffsetBottom) {
+      bgParticles[i] = createBgParticle(true);
+    }
+  }
 }
 
 function drawBackground() {
-     if (!siteBgCtx) {
-          return;
-     }
+  if (!siteBgCtx) {
+    return;
+  }
 
-     siteBgCtx.clearRect(0, 0, bgWidth, bgHeight);
+  siteBgCtx.clearRect(0, 0, bgWidth, bgHeight);
 }
 
 function drawBgParticles() {
-     if (!siteBgCtx) {
-          return;
-     }
+  if (!siteBgCtx) {
+    return;
+  }
 
-     for (let i = 0; i < bgParticles.length; i += 1) {
-          const p = bgParticles[i];
+  for (let i = 0; i < bgParticles.length; i += 1) {
+    const p = bgParticles[i];
 
-          siteBgCtx.save();
-          siteBgCtx.globalAlpha = p.opacity;
-          siteBgCtx.font = `${p.size}px "Apple Symbols", "Segoe UI Symbol", "Noto Sans Symbols 2", "Noto Sans Symbols", sans-serif`;
-          siteBgCtx.textAlign = "center";
-          siteBgCtx.textBaseline = "middle";
-          siteBgCtx.fillStyle = p.color;
-          siteBgCtx.shadowBlur = 0;
-          siteBgCtx.shadowColor = "transparent";
-          siteBgCtx.fillText(p.char, p.x, p.y);
-          siteBgCtx.restore();
-     }
+    siteBgCtx.save();
+    siteBgCtx.globalAlpha = p.opacity;
+    siteBgCtx.font = `${p.size}px "Apple Symbols", "Segoe UI Symbol", "Noto Sans Symbols 2", "Noto Sans Symbols", sans-serif`;
+    siteBgCtx.textAlign = "center";
+    siteBgCtx.textBaseline = "middle";
+    siteBgCtx.fillStyle = p.color;
+    siteBgCtx.shadowBlur = 0;
+    siteBgCtx.shadowColor = "transparent";
+    siteBgCtx.fillText(p.char, p.x, p.y);
+    siteBgCtx.restore();
+  }
 }
 
 function drawSparkleRain() {
-     if (!siteBgCanvas || !siteBgCtx) {
-          return;
-     }
+  if (!siteBgCanvas || !siteBgCtx) {
+    return;
+  }
 
-     drawBackground();
-     updateBgParticles();
-     drawBgParticles();
+  drawBackground();
+  updateBgParticles();
+  drawBgParticles();
 
-     window.requestAnimationFrame(drawSparkleRain);
+  window.requestAnimationFrame(drawSparkleRain);
 }
 
 //====================================================================================================
@@ -642,308 +683,332 @@ let projectPopupTitle = null;
 let projectPopupBody = null;
 
 function getProjectPopup() {
-     if (projectPopup) {
-          return projectPopup;
-     }
+  if (projectPopup) {
+    return projectPopup;
+  }
 
-     projectPopup = document.createElement("div");
-     projectPopup.className = "project-popup";
-     projectPopup.setAttribute("role", "dialog");
-     projectPopup.setAttribute("aria-modal", "true");
-     projectPopup.setAttribute("aria-hidden", "true");
-     projectPopup.tabIndex = -1;
+  projectPopup = document.createElement("div");
+  projectPopup.className = "project-popup";
+  projectPopup.setAttribute("role", "dialog");
+  projectPopup.setAttribute("aria-modal", "true");
+  projectPopup.setAttribute("aria-hidden", "true");
+  projectPopup.tabIndex = -1;
 
-     const frame = document.createElement("div");
-     frame.className = "project-popup-frame";
+  const frame = document.createElement("div");
+  frame.className = "project-popup-frame";
 
-     projectPopupTitlebar = document.createElement("button");
-     projectPopupTitlebar.className = "project-popup-titlebar";
-     projectPopupTitlebar.type = "button";
-     projectPopupTitlebar.disabled = true;
+  projectPopupTitlebar = document.createElement("button");
+  projectPopupTitlebar.className = "project-popup-titlebar";
+  projectPopupTitlebar.type = "button";
+  projectPopupTitlebar.disabled = true;
 
-     projectPopupTitle = document.createElement("span");
-     projectPopupTitle.className = "project-popup-title";
+  projectPopupTitle = document.createElement("span");
+  projectPopupTitle.className = "project-popup-title";
 
-     projectPopupTitlebar.append(projectPopupTitle);
+  projectPopupTitlebar.append(projectPopupTitle);
 
-     projectPopupBody = document.createElement("div");
-     projectPopupBody.className = "project-popup-body";
+  projectPopupBody = document.createElement("div");
+  projectPopupBody.className = "project-popup-body";
 
-     frame.append(projectPopupTitlebar, projectPopupBody);
-     projectPopup.appendChild(frame);
-     document.body.appendChild(projectPopup);
+  frame.append(projectPopupTitlebar, projectPopupBody);
+  projectPopup.appendChild(frame);
+  document.body.appendChild(projectPopup);
 
-     projectPopup.addEventListener("click", function (event) {
-          if (event.target === projectPopup) {
-               closeProjectPopup();
-          }
-     });
+  projectPopup.addEventListener("click", function (event) {
+    if (event.target === projectPopup) {
+      closeProjectPopup();
+    }
+  });
 
-     projectPopup.addEventListener("keydown", function (event) {
-          if (event.key === "Escape") {
-               closeProjectPopup();
-          }
-     });
+  projectPopup.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeProjectPopup();
+    }
+  });
 
-     projectPopupTitlebar.addEventListener("click", function () {
-          const projectUrl = projectPopupTitlebar.dataset.projectUrl;
+  projectPopupTitlebar.addEventListener("click", function () {
+    const projectUrl = projectPopupTitlebar.dataset.projectUrl;
 
-          if (projectUrl) {
-               window.open(projectUrl, "_blank", "noopener,noreferrer");
-          }
-     });
+    if (projectUrl) {
+      window.open(projectUrl, "_blank", "noopener,noreferrer");
+    }
+  });
 
-     return projectPopup;
+  return projectPopup;
 }
 
 function closeProjectPopup() {
-     if (!projectPopup) {
-          return;
-     }
+  if (!projectPopup) {
+    return;
+  }
 
-     projectPopup.classList.remove("is-open");
-     projectPopup.setAttribute("aria-hidden", "true");
-     projectPopupTitlebar.disabled = true;
-     projectPopupTitlebar.removeAttribute("data-project-url");
-     projectPopupBody.replaceChildren();
+  projectPopup.classList.remove("is-open");
+  projectPopup.setAttribute("aria-hidden", "true");
+  projectPopupTitlebar.disabled = true;
+  projectPopupTitlebar.removeAttribute("data-project-url");
+  projectPopupBody.replaceChildren();
 }
 
 function openProjectPopup(projectItem) {
-     if (!projectItem) {
-          return;
-     }
+  if (!projectItem) {
+    return;
+  }
 
-     const preview = projectItem.querySelector(".project-preview");
-     const projectCopy = projectItem.querySelector(".project-copy");
-     const projectUrl = preview ? preview.getAttribute("href") : "";
-     const projectTitle = projectItem.dataset.title || "project.preview";
-     if (!preview) {
-          return;
-     }
+  const preview = projectItem.querySelector(".project-preview");
+  const projectCopy = projectItem.querySelector(".project-copy");
+  const projectUrl = preview ? preview.getAttribute("href") : "";
+  const projectTitle = projectItem.dataset.title || "project.preview";
+  if (!preview) {
+    return;
+  }
 
-     getProjectPopup();
+  getProjectPopup();
 
-     const popupPreview = preview.cloneNode(true);
-     popupPreview.removeAttribute("href");
-     popupPreview.removeAttribute("target");
-     popupPreview.removeAttribute("rel");
-     popupPreview.removeAttribute("aria-label");
-     popupPreview.setAttribute("aria-hidden", "true");
-     popupPreview.tabIndex = -1;
+  const popupPreview = preview.cloneNode(true);
+  popupPreview.removeAttribute("href");
+  popupPreview.removeAttribute("target");
+  popupPreview.removeAttribute("rel");
+  popupPreview.removeAttribute("aria-label");
+  popupPreview.setAttribute("aria-hidden", "true");
+  popupPreview.tabIndex = -1;
 
-     projectPopupTitle.textContent = `open ${projectTitle} in new tab`;
+  projectPopupTitle.textContent = `open ${projectTitle} in new tab`;
 
-     if (projectUrl) {
-          projectPopupTitlebar.disabled = false;
-          projectPopupTitlebar.dataset.projectUrl = projectUrl;
-          projectPopupTitlebar.setAttribute("aria-label", `Open ${projectTitle} in a new tab`);
-     } else {
-          projectPopupTitlebar.disabled = true;
-          projectPopupTitlebar.removeAttribute("data-project-url");
-          projectPopupTitlebar.setAttribute("aria-label", `${projectTitle} has no link to open`);
-     }
+  if (projectUrl) {
+    projectPopupTitlebar.disabled = false;
+    projectPopupTitlebar.dataset.projectUrl = projectUrl;
+    projectPopupTitlebar.setAttribute(
+      "aria-label",
+      `Open ${projectTitle} in a new tab`,
+    );
+  } else {
+    projectPopupTitlebar.disabled = true;
+    projectPopupTitlebar.removeAttribute("data-project-url");
+    projectPopupTitlebar.setAttribute(
+      "aria-label",
+      `${projectTitle} has no link to open`,
+    );
+  }
 
-     if (projectCopy) {
-          projectPopupBody.replaceChildren(popupPreview, projectCopy.cloneNode(true));
-     } else {
-          projectPopupBody.replaceChildren(popupPreview);
-     }
+  if (projectCopy) {
+    projectPopupBody.replaceChildren(popupPreview, projectCopy.cloneNode(true));
+  } else {
+    projectPopupBody.replaceChildren(popupPreview);
+  }
 
-     projectPopup.classList.add("is-open");
-     projectPopup.setAttribute("aria-hidden", "false");
-     projectPopup.focus();
+  projectPopup.classList.add("is-open");
+  projectPopup.setAttribute("aria-hidden", "false");
+  projectPopup.focus();
 }
 
 function setupProjectPopups() {
-     const projectTitlebars = Array.from(document.querySelectorAll(".project-titlebar"));
-     const projectPreviews = Array.from(document.querySelectorAll("a.project-preview"));
+  const projectTitlebars = Array.from(
+    document.querySelectorAll(".project-titlebar"),
+  );
+  const projectPreviews = Array.from(
+    document.querySelectorAll("a.project-preview"),
+  );
 
-     document.addEventListener("click", function (event) {
-          const titlebar = event.target.closest(".project-titlebar");
+  document.addEventListener("click", function (event) {
+    const titlebar = event.target.closest(".project-titlebar");
 
-          if (!titlebar) {
-               return;
-          }
+    if (!titlebar) {
+      return;
+    }
 
-          openProjectPopup(titlebar.closest(".project-item"));
-     });
+    openProjectPopup(titlebar.closest(".project-item"));
+  });
 
-     document.addEventListener("pointerdown", function (event) {
-          if (!event.target.closest(".project-item")) {
-               for (let i = 0; i < projectTitlebars.length; i += 1) {
-                    projectTitlebars[i].blur();
-               }
-          }
-     });
+  document.addEventListener("pointerdown", function (event) {
+    if (!event.target.closest(".project-item")) {
+      for (let i = 0; i < projectTitlebars.length; i += 1) {
+        projectTitlebars[i].blur();
+      }
+    }
+  });
 
-     for (let i = 0; i < projectPreviews.length; i += 1) {
-          projectPreviews[i].tabIndex = -1;
-          projectPreviews[i].addEventListener("click", function (event) {
-               event.preventDefault();
-          });
-     }
+  for (let i = 0; i < projectPreviews.length; i += 1) {
+    projectPreviews[i].tabIndex = -1;
+    projectPreviews[i].addEventListener("click", function (event) {
+      event.preventDefault();
+    });
+  }
 }
 
 function setupScrollTopButton() {
-     const scrollTopButton = document.querySelector(".scroll-top-button");
-     const mainContent = document.querySelector(".main-squeeze");
+  const scrollTopButton = document.querySelector(".scroll-top-button");
+  const mainContent = document.querySelector(".main-squeeze");
 
-     if (!scrollTopButton) {
-          return;
-     }
+  if (!scrollTopButton) {
+    return;
+  }
 
-     function updateScrollTopVisibility() {
-          const contentBottom = mainContent
-               ? mainContent.getBoundingClientRect().bottom + window.scrollY
-               : document.documentElement.scrollHeight;
+  function updateScrollTopVisibility() {
+    const contentBottom = mainContent
+      ? mainContent.getBoundingClientRect().bottom + window.scrollY
+      : document.documentElement.scrollHeight;
 
-          scrollTopButton.hidden = contentBottom <= window.innerHeight + 1;
-     }
+    scrollTopButton.hidden = contentBottom <= window.innerHeight + 1;
+  }
 
-     scrollTopButton.addEventListener("click", function (event) {
-          event.preventDefault();
+  scrollTopButton.addEventListener("click", function (event) {
+    event.preventDefault();
 
-          window.scrollTo({
-               top: 0,
-               behavior: "smooth"
-          });
-     });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
 
-     updateScrollTopVisibility();
-     window.addEventListener("load", updateScrollTopVisibility);
-     window.addEventListener("resize", updateScrollTopVisibility);
+  updateScrollTopVisibility();
+  window.addEventListener("load", updateScrollTopVisibility);
+  window.addEventListener("resize", updateScrollTopVisibility);
 }
 
 function setupHomePanelToggles() {
-     const panels = Array.from(document.querySelectorAll(".home-grid-about, .home-grid-devlog"));
-     const smallLayoutQuery = window.matchMedia("(max-width: 800px)");
+  const panels = Array.from(
+    document.querySelectorAll(".home-grid-about, .home-grid-devlog"),
+  );
+  const smallLayoutQuery = window.matchMedia("(max-width: 800px)");
 
-     if (panels.length === 0) {
-          return;
-     }
+  if (panels.length === 0) {
+    return;
+  }
 
-     function setExpandedHeight(panel) {
-          panel.style.setProperty("--home-panel-expanded-height", `${panel.scrollHeight}px`);
-     }
+  function setExpandedHeight(panel) {
+    panel.style.setProperty(
+      "--home-panel-expanded-height",
+      `${panel.scrollHeight}px`,
+    );
+  }
 
-     function updatePanelHeights() {
-          for (let i = 0; i < panels.length; i += 1) {
-               setExpandedHeight(panels[i]);
-          }
-     }
+  function updatePanelHeights() {
+    for (let i = 0; i < panels.length; i += 1) {
+      setExpandedHeight(panels[i]);
+    }
+  }
 
-     function closePanelsOutsideSmallLayout() {
-          if (smallLayoutQuery.matches) {
-               updatePanelHeights();
-               return;
-          }
+  function closePanelsOutsideSmallLayout() {
+    if (smallLayoutQuery.matches) {
+      updatePanelHeights();
+      return;
+    }
 
-          for (let i = 0; i < panels.length; i += 1) {
-               const titlebar = panels[i].querySelector(".landing-titlebar");
+    for (let i = 0; i < panels.length; i += 1) {
+      const titlebar = panels[i].querySelector(".landing-titlebar");
 
-               panels[i].classList.remove("is-open");
+      panels[i].classList.remove("is-open");
 
-               if (titlebar) {
-                    titlebar.setAttribute("aria-expanded", "false");
-               }
-          }
-     }
+      if (titlebar) {
+        titlebar.setAttribute("aria-expanded", "false");
+      }
+    }
+  }
 
-     for (let i = 0; i < panels.length; i += 1) {
-          const panel = panels[i];
-          const titlebar = panel.querySelector(".landing-titlebar");
+  for (let i = 0; i < panels.length; i += 1) {
+    const panel = panels[i];
+    const titlebar = panel.querySelector(".landing-titlebar");
 
-          setExpandedHeight(panel);
+    setExpandedHeight(panel);
 
-          if (!titlebar) {
-               continue;
-          }
+    if (!titlebar) {
+      continue;
+    }
 
-          titlebar.addEventListener("click", function () {
-               if (!smallLayoutQuery.matches) {
-                    return;
-               }
+    titlebar.addEventListener("click", function () {
+      if (!smallLayoutQuery.matches) {
+        return;
+      }
 
-               setExpandedHeight(panel);
-               panel.classList.toggle("is-open");
-               titlebar.setAttribute("aria-expanded", String(panel.classList.contains("is-open")));
-               window.dispatchEvent(new Event("resize"));
-          });
+      setExpandedHeight(panel);
+      panel.classList.toggle("is-open");
+      titlebar.setAttribute(
+        "aria-expanded",
+        String(panel.classList.contains("is-open")),
+      );
+      window.dispatchEvent(new Event("resize"));
+    });
 
-          panel.addEventListener("transitionend", function (event) {
-               if (event.propertyName === "max-height") {
-                    window.dispatchEvent(new Event("resize"));
-               }
-          });
-     }
+    panel.addEventListener("transitionend", function (event) {
+      if (event.propertyName === "max-height") {
+        window.dispatchEvent(new Event("resize"));
+      }
+    });
+  }
 
-     window.addEventListener("load", updatePanelHeights);
-     window.addEventListener("resize", updatePanelHeights);
+  window.addEventListener("load", updatePanelHeights);
+  window.addEventListener("resize", updatePanelHeights);
 
-     if (typeof smallLayoutQuery.addEventListener === "function") {
-          smallLayoutQuery.addEventListener("change", closePanelsOutsideSmallLayout);
-     } else if (typeof smallLayoutQuery.addListener === "function") {
-          smallLayoutQuery.addListener(closePanelsOutsideSmallLayout);
-     }
+  if (typeof smallLayoutQuery.addEventListener === "function") {
+    smallLayoutQuery.addEventListener("change", closePanelsOutsideSmallLayout);
+  } else if (typeof smallLayoutQuery.addListener === "function") {
+    smallLayoutQuery.addListener(closePanelsOutsideSmallLayout);
+  }
 }
 
 function getDevLogIsoDate(post) {
-     return post.date || post.published || "";
+  return post.date || post.published || "";
 }
 
 function formatDevLogDisplayDate(dateValue) {
-     const date = new Date(`${dateValue}T00:00:00`);
+  const date = new Date(`${dateValue}T00:00:00`);
 
-     if (Number.isNaN(date.getTime())) {
-          return "";
-     }
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
 
-     const year = String(date.getFullYear()).slice(-2);
-     const month = date.toLocaleString("en-US", { month: "short", timeZone: "UTC" });
-     const day = String(date.getUTCDate()).padStart(2, "0");
-     const weekday = date.toLocaleString("en-US", { weekday: "short", timeZone: "UTC" });
+  const year = String(date.getFullYear()).slice(-2);
+  const month = date.toLocaleString("en-US", {
+    month: "short",
+    timeZone: "UTC",
+  });
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const weekday = date.toLocaleString("en-US", {
+    weekday: "short",
+    timeZone: "UTC",
+  });
 
-     return `${weekday}${day}${month}${year}`;
+  return `${weekday}${day}${month}${year}`;
 }
 
 async function setupDevLog() {
-     const devLog = document.querySelector("[data-dev-log]");
-     const latestContainer = document.querySelector("[data-dev-log-latest]");
-     const archiveContainer = document.querySelector("[data-dev-log-archive]");
-     const archiveTitle = document.querySelector("[data-dev-log-archive-title]");
-     const devLogFeedUrl = "data/medium-posts.json";
-     const mediumUrl = "https://medium.com/@chrisiscode";
+  const devLog = document.querySelector("[data-dev-log]");
+  const latestContainer = document.querySelector("[data-dev-log-latest]");
+  const archiveContainer = document.querySelector("[data-dev-log-archive]");
+  const archiveTitle = document.querySelector("[data-dev-log-archive-title]");
+  const devLogFeedUrl = "data/medium-posts.json";
+  const mediumUrl = "https://medium.com/@chrisiscode";
 
-     if (!devLog || !latestContainer || !archiveContainer || !archiveTitle) {
-          return;
-     }
+  if (!devLog || !latestContainer || !archiveContainer || !archiveTitle) {
+    return;
+  }
 
-     function escapeHtml(value) {
-          return String(value)
-               .replaceAll("&", "&amp;")
-               .replaceAll("<", "&lt;")
-               .replaceAll(">", "&gt;")
-               .replaceAll('"', "&quot;")
-               .replaceAll("'", "&#39;");
-     }
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
 
-     function createPostItem(post) {
-          const item = document.createElement(post.url ? "a" : "article");
-          const displayDate = formatDevLogDisplayDate(getDevLogIsoDate(post));
-          const tags = Array.isArray(post.tags) ? post.tags : [];
-          const imageMarkup = post.imageUrl
-               ? `<img class="dev-log-entry-image" src="${escapeHtml(post.imageUrl)}" alt="" loading="lazy">`
-               : "";
+  function createPostItem(post) {
+    const item = document.createElement(post.url ? "a" : "article");
+    const displayDate = formatDevLogDisplayDate(getDevLogIsoDate(post));
+    const tags = Array.isArray(post.tags) ? post.tags : [];
+    const imageMarkup = post.imageUrl
+      ? `<img class="dev-log-entry-image" src="${escapeHtml(post.imageUrl)}" alt="" loading="lazy">`
+      : "";
 
-          item.className = "dev-log-entry";
+    item.className = "dev-log-entry";
 
-          if (post.url) {
-               item.href = post.url;
-               item.target = "_blank";
-               item.rel = "noopener noreferrer";
-          }
+    if (post.url) {
+      item.href = post.url;
+      item.target = "_blank";
+      item.rel = "noopener noreferrer";
+    }
 
-          item.innerHTML = `
+    item.innerHTML = `
                ${imageMarkup}
                <span class="dev-log-entry-title">${escapeHtml(post.title || "untitled")}</span>
                <span class="dev-log-entry-content">${escapeHtml(post.content || post.excerpt || "")}</span>
@@ -953,193 +1018,204 @@ async function setupDevLog() {
                </span>
           `;
 
-          return item;
-     }
+    return item;
+  }
 
-     function renderDevLogPosts(posts) {
-          const sortedPosts = posts
-               .filter((post) => post && getDevLogIsoDate(post))
-               .sort((firstPost, secondPost) => new Date(`${getDevLogIsoDate(secondPost)}T00:00:00`) - new Date(`${getDevLogIsoDate(firstPost)}T00:00:00`));
-          const latestPosts = sortedPosts.slice(0, 1);
-          const archivedPosts = sortedPosts.slice(1);
+  function renderDevLogPosts(posts) {
+    const sortedPosts = posts
+      .filter((post) => post && getDevLogIsoDate(post))
+      .sort(
+        (firstPost, secondPost) =>
+          new Date(`${getDevLogIsoDate(secondPost)}T00:00:00`) -
+          new Date(`${getDevLogIsoDate(firstPost)}T00:00:00`),
+      );
+    const latestPosts = sortedPosts.slice(0, 1);
+    const archivedPosts = sortedPosts.slice(1);
 
-          latestContainer.replaceChildren(...latestPosts.map(createPostItem));
+    latestContainer.replaceChildren(...latestPosts.map(createPostItem));
 
-          if (latestPosts.length === 0) {
-               const placeholder = document.createElement("a");
+    if (latestPosts.length === 0) {
+      const placeholder = document.createElement("a");
 
-               placeholder.className = "dev-log-entry";
-               placeholder.href = mediumUrl;
-               placeholder.target = "_blank";
-               placeholder.rel = "noopener noreferrer";
-               placeholder.innerHTML = `
+      placeholder.className = "dev-log-entry";
+      placeholder.href = mediumUrl;
+      placeholder.target = "_blank";
+      placeholder.rel = "noopener noreferrer";
+      placeholder.innerHTML = `
                     <span class="dev-log-entry-title">dev.log on Medium</span>
                     <span class="dev-log-entry-content">Latest articles will appear here after the feed updates.</span>
                     <span class="dev-log-meta">
                          <span class="dev-log-tags"><span>medium</span></span>
                     </span>
                `;
-               latestContainer.replaceChildren(placeholder);
-          }
+      latestContainer.replaceChildren(placeholder);
+    }
 
-          archiveContainer.closest(".dev-log-archive").hidden = archivedPosts.length === 0;
-          archiveContainer.replaceChildren(...archivedPosts.map(createPostItem));
+    archiveContainer.closest(".dev-log-archive").hidden =
+      archivedPosts.length === 0;
+    archiveContainer.replaceChildren(...archivedPosts.map(createPostItem));
 
-          function updateArchiveTitleVisibility() {
-               archiveTitle.hidden = archivedPosts.length === 0 || devLog.scrollHeight <= devLog.clientHeight + 1;
-          }
+    function updateArchiveTitleVisibility() {
+      archiveTitle.hidden =
+        archivedPosts.length === 0 ||
+        devLog.scrollHeight <= devLog.clientHeight + 1;
+    }
 
-          requestAnimationFrame(updateArchiveTitleVisibility);
-          window.addEventListener("resize", updateArchiveTitleVisibility);
-          window.dispatchEvent(new Event("resize"));
-     }
+    requestAnimationFrame(updateArchiveTitleVisibility);
+    window.addEventListener("resize", updateArchiveTitleVisibility);
+    window.dispatchEvent(new Event("resize"));
+  }
 
-     try {
-          const response = await fetch(devLogFeedUrl, { cache: "no-store" });
+  try {
+    const response = await fetch(devLogFeedUrl, { cache: "no-store" });
 
-          if (!response.ok) {
-               throw new Error(`Unable to load ${devLogFeedUrl}`);
-          }
+    if (!response.ok) {
+      throw new Error(`Unable to load ${devLogFeedUrl}`);
+    }
 
-          const mediumPosts = await response.json();
-          renderDevLogPosts(Array.isArray(mediumPosts) ? mediumPosts : []);
-     } catch (error) {
-          renderDevLogPosts([]);
-     }
+    const mediumPosts = await response.json();
+    renderDevLogPosts(Array.isArray(mediumPosts) ? mediumPosts : []);
+  } catch (error) {
+    renderDevLogPosts([]);
+  }
 }
 
 function setupProjectRailControls() {
-     const rail = document.querySelector("[data-project-rail]");
-     const previousButton = document.querySelector(".project-rail-button-prev");
-     const nextButton = document.querySelector(".project-rail-button-next");
-     let shouldNormalizeScroll = true;
+  const rail = document.querySelector("[data-project-rail]");
+  const previousButton = document.querySelector(".project-rail-button-prev");
+  const nextButton = document.querySelector(".project-rail-button-next");
+  let shouldNormalizeScroll = true;
 
-     if (!rail || !previousButton || !nextButton) {
-          return;
-     }
+  if (!rail || !previousButton || !nextButton) {
+    return;
+  }
 
-     const originalItems = Array.from(rail.querySelectorAll(".project-item"));
+  const originalItems = Array.from(rail.querySelectorAll(".project-item"));
 
-     for (let i = 0; i < originalItems.length; i += 1) {
-          const clone = originalItems[i].cloneNode(true);
+  for (let i = 0; i < originalItems.length; i += 1) {
+    const clone = originalItems[i].cloneNode(true);
 
-          clone.setAttribute("aria-hidden", "true");
-          clone.querySelectorAll("a, button").forEach(function (element) {
-               element.tabIndex = -1;
-          });
-          rail.appendChild(clone);
-     }
+    clone.setAttribute("aria-hidden", "true");
+    clone.querySelectorAll("a, button").forEach(function (element) {
+      element.tabIndex = -1;
+    });
+    rail.appendChild(clone);
+  }
 
-     function getRailStep() {
-          const firstItem = rail.querySelector(".project-item");
-          const gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
+  function getRailStep() {
+    const firstItem = rail.querySelector(".project-item");
+    const gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
 
-          if (!firstItem) {
-               return rail.clientWidth;
-          }
+    if (!firstItem) {
+      return rail.clientWidth;
+    }
 
-          return firstItem.getBoundingClientRect().width + gap;
-     }
+    return firstItem.getBoundingClientRect().width + gap;
+  }
 
-     function getLoopWidth() {
-          return rail.scrollWidth / 2;
-     }
+  function getLoopWidth() {
+    return rail.scrollWidth / 2;
+  }
 
-     function normalizeRailScroll() {
-          if (!shouldNormalizeScroll) {
-               return;
-          }
+  function normalizeRailScroll() {
+    if (!shouldNormalizeScroll) {
+      return;
+    }
 
-          const loopWidth = getLoopWidth();
+    const loopWidth = getLoopWidth();
 
-          if (loopWidth <= 0) {
-               return;
-          }
+    if (loopWidth <= 0) {
+      return;
+    }
 
-          if (rail.scrollLeft >= loopWidth) {
-               rail.scrollLeft -= loopWidth;
-          } else if (rail.scrollLeft < 0) {
-               rail.scrollLeft += loopWidth;
-          }
-     }
+    if (rail.scrollLeft >= loopWidth) {
+      rail.scrollLeft -= loopWidth;
+    } else if (rail.scrollLeft < 0) {
+      rail.scrollLeft += loopWidth;
+    }
+  }
 
-     function updateRailButtons() {
-          previousButton.disabled = false;
-          nextButton.disabled = false;
-     }
+  function updateRailButtons() {
+    previousButton.disabled = false;
+    nextButton.disabled = false;
+  }
 
-     previousButton.addEventListener("click", function () {
-          if (rail.scrollLeft <= 1) {
-               shouldNormalizeScroll = false;
-               rail.scrollLeft += getLoopWidth();
+  previousButton.addEventListener("click", function () {
+    if (rail.scrollLeft <= 1) {
+      shouldNormalizeScroll = false;
+      rail.scrollLeft += getLoopWidth();
 
-               window.setTimeout(function () {
-                    shouldNormalizeScroll = true;
-                    normalizeRailScroll();
-               }, 450);
-          }
+      window.setTimeout(function () {
+        shouldNormalizeScroll = true;
+        normalizeRailScroll();
+      }, 450);
+    }
 
-          rail.scrollBy({
-               left: -getRailStep(),
-               behavior: "smooth"
-          });
-          window.setTimeout(normalizeRailScroll, 350);
-     });
+    rail.scrollBy({
+      left: -getRailStep(),
+      behavior: "smooth",
+    });
+    window.setTimeout(normalizeRailScroll, 350);
+  });
 
-     nextButton.addEventListener("click", function () {
-          rail.scrollBy({
-               left: getRailStep(),
-               behavior: "smooth"
-          });
-          window.setTimeout(normalizeRailScroll, 350);
-     });
+  nextButton.addEventListener("click", function () {
+    rail.scrollBy({
+      left: getRailStep(),
+      behavior: "smooth",
+    });
+    window.setTimeout(normalizeRailScroll, 350);
+  });
 
-     rail.addEventListener("scroll", function () {
-          normalizeRailScroll();
-          updateRailButtons();
-     }, { passive: true });
+  rail.addEventListener(
+    "scroll",
+    function () {
+      normalizeRailScroll();
+      updateRailButtons();
+    },
+    { passive: true },
+  );
 
-     window.addEventListener("resize", updateRailButtons);
-     updateRailButtons();
+  window.addEventListener("resize", updateRailButtons);
+  updateRailButtons();
 }
 
 /* SHARED HELPERS FOR GAME PAGES */
 /* Expose reusable site-wide helpers so module files can reuse same CSS/theme/math logic instead of redefining it in every game file. */
 
 if (!window.SiteTheme) {
-     window.SiteTheme = {};
+  window.SiteTheme = {};
 }
 
 Object.assign(window.SiteTheme, {
-     getCssValue,
-     getCssNumber,
-     getCssColor,
-     getSparkleSettings,
-     createColorEngine,
-     randomNumber,
-     randomWholeNumber,
-     randomItem,
-     randomItemExcept,
-     shuffleArray,
-     fitMarqueeToContainer,
-     fitAllMarquees
+  getCssValue,
+  getCssNumber,
+  getCssColor,
+  getSparkleSettings,
+  createColorEngine,
+  randomNumber,
+  randomWholeNumber,
+  randomItem,
+  randomItemExcept,
+  shuffleArray,
+  fitMarqueeToContainer,
+  fitAllMarquees,
 });
 
 /* STARTUP */
 
 function handleResize() {
-     window.clearTimeout(resizeTimer);
+  window.clearTimeout(resizeTimer);
 
-     resizeTimer = window.setTimeout(function () {
-          setupSparkleRain();
-          syncNavButtonGlow();
-          fitAllMarquees();
-          setMarqueeTextToSolidColor(getCssColor("--color-gray3", "gray"));
-     }, 150);
+  resizeTimer = window.setTimeout(function () {
+    setupSparkleRain();
+    syncNavButtonGlow();
+    fitAllMarquees();
+    setMarqueeTextToSolidColor(getCssColor("--color-gray3", "gray"));
+  }, 150);
 }
 
 for (let i = 0; i < marqueeItems.length; i += 1) {
-     buildMarqueeSpans(marqueeItems[i]);
+  buildMarqueeSpans(marqueeItems[i]);
 }
 
 fitAllMarquees();
@@ -1153,7 +1229,7 @@ setupScrollTopButton();
 closeMenu();
 
 if (siteBgCanvas && siteBgCtx) {
-     setupSparkleRain();
-     drawSparkleRain();
-     window.addEventListener("resize", handleResize);
+  setupSparkleRain();
+  drawSparkleRain();
+  window.addEventListener("resize", handleResize);
 }
