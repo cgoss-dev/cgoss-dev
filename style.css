@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "Annotation Mono";
+  src:
+    url("./fonts/AnnotationMono-VF.woff2") format("woff2"),
+    url("./fonts/AnnotationMono-VF.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+}
+
 /* NOTE: MAIN ROOT CSS */
 
 :root {
@@ -50,7 +60,7 @@
   --border-sm: 2px;
   --border-radius: 10px;
   /* TYPOGRAPHY */
-  --font-noto: "Noto Sans Mono", monospace;
+  --font-noto: "Annotation Mono", "Noto Sans Mono", monospace;
   --font-bungee: "Bungee Shade", monospace;
   --font-dancing: "Dancing Script", cursive;
   --font-symbol:
@@ -155,7 +165,7 @@ body {
   min-height: 100dvh;
   background: var(--color-black);
   color: #000;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-noto);
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
@@ -1604,7 +1614,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 }
 
 .project-preview-planner {
-  background: var(--color-white);
+  background: var(--color-white) !important;
 }
 
 .project-preview:is(:hover, :active, :focus-visible) {
@@ -1618,7 +1628,12 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 .project-preview-tender {
   background:
     url("./images/catDogWhiteBG.png") right bottom / 82.5% auto no-repeat,
-    var(--color-white);
+    var(--color-white) !important;
+}
+
+.project-preview-planner,
+.project-preview-tender {
+  filter: none !important;
 }
 
 .project-preview-empty {
@@ -1900,6 +1915,11 @@ a.project-preview:is(:hover, :active, :focus-visible) {
   width: 100%;
   filter: grayscale(1) blur(0.7px);
   box-shadow: none;
+}
+
+.project-popup-body .project-preview-planner,
+.project-popup-body .project-preview-tender {
+  filter: none !important;
 }
 
 .project-popup-body .project-copy {
