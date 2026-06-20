@@ -79,10 +79,17 @@
   /* LAYOUT */
   --universalPadding: 1rem; /* ANCHOR UNIVERSAL PADDING */
   --visual-gap: var(--universalPadding);
-  --page-width-wide: 75rem;
+  --home-grid-gap: 3rem;
+  --home-preview-card-width: 28rem;
+  --page-width-wide: calc(
+    (var(--home-preview-card-width) * 3) + (var(--home-grid-gap) * 2)
+  );
   --nav-height: var(--font-size-lg);
   --content-width: min(100%, 50rem);
-  --home-panel-width: min(calc(100vw - (var(--visual-gap) * 2)), 75rem);
+  --home-panel-width: min(
+    calc(100vw - (var(--visual-gap) * 2)),
+    var(--page-width-wide)
+  );
   --home-panel-height: calc(
     100dvh - (var(--universalPadding) * 3) - var(--nav-height)
   );
@@ -464,7 +471,7 @@ body::after {
 }
 
 .box-text-primary {
-  font-size: calc(var(--font-size-sm) * 1.5);
+  font-size: var(--font-size-sm);
 }
 
 .box-text + .box-text {
@@ -558,7 +565,7 @@ body::after {
   padding-bottom: var(--border-sm);
   color: var(--color-white);
   border-bottom: var(--border-sm) solid var(--color-gray3);
-  font-size: calc(var(--font-size-sm) * 1.5);
+  font-size: var(--font-size-sm);
   line-height: 1.2;
 }
 
@@ -638,8 +645,8 @@ body::after {
 }
 
 .footer-skill-badges {
-  width: min(calc(100vw - (var(--visual-gap) * 2)), 75rem);
-  margin: var(--visual-gap) auto 0;
+  width: var(--home-panel-width);
+  margin: 3rem auto 0;
 }
 
 .skill-badges-track {
@@ -1040,19 +1047,19 @@ html:has(body.star-shower-game-page)::after {
 .particle-10a {
   left: 28%;
   top: 31%;
-  color: var(--mocha-09);
+  color: #00f;
 }
 
 .particle-10b {
   right: 7%;
   top: 69%;
-  color: var(--mocha-10);
+  color: #40f;
 }
 
 .particle-11a {
   left: 25%;
   top: 83%;
-  color: var(--mocha-11);
+  color: #80f;
 }
 
 .particle-11b {
@@ -1284,14 +1291,21 @@ html:has(body.star-shower-game-page)::after {
 .project-preview-tender {
   --tender-preview-inset: 6.5%;
   --tender-preview-gap: 4%;
-  background:
-    url("./images/catDogWhiteBG.png") right bottom / 82.5% auto no-repeat,
-    var(--color-white);
+}
+
+.project-preview-tender::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: url("./images/catDogWhiteBG.png") right bottom / 82.5% auto
+    no-repeat;
+  pointer-events: none;
 }
 
 .tender-preview-paw {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   display: block;
   width: 15%;
   aspect-ratio: 1;
@@ -1398,7 +1412,7 @@ html:has(body.star-shower-game-page)::after {
 
 .tender-preview-title,
 .tender-preview-button {
-  z-index: 2;
+  z-index: 3;
   display: grid;
   place-items: center;
   border: var(--border-sm) solid var(--color-white);
@@ -1623,7 +1637,17 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 .project-preview {
   background: var(--color-black);
   filter: none;
+  isolation: isolate;
   cursor: default;
+  pointer-events: none;
+}
+
+.project-preview-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  background: var(--color-white);
   pointer-events: none;
 }
 
@@ -1632,9 +1656,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 }
 
 .project-preview-tender {
-  background:
-    url("./images/catDogWhiteBG.png") right bottom / 82.5% auto no-repeat,
-    var(--color-white) !important;
+  background: var(--color-white) !important;
   color: var(--color-black);
 }
 
@@ -1679,7 +1701,9 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 
 .star-preview-particle,
 .planner-preview-header,
+.planner-preview-grid,
 .planner-preview-day {
+  z-index: 1;
   filter: none;
 }
 
@@ -1956,7 +1980,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 .scroll-top-button {
   display: block;
   width: max-content;
-  margin: var(--visual-gap) auto 3rem;
+  margin: 3rem auto 3rem;
   padding: 0;
   color: var(--color-white);
   background: transparent;
@@ -1985,8 +2009,6 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 /* ==================================================================================================== */
 
 body:not(.star-shower-game-page) .home-grid {
-  --home-grid-gap: 3rem;
-  --home-preview-card-width: 23rem;
   --home-preview-row-height: calc(
     (var(--home-preview-card-width) * 2 / 3) + (var(--font-size-md) * 1.5) +
       (var(--border-md) * 2) + var(--nav-btn-pad)
@@ -1994,9 +2016,7 @@ body:not(.star-shower-game-page) .home-grid {
   --home-tall-panel-height: calc(
     (var(--home-preview-row-height) * 2) + var(--home-grid-gap)
   );
-  width: calc(
-    (var(--home-preview-card-width) * 3) + (var(--home-grid-gap) * 2)
-  );
+  width: var(--page-width-wide);
   max-width: none;
   min-height: 0;
   margin: 0 auto;
