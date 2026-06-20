@@ -66,9 +66,9 @@
   --font-symbol:
     "Segoe UI Symbol", "Noto Sans Symbols 2", "Noto Sans Symbols", sans-serif;
 
-  --font-size-lg: 3rem;
-  --font-size-md: 2rem;
-  --font-size-sm: 1rem;
+  --font-size-sm: 1.5rem;
+  --font-size-md: calc(var(--font-size-sm) * 2);
+  --font-size-lg: calc(var(--font-size-md) * 2);
   --font-weight: 400;
 
   --marquee-font-size-min: 2.5rem; /* ANCHOR: MARQUEE FONT SIZE*/
@@ -148,6 +148,18 @@
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
 /* ⭐️ 🔟 ⭐️ */
@@ -556,7 +568,6 @@ body::after {
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border: var(--border-sm) solid var(--color-gray3);
-  filter: grayscale(1) contrast(1.08);
 }
 
 .dev-log-entry-content {
@@ -626,6 +637,11 @@ body::after {
   margin: 0 auto var(--universalPadding);
 }
 
+.footer-skill-badges {
+  width: min(calc(100vw - (var(--visual-gap) * 2)), 75rem);
+  margin: var(--visual-gap) auto 0;
+}
+
 .skill-badges-track {
   display: flex;
   width: max-content;
@@ -647,7 +663,6 @@ body::after {
   height: 20px;
   vertical-align: top;
   filter: none;
-  transition: filter 0.2s ease-in-out;
 }
 
 .skill-badge {
@@ -1025,19 +1040,19 @@ html:has(body.star-shower-game-page)::after {
 .particle-10a {
   left: 28%;
   top: 31%;
-  color: #00f;
+  color: var(--mocha-09);
 }
 
 .particle-10b {
   right: 7%;
   top: 69%;
-  color: #40f;
+  color: var(--mocha-10);
 }
 
 .particle-11a {
   left: 25%;
   top: 83%;
-  color: #80f;
+  color: var(--mocha-11);
 }
 
 .particle-11b {
@@ -1607,8 +1622,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 
 .project-preview {
   background: var(--color-black);
-  filter: grayscale(1) blur(0.7px);
-  transition: filter 0.2s ease-in-out;
+  filter: none;
   cursor: default;
   pointer-events: none;
 }
@@ -1617,23 +1631,20 @@ a.project-preview:is(:hover, :active, :focus-visible) {
   background: var(--color-white) !important;
 }
 
-.project-preview:is(:hover, :active, :focus-visible) {
-  filter: none;
-}
-
-.project-item:is(:hover, :focus-within) .project-preview {
-  filter: none;
-}
-
 .project-preview-tender {
   background:
     url("./images/catDogWhiteBG.png") right bottom / 82.5% auto no-repeat,
     var(--color-white) !important;
+  color: var(--color-black);
 }
 
 .project-preview-planner,
 .project-preview-tender {
   filter: none !important;
+}
+
+.project-preview-star {
+  color: var(--color-white);
 }
 
 .project-preview-empty {
@@ -1654,7 +1665,12 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 .planner-preview-day,
 .tender-preview-title,
 .tender-preview-button {
-  color: var(--color-white);
+  color: var(--color-black);
+}
+
+.tender-preview-title,
+.tender-preview-button {
+  border-color: var(--color-black);
 }
 
 .planner-preview-header {
@@ -1677,7 +1693,6 @@ a.project-preview:is(:hover, :active, :focus-visible) {
   clip-path: none;
   background: var(--home-copy-panel-fill);
   filter: none;
-  transition: filter 0.2s ease-in-out;
   box-shadow:
     0 calc(var(--border-md) * -1) 0 0 var(--color-white),
     0 var(--border-md) 0 0 var(--color-white),
@@ -1845,7 +1860,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 .project-popup-titlebar {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: var(--nav-btn-pad);
   position: absolute;
   inset: 0 0 auto 0;
@@ -1861,14 +1876,11 @@ a.project-preview:is(:hover, :active, :focus-visible) {
   font-weight: 400;
   text-align: left;
   border-bottom: var(--border-md) solid var(--color-white);
-  cursor: pointer;
-}
-
-.project-popup-titlebar:disabled {
   cursor: default;
 }
 
 .project-popup-title {
+  flex: 1 1 auto;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1898,6 +1910,11 @@ a.project-preview:is(:hover, :active, :focus-visible) {
   cursor: default;
 }
 
+.project-popup-control:focus-visible {
+  outline: var(--border-sm) solid var(--color-black);
+  outline-offset: var(--border-sm);
+}
+
 .project-popup-control-open {
   transform: translateY(-0.03em);
 }
@@ -1913,7 +1930,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 
 .project-popup-body .project-preview {
   width: 100%;
-  filter: grayscale(1) blur(0.7px);
+  filter: none;
   box-shadow: none;
 }
 
@@ -1939,7 +1956,7 @@ a.project-preview:is(:hover, :active, :focus-visible) {
 .scroll-top-button {
   display: block;
   width: max-content;
-  margin: var(--visual-gap) auto var(--universalPadding);
+  margin: var(--visual-gap) auto 3rem;
   padding: 0;
   color: var(--color-white);
   background: transparent;
@@ -2124,6 +2141,10 @@ body:not(.star-shower-game-page) .home-grid {
   .home-grid .project-preview {
     aspect-ratio: 3 / 2;
   }
+
+  .scroll-top-button {
+    margin-bottom: var(--visual-gap);
+  }
 }
 
 .project-rail-controls {
@@ -2170,4 +2191,27 @@ body:not(.star-shower-game-page) .home-grid {
 .project-rail-button:disabled {
   opacity: 0.35;
   cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  html::after {
+    opacity: 0.18;
+  }
+
+  .site-bg-canvas {
+    display: none !important;
+  }
+
+  .site-title-marquee {
+    animation: none !important;
+  }
 }
