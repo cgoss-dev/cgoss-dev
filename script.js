@@ -677,197 +677,6 @@ function drawSparkleRain() {
   window.requestAnimationFrame(drawSparkleRain);
 }
 
-//====================================================================================================
-/* NOTE: PROJECT POPUP */
-//====================================================================================================
-
-let projectPopup = null;
-let projectPopupTitlebar = null;
-let projectPopupTitle = null;
-let projectPopupBody = null;
-let projectPopupOpenButton = null;
-let projectPopupCloseButton = null;
-let projectPopupTrigger = null;
-
-function getProjectPopup() {
-  if (projectPopup) {
-    return projectPopup;
-  }
-
-  projectPopup = document.createElement("div");
-  projectPopup.className = "project-popup";
-  projectPopup.setAttribute("role", "dialog");
-  projectPopup.setAttribute("aria-modal", "true");
-  projectPopup.setAttribute("aria-hidden", "true");
-  projectPopup.tabIndex = -1;
-
-  const frame = document.createElement("div");
-  frame.className = "project-popup-frame";
-
-  projectPopupTitlebar = document.createElement("div");
-  projectPopupTitlebar.className = "project-popup-titlebar";
-
-  projectPopupTitle = document.createElement("span");
-  projectPopupTitle.className = "project-popup-title";
-
-  const projectPopupControls = document.createElement("span");
-  projectPopupControls.className = "project-popup-controls";
-
-  projectPopupOpenButton = document.createElement("button");
-  projectPopupOpenButton.className =
-    "project-popup-control project-popup-control-open";
-  projectPopupOpenButton.type = "button";
-  projectPopupOpenButton.textContent = "↗";
-
-  projectPopupCloseButton = document.createElement("button");
-  projectPopupCloseButton.className =
-    "project-popup-control project-popup-control-close";
-  projectPopupCloseButton.type = "button";
-  projectPopupCloseButton.textContent = "×";
-  projectPopupCloseButton.setAttribute("aria-label", "Close project preview");
-
-  projectPopupControls.append(projectPopupOpenButton, projectPopupCloseButton);
-  projectPopupTitlebar.append(projectPopupTitle, projectPopupControls);
-
-  projectPopupBody = document.createElement("div");
-  projectPopupBody.className = "project-popup-body";
-
-  frame.append(projectPopupTitlebar, projectPopupBody);
-  projectPopup.appendChild(frame);
-  document.body.appendChild(projectPopup);
-
-  projectPopup.addEventListener("click", function (event) {
-    if (event.target === projectPopup) {
-      closeProjectPopup();
-    }
-  });
-
-  projectPopup.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
-      closeProjectPopup();
-    }
-  });
-
-  projectPopupOpenButton.addEventListener("click", function () {
-    const projectUrl = projectPopupOpenButton.dataset.projectUrl;
-
-    if (projectUrl) {
-      window.open(projectUrl, "_blank", "noopener,noreferrer");
-    }
-  });
-
-  projectPopupCloseButton.addEventListener("click", closeProjectPopup);
-
-  return projectPopup;
-}
-
-function closeProjectPopup() {
-  if (!projectPopup) {
-    return;
-  }
-
-  projectPopup.classList.remove("is-open");
-  projectPopup.setAttribute("aria-hidden", "true");
-  projectPopup.removeAttribute("aria-label");
-  projectPopupOpenButton.disabled = true;
-  projectPopupOpenButton.removeAttribute("data-project-url");
-  projectPopupBody.replaceChildren();
-
-  if (projectPopupTrigger && document.contains(projectPopupTrigger)) {
-    projectPopupTrigger.focus();
-  }
-
-  projectPopupTrigger = null;
-}
-
-function openProjectPopup(projectItem, trigger = null) {
-  if (!projectItem) {
-    return;
-  }
-
-  const preview = projectItem.querySelector(".project-preview");
-  const projectCopy = projectItem.querySelector(".project-copy");
-  const projectUrl = preview ? preview.getAttribute("href") : "";
-  const projectTitle = projectItem.dataset.title || "project.preview";
-  if (!preview) {
-    return;
-  }
-
-  getProjectPopup();
-  projectPopupTrigger = trigger;
-
-  const popupPreview = preview.cloneNode(true);
-  popupPreview.removeAttribute("href");
-  popupPreview.removeAttribute("target");
-  popupPreview.removeAttribute("rel");
-  popupPreview.removeAttribute("aria-label");
-  popupPreview.setAttribute("aria-hidden", "true");
-  popupPreview.tabIndex = -1;
-
-  projectPopup.setAttribute("aria-label", `${projectTitle} project preview`);
-  projectPopupTitle.textContent = projectTitle;
-
-  if (projectUrl) {
-    projectPopupOpenButton.disabled = false;
-    projectPopupOpenButton.dataset.projectUrl = projectUrl;
-    projectPopupOpenButton.setAttribute(
-      "aria-label",
-      `Open ${projectTitle} in a new tab`,
-    );
-  } else {
-    projectPopupOpenButton.disabled = true;
-    projectPopupOpenButton.removeAttribute("data-project-url");
-    projectPopupOpenButton.setAttribute(
-      "aria-label",
-      `${projectTitle} has no link to open`,
-    );
-  }
-
-  if (projectCopy) {
-    projectPopupBody.replaceChildren(popupPreview, projectCopy.cloneNode(true));
-  } else {
-    projectPopupBody.replaceChildren(popupPreview);
-  }
-
-  projectPopup.classList.add("is-open");
-  projectPopup.setAttribute("aria-hidden", "false");
-  projectPopupCloseButton.focus();
-}
-
-function setupProjectPopups() {
-  const projectTitlebars = Array.from(
-    document.querySelectorAll(".project-titlebar"),
-  );
-  const projectPreviews = Array.from(
-    document.querySelectorAll("a.project-preview"),
-  );
-
-  document.addEventListener("click", function (event) {
-    const titlebar = event.target.closest(".project-titlebar");
-
-    if (!titlebar) {
-      return;
-    }
-
-    openProjectPopup(titlebar.closest(".project-item"), titlebar);
-  });
-
-  document.addEventListener("pointerdown", function (event) {
-    if (!event.target.closest(".project-item")) {
-      for (let i = 0; i < projectTitlebars.length; i += 1) {
-        projectTitlebars[i].blur();
-      }
-    }
-  });
-
-  for (let i = 0; i < projectPreviews.length; i += 1) {
-    projectPreviews[i].tabIndex = -1;
-    projectPreviews[i].addEventListener("click", function (event) {
-      event.preventDefault();
-    });
-  }
-}
-
 function setupScrollTopButton() {
   const scrollTopButton = document.querySelector(".scroll-top-button");
   const mainContent = document.querySelector(".main-squeeze");
@@ -1025,10 +834,22 @@ async function setupDevLog() {
       .replaceAll("'", "&#39;");
   }
 
+  function getFirstSentence(value) {
+    const text = String(value || "").trim();
+    const periodIndex = text.indexOf(".");
+
+    if (periodIndex === -1) {
+      return text;
+    }
+
+    return text.slice(0, periodIndex + 1);
+  }
+
   function createPostItem(post) {
     const item = document.createElement(post.url ? "a" : "article");
     const displayDate = formatDevLogDisplayDate(getDevLogIsoDate(post));
     const tags = Array.isArray(post.tags) ? post.tags : [];
+    const contentPreview = getFirstSentence(post.content || post.excerpt);
     const imageMarkup = post.imageUrl
       ? `<img class="dev-log-entry-image" src="${escapeHtml(post.imageUrl)}" alt="" loading="lazy">`
       : "";
@@ -1044,7 +865,7 @@ async function setupDevLog() {
     item.innerHTML = `
                ${imageMarkup}
                <span class="dev-log-entry-title">${escapeHtml(post.title || "untitled")}</span>
-               <span class="dev-log-entry-content">${escapeHtml(post.content || post.excerpt || "")}</span>
+               <span class="dev-log-entry-content">${escapeHtml(contentPreview)}</span>
                <span class="dev-log-meta">
                     <span class="dev-log-tags">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</span>
                     <span class="dev-log-stamp">${displayDate}</span>
@@ -1102,105 +923,6 @@ async function setupDevLog() {
   }
 }
 
-function setupProjectRailControls() {
-  const rail = document.querySelector("[data-project-rail]");
-  const previousButton = document.querySelector(".project-rail-button-prev");
-  const nextButton = document.querySelector(".project-rail-button-next");
-  let shouldNormalizeScroll = true;
-
-  if (!rail || !previousButton || !nextButton) {
-    return;
-  }
-
-  const originalItems = Array.from(rail.querySelectorAll(".project-item"));
-
-  for (let i = 0; i < originalItems.length; i += 1) {
-    const clone = originalItems[i].cloneNode(true);
-
-    clone.setAttribute("aria-hidden", "true");
-    clone.querySelectorAll("a, button").forEach(function (element) {
-      element.tabIndex = -1;
-    });
-    rail.appendChild(clone);
-  }
-
-  function getRailStep() {
-    const firstItem = rail.querySelector(".project-item");
-    const gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
-
-    if (!firstItem) {
-      return rail.clientWidth;
-    }
-
-    return firstItem.getBoundingClientRect().width + gap;
-  }
-
-  function getLoopWidth() {
-    return rail.scrollWidth / 2;
-  }
-
-  function normalizeRailScroll() {
-    if (!shouldNormalizeScroll) {
-      return;
-    }
-
-    const loopWidth = getLoopWidth();
-
-    if (loopWidth <= 0) {
-      return;
-    }
-
-    if (rail.scrollLeft >= loopWidth) {
-      rail.scrollLeft -= loopWidth;
-    } else if (rail.scrollLeft < 0) {
-      rail.scrollLeft += loopWidth;
-    }
-  }
-
-  function updateRailButtons() {
-    previousButton.disabled = false;
-    nextButton.disabled = false;
-  }
-
-  previousButton.addEventListener("click", function () {
-    if (rail.scrollLeft <= 1) {
-      shouldNormalizeScroll = false;
-      rail.scrollLeft += getLoopWidth();
-
-      window.setTimeout(function () {
-        shouldNormalizeScroll = true;
-        normalizeRailScroll();
-      }, 450);
-    }
-
-    rail.scrollBy({
-      left: -getRailStep(),
-      behavior: "smooth",
-    });
-    window.setTimeout(normalizeRailScroll, 350);
-  });
-
-  nextButton.addEventListener("click", function () {
-    rail.scrollBy({
-      left: getRailStep(),
-      behavior: "smooth",
-    });
-    window.setTimeout(normalizeRailScroll, 350);
-  });
-
-  rail.addEventListener(
-    "scroll",
-    function () {
-      normalizeRailScroll();
-      updateRailButtons();
-    },
-    { passive: true },
-  );
-
-  window.addEventListener("resize", updateRailButtons);
-  updateRailButtons();
-}
-
 /* SHARED HELPERS FOR GAME PAGES */
 /* Expose reusable site-wide helpers so module files can reuse same CSS/theme/math logic instead of redefining it in every game file. */
 
@@ -1243,8 +965,6 @@ for (let i = 0; i < marqueeItems.length; i += 1) {
 fitAllMarquees();
 setMarqueeTextToSolidColor(getCssColor("--color-gray3", "gray"));
 syncNavButtonGlow();
-setupProjectPopups();
-setupProjectRailControls();
 setupHomePanelToggles();
 setupDevLog();
 setupScrollTopButton();
