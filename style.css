@@ -1529,9 +1529,10 @@ body {
   font-weight: 400;
   text-align: left;
   white-space: nowrap;
+  text-decoration: none;
   border-bottom: var(--border-md) solid var(--color-white);
   box-shadow: none;
-  cursor: default;
+  cursor: pointer;
 }
 
 .project-preview::after {
