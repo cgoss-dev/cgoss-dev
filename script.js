@@ -1,4 +1,4 @@
-// NOTE: MAIN ROOT JS
+// MAIN ROOT JS
 
 function getCssValue(variableName) {
   return getComputedStyle(document.documentElement)
@@ -373,7 +373,7 @@ document.addEventListener("keydown", function (event) {
 });
 
 //====================================================================================================
-/* NOTE: MARQUEE */
+/* MARQUEE */
 //====================================================================================================
 
 const marqueeElements = Array.from(document.querySelectorAll(".marquee"));
@@ -517,7 +517,7 @@ function buildMarqueeSpans(marqueeItem) {
 }
 
 //====================================================================================================
-/* NOTE: CANVAS */
+/* CANVAS */
 //====================================================================================================
 
 const siteBgCanvas = document.getElementById("siteBgCanvas");

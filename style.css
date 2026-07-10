@@ -8,7 +8,7 @@
   font-display: swap;
 }
 
-/* NOTE: MAIN ROOT CSS */
+/* MAIN ROOT CSS */
 
 :root {
   /* THEME COLORS */
@@ -253,7 +253,7 @@ html::after {
 }
 
 /* ==================================================================================================== */
-/* NOTE: HEADER */
+/* HEADER */
 /* ==================================================================================================== */
 
 .site-header {
@@ -341,7 +341,7 @@ html::after {
 }
 
 /* ==================================================================================================== */
-/* NOTE: HERO LAYOUT */
+/* HERO LAYOUT */
 /* ==================================================================================================== */
 
 .main-squeeze {
@@ -766,11 +766,14 @@ html::after {
   flex-direction: column;
   justify-content: flex-start;
   gap: var(--universalPadding);
+  overflow-y: auto;
   z-index: 2;
   padding: 0;
   background: transparent;
   opacity: 1;
   pointer-events: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   transition: none;
 }
 
@@ -858,7 +861,7 @@ html:has(body.star-shower-game-page)::after {
 }
 
 /* ==================================================================================================== */
-/* NOTE: RESPONSIVE NAV MODES */
+/* RESPONSIVE NAV MODES */
 /* ==================================================================================================== */
 
 /* REQ TO PREVENT HOLD/FAST CLICK FROM HIGHLIGHTING ON MOBILE */
@@ -993,7 +996,7 @@ body {
 }
 
 /* ==================================================================================================== */
-/* NOTE: HOME 3X3 GRID */
+/* HOME 3X3 GRID */
 /* ==================================================================================================== */
 
 body:not(.star-shower-game-page) .home-grid {
@@ -1075,7 +1078,7 @@ body:not(.star-shower-game-page) .home-grid {
     --home-preview-card-width: min(28rem, 82vw);
     --home-grid-gap: calc(var(--universalPadding) * 3);
     min-height: 0;
-    width: var(--home-panel-width);
+    width: calc(100vw - (var(--home-grid-gap) * 2));
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     gap: var(--home-grid-gap);
@@ -1116,8 +1119,12 @@ body:not(.star-shower-game-page) .home-grid {
 
   .home-grid .projects-list {
     grid-template-columns: 1fr;
-    gap: var(--visual-gap);
+    gap: var(--home-grid-gap);
     height: auto;
+  }
+
+  .home-grid .project-item {
+    height: 300px;
   }
 
   .scroll-top-button {

@@ -1,4 +1,4 @@
-// NOTE: SHARED SITE HEADER
+// SHARED SITE HEADER
 
 const marqueeRainbowPalette = [
   "#f00",
@@ -219,7 +219,7 @@ function scheduleHeaderCompactCheck() {
 }
 
 function renderSiteHeader(header, index) {
-  // NOTE: MARQUEE TEXT ACTUAL
+  // MARQUEE TEXT ACTUAL
 
   header.innerHTML = `
      <div class="header-top">
