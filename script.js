@@ -368,7 +368,6 @@ document.addEventListener("click", function (event) {
 document.addEventListener("keydown", function (event) {
   if (event.key === "Escape") {
     closeMenu();
-    closeProjectPopup();
   }
 });
 

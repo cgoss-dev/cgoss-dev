@@ -107,7 +107,7 @@
   --panel-border-color: var(--color-gray3);
   --panel-border: var(--panel-border-width) solid var(--panel-border-color);
   /* HOME COPY PANEL */
-  --home-copy-panel-fill: transparent;
+  --home-copy-panel-fill: rgba(0, 0, 0, 0.5);
   --home-copy-panel-border-width: var(--border-lg);
   --home-copy-panel-border-color: var(--color-gray3);
   --home-copy-panel-border: 0 solid transparent;
@@ -738,7 +738,7 @@ html::after {
   overflow: hidden;
   padding: 0 calc(var(--universalPadding) * 2) calc(var(--universalPadding) * 2);
   border: 0;
-  background: transparent;
+  background: var(--home-copy-panel-fill);
   box-shadow:
     0 calc(var(--border-md) * -1) 0 0 var(--color-white),
     0 var(--border-md) 0 0 var(--color-white),
@@ -818,46 +818,6 @@ html::after {
   font-size: var(--font-size-sm);
   line-height: 1.5;
   opacity: 1;
-}
-
-.project-embed-panel {
-  height: var(--home-panel-height);
-  padding: 0;
-  overflow: hidden;
-}
-
-.project-embed-frame {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  background: var(--color-black);
-}
-
-.star-shower-game-shell {
-  min-height: 100dvh;
-  padding: 0;
-  overflow: hidden;
-}
-
-.star-shower-game-shell .main-squeeze {
-  height: 100dvh;
-  min-height: 100dvh;
-  padding: 0;
-  gap: 0;
-}
-
-.star-shower-game-shell .project-embed-panel {
-  width: 100vw;
-  height: 100dvh;
-  margin: 0;
-}
-
-body.star-shower-game-page::before,
-body.star-shower-game-page::after,
-html:has(body.star-shower-game-page)::after {
-  display: none;
-  content: none;
 }
 
 /* ==================================================================================================== */
@@ -999,7 +959,7 @@ body {
 /* HOME 3X3 GRID */
 /* ==================================================================================================== */
 
-body:not(.star-shower-game-page) .home-grid {
+.home-grid {
   width: var(--page-width-wide);
   max-width: none;
   min-height: 0;
@@ -1074,7 +1034,7 @@ body:not(.star-shower-game-page) .home-grid {
     align-items: flex-start;
   }
 
-  body:not(.star-shower-game-page) .home-grid {
+  .home-grid {
     --home-preview-card-width: min(28rem, 82vw);
     --home-grid-gap: calc(var(--universalPadding) * 3);
     min-height: 0;
