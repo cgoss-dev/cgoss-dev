@@ -765,7 +765,7 @@ function setupHomePanelToggles() {
 
     setExpandedHeight(panel);
 
-    if (!titlebar) {
+    if (!titlebar || titlebar.tagName.toLowerCase() === "a") {
       continue;
     }
 
@@ -839,6 +839,7 @@ function getDevLogIsoDate(post) {
 
 async function setupDevLog() {
   const devLog = document.querySelector("[data-dev-log]");
+  const devLogLink = document.querySelector("[data-dev-log-link]");
   const latestContainer = document.querySelector("[data-dev-log-latest]");
   const archiveContainer = document.querySelector("[data-dev-log-archive]");
   const archiveTitle = document.querySelector("[data-dev-log-archive-title]");
@@ -859,18 +860,12 @@ async function setupDevLog() {
   }
 
   function createPostItem(post) {
-    const item = document.createElement(post.url ? "a" : "article");
+    const item = document.createElement("article");
     const imageMarkup = post.imageUrl
       ? `<img class="dev-log-entry-image" src="${escapeHtml(post.imageUrl)}" alt="" loading="lazy">`
       : "";
 
     item.className = "dev-log-entry";
-
-    if (post.url) {
-      item.href = post.url;
-      item.target = "_blank";
-      item.rel = "noopener noreferrer";
-    }
 
     item.innerHTML = `
                ${imageMarkup}
@@ -891,13 +886,24 @@ async function setupDevLog() {
     const latestPosts = sortedPosts.slice(0, 1);
     latestContainer.replaceChildren(...latestPosts.map(createPostItem));
 
+    if (devLogLink && latestPosts[0]?.url) {
+      devLogLink.href = latestPosts[0].url;
+      devLogLink.setAttribute(
+        "aria-label",
+        `Open latest dev.log article: ${latestPosts[0].title || "untitled"}`,
+      );
+    } else if (devLogLink) {
+      devLogLink.href = mediumUrl;
+      devLogLink.setAttribute(
+        "aria-label",
+        "Open dev.log on Medium in a new tab",
+      );
+    }
+
     if (latestPosts.length === 0) {
-      const placeholder = document.createElement("a");
+      const placeholder = document.createElement("article");
 
       placeholder.className = "dev-log-entry";
-      placeholder.href = mediumUrl;
-      placeholder.target = "_blank";
-      placeholder.rel = "noopener noreferrer";
       placeholder.innerHTML = `
                     <span class="dev-log-entry-title">dev.log on Medium</span>
                `;
