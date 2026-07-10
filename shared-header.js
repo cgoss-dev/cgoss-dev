@@ -225,7 +225,7 @@ function renderSiteHeader(header, index) {
      <div class="header-top">
      <div class="header-brand">
      <h1 class="site-title">
-                         <span class="site-title-marquee" aria-label="Chris Goss">Hello World</span>
+                         <span class="site-title-marquee" aria-label="Hello World">Hello World</span>
                     </h1>
                </div>
           </div>
@@ -235,16 +235,15 @@ function renderSiteHeader(header, index) {
 
   if (siteTitleMarquee) {
     siteTitleMarquee.dataset.text = siteTitleMarquee.textContent;
+    buildMarqueeRainbow(siteTitleMarquee);
   }
-
-  // Rainbow marquee disabled while the landing page is being restyled.
 
   renderedHeaders.push(header);
   scheduleHeaderCompactCheck();
 }
 
 document.querySelectorAll("[data-site-header]").forEach(renderSiteHeader);
-// startMarqueeRainbow();
+startMarqueeRainbow();
 
 window.addEventListener("resize", scheduleHeaderCompactCheck);
 
