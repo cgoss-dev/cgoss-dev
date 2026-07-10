@@ -37,7 +37,20 @@ function getSparkleSettings() {
 }
 
 function getSparklePalette() {
-  return ["#ffffff"];
+  return [
+    getCssColor("--tertiary-01", "#ff0000"),
+    getCssColor("--tertiary-02", "#ff4400"),
+    getCssColor("--tertiary-03", "#ff8800"),
+    getCssColor("--tertiary-04", "#ffcc00"),
+    getCssColor("--tertiary-05", "#ffff00"),
+    getCssColor("--tertiary-06", "#88ff00"),
+    getCssColor("--tertiary-07", "#00ff00"),
+    getCssColor("--tertiary-08", "#0088ff"),
+    getCssColor("--tertiary-09", "#0000ff"),
+    getCssColor("--tertiary-10", "#4400ff"),
+    getCssColor("--tertiary-11", "#8800ff"),
+    getCssColor("--tertiary-12", "#ff00ff"),
+  ];
 }
 
 //====================================================================================================
