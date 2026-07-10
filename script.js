@@ -800,6 +800,39 @@ function setupHomePanelToggles() {
   }
 }
 
+const homeCardHeightQuery = window.matchMedia("(max-width: 800px)");
+
+function getHomeCards() {
+  return Array.from(
+    document.querySelectorAll(
+      ".home-grid-about, .home-grid-devlog, .home-grid .project-item",
+    ),
+  );
+}
+
+function syncHomeCardHeights() {
+  const homeGrid = document.querySelector(".home-grid");
+  const cards = getHomeCards();
+
+  if (!homeGrid || cards.length === 0) {
+    return;
+  }
+
+  homeGrid.style.removeProperty("--home-card-height");
+
+  if (homeCardHeightQuery.matches) {
+    return;
+  }
+
+  const tallestHeight = cards.reduce(function (maxHeight, card) {
+    return Math.max(maxHeight, Math.ceil(card.getBoundingClientRect().height));
+  }, 0);
+
+  if (tallestHeight > 0) {
+    homeGrid.style.setProperty("--home-card-height", `${tallestHeight}px`);
+  }
+}
+
 function getDevLogIsoDate(post) {
   return post.date || post.published || "";
 }
@@ -874,6 +907,12 @@ async function setupDevLog() {
     archiveContainer.replaceChildren();
     archiveTitle.hidden = true;
     archiveContainer.closest(".dev-log-archive").hidden = true;
+
+    latestContainer
+      .querySelectorAll("img")
+      .forEach((image) => image.addEventListener("load", syncHomeCardHeights));
+
+    syncHomeCardHeights();
     window.dispatchEvent(new Event("resize"));
   }
 
@@ -923,6 +962,7 @@ function handleResize() {
     syncNavButtonGlow();
     fitAllMarquees();
     setMarqueeTextToSolidColor(getCssColor("--color-gray3", "gray"));
+    syncHomeCardHeights();
   }, 150);
 }
 
@@ -936,6 +976,7 @@ syncNavButtonGlow();
 setupHomePanelToggles();
 setupDevLog();
 setupScrollTopButton();
+syncHomeCardHeights();
 closeMenu();
 
 if (siteBgCanvas && siteBgCtx && !reducedMotionQuery.matches) {
@@ -943,3 +984,11 @@ if (siteBgCanvas && siteBgCtx && !reducedMotionQuery.matches) {
   drawSparkleRain();
   window.addEventListener("resize", handleResize);
 }
+
+if (typeof homeCardHeightQuery.addEventListener === "function") {
+  homeCardHeightQuery.addEventListener("change", syncHomeCardHeights);
+} else if (typeof homeCardHeightQuery.addListener === "function") {
+  homeCardHeightQuery.addListener(syncHomeCardHeights);
+}
+
+window.addEventListener("load", syncHomeCardHeights);

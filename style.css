@@ -922,7 +922,7 @@ body {
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, var(--home-preview-card-width));
-  grid-template-rows: repeat(2, 300px);
+  grid-template-rows: repeat(2, var(--home-card-height, auto));
   align-items: stretch;
   gap: var(--home-grid-gap);
   padding-bottom: 0;
@@ -946,7 +946,7 @@ body {
   grid-column: 1 / 4;
   grid-row: 2 / 3;
   width: 100%;
-  min-height: 300px;
+  min-height: var(--home-card-height, auto);
   min-width: 0;
   position: relative;
   overflow: visible;
@@ -955,7 +955,7 @@ body {
 .home-grid .home-copy-panel {
   width: 100%;
   min-width: 0;
-  height: 300px;
+  height: var(--home-card-height, auto);
   margin: 0;
 }
 
@@ -964,7 +964,7 @@ body {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--home-grid-gap);
   width: 100%;
-  height: 300px;
+  height: var(--home-card-height, auto);
   margin: 0;
   overflow: visible;
   padding: 0;
@@ -972,7 +972,7 @@ body {
 
 .home-grid .project-item {
   min-width: 0;
-  height: 100%;
+  height: var(--home-card-height, auto);
 }
 
 @media (max-width: 800px) {
@@ -1003,19 +1003,17 @@ body {
   }
 
   .home-grid .home-copy-panel {
-    height: 300px;
-    min-height: 300px;
-    max-height: 300px;
-    overflow: hidden;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
     transition: max-height 0.24s ease-in-out;
   }
 
   .home-grid-about .box-body,
   .home-grid-devlog .dev-log {
-    max-height: calc(
-      300px - var(--browser-frame-bar-height) - (var(--universalPadding) * 2)
-    );
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
   }
@@ -1035,7 +1033,11 @@ body {
   }
 
   .home-grid .project-item {
-    height: 300px;
+    height: auto;
+  }
+
+  .home-grid .project-copy {
+    overflow: visible;
   }
 
   .scroll-top-button {
