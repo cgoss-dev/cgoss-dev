@@ -792,27 +792,6 @@ function getDevLogIsoDate(post) {
   return post.date || post.published || "";
 }
 
-function formatDevLogDisplayDate(dateValue) {
-  const date = new Date(`${dateValue}T00:00:00`);
-
-  if (Number.isNaN(date.getTime())) {
-    return "";
-  }
-
-  const year = String(date.getFullYear()).slice(-2);
-  const month = date.toLocaleString("en-US", {
-    month: "short",
-    timeZone: "UTC",
-  });
-  const day = String(date.getUTCDate()).padStart(2, "0");
-  const weekday = date.toLocaleString("en-US", {
-    weekday: "short",
-    timeZone: "UTC",
-  });
-
-  return `${weekday}${day}${month}${year}`;
-}
-
 async function setupDevLog() {
   const devLog = document.querySelector("[data-dev-log]");
   const latestContainer = document.querySelector("[data-dev-log-latest]");
@@ -834,22 +813,8 @@ async function setupDevLog() {
       .replaceAll("'", "&#39;");
   }
 
-  function getFirstSentence(value) {
-    const text = String(value || "").trim();
-    const periodIndex = text.indexOf(".");
-
-    if (periodIndex === -1) {
-      return text;
-    }
-
-    return text.slice(0, periodIndex + 1);
-  }
-
   function createPostItem(post) {
     const item = document.createElement(post.url ? "a" : "article");
-    const displayDate = formatDevLogDisplayDate(getDevLogIsoDate(post));
-    const tags = Array.isArray(post.tags) ? post.tags : [];
-    const contentPreview = getFirstSentence(post.content || post.excerpt);
     const imageMarkup = post.imageUrl
       ? `<img class="dev-log-entry-image" src="${escapeHtml(post.imageUrl)}" alt="" loading="lazy">`
       : "";
@@ -865,11 +830,6 @@ async function setupDevLog() {
     item.innerHTML = `
                ${imageMarkup}
                <span class="dev-log-entry-title">${escapeHtml(post.title || "untitled")}</span>
-               <span class="dev-log-entry-content">${escapeHtml(contentPreview)}</span>
-               <span class="dev-log-meta">
-                    <span class="dev-log-tags">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</span>
-                    <span class="dev-log-stamp">${displayDate}</span>
-               </span>
           `;
 
     return item;
@@ -895,10 +855,6 @@ async function setupDevLog() {
       placeholder.rel = "noopener noreferrer";
       placeholder.innerHTML = `
                     <span class="dev-log-entry-title">dev.log on Medium</span>
-                    <span class="dev-log-entry-content">Latest articles will appear here after the feed updates.</span>
-                    <span class="dev-log-meta">
-                         <span class="dev-log-tags"><span>medium</span></span>
-                    </span>
                `;
       latestContainer.replaceChildren(placeholder);
     }
