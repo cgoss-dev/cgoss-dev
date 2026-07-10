@@ -117,7 +117,7 @@
   --z-menu: 20;
 
   /* SPARKLES */
-  --sparkle-opacity: 0;
+  --sparkle-opacity: 1;
   --sparkle-count-max: 180;
   --sparkle-density: 0.00015;
   --sparkle-size-min: 20;
@@ -246,7 +246,7 @@ html::after {
   inset: 0;
   width: 100vw;
   height: 100dvh;
-  display: none;
+  display: block;
   pointer-events: none;
   opacity: var(--sparkle-opacity);
   z-index: var(--z-sparkle);
