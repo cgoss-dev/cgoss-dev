@@ -107,7 +107,7 @@
   --panel-border-color: var(--color-gray3);
   --panel-border: var(--panel-border-width) solid var(--panel-border-color);
   /* HOME COPY PANEL */
-  --home-copy-panel-fill: rgba(0, 0, 0, 0.85);
+  --home-copy-panel-fill: var(--color-black);
   --home-copy-panel-border-width: var(--border-lg);
   --home-copy-panel-border-color: var(--color-gray3);
   --home-copy-panel-border: 0 solid transparent;
@@ -128,7 +128,7 @@
   --sparkle-wobble-speed-max: 0.02;
   --sparkle-wobble-amount-min: 5;
   --sparkle-wobble-amount-max: 15;
-  --sparkle-opacity-min: 0.2;
+  --sparkle-opacity-min: 0.85;
   --sparkle-opacity-max: 1;
   --sparkle-respawn-offset-top: -20;
   --sparkle-respawn-offset-bottom: 24;
@@ -191,34 +191,6 @@ body::before {
 
 body::after {
   display: none;
-}
-
-html::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 2147483647;
-  pointer-events: none;
-  background:
-    linear-gradient(transparent 50%, rgba(0, 0, 0, 0.38) 50%),
-    linear-gradient(
-      90deg,
-      rgba(255, 0, 0, 0.08),
-      rgba(0, 255, 0, 0.035),
-      rgba(0, 0, 255, 0.08)
-    ),
-    repeating-linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.18) 0,
-      rgba(255, 255, 255, 0.18) 1px,
-      transparent 1px,
-      transparent 4px
-    );
-  background-size:
-    100% 2px,
-    3px 100%,
-    auto;
-  opacity: 0.45;
 }
 
 .body-ody {
@@ -1100,10 +1072,6 @@ body {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
-  }
-
-  html::after {
-    opacity: 0.18;
   }
 
   .site-bg-canvas {

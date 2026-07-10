@@ -670,8 +670,8 @@ function drawBgParticles() {
     siteBgCtx.textAlign = "center";
     siteBgCtx.textBaseline = "middle";
     siteBgCtx.fillStyle = p.color;
-    siteBgCtx.shadowBlur = 0;
-    siteBgCtx.shadowColor = "transparent";
+    siteBgCtx.shadowBlur = p.size * 0.65;
+    siteBgCtx.shadowColor = p.color;
     siteBgCtx.fillText(p.char, p.x, p.y);
     siteBgCtx.restore();
   }
