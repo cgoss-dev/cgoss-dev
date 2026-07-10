@@ -107,7 +107,7 @@
   --panel-border-color: var(--color-gray3);
   --panel-border: var(--panel-border-width) solid var(--panel-border-color);
   /* HOME COPY PANEL */
-  --home-copy-panel-fill: rgba(0, 0, 0, 0.5);
+  --home-copy-panel-fill: rgba(0, 0, 0, 0.75);
   --home-copy-panel-border-width: var(--border-lg);
   --home-copy-panel-border-color: var(--color-gray3);
   --home-copy-panel-border: 0 solid transparent;
