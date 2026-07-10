@@ -177,22 +177,6 @@ body {
   overflow-y: auto;
 }
 
-body::before,
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-}
-
-body::before {
-  display: none;
-}
-
-body::after {
-  display: none;
-}
-
 .body-ody {
   width: 100%;
   max-width: 100%;
@@ -992,11 +976,6 @@ body {
 }
 
 @media (max-width: 800px) {
-  body::before {
-    background-size: 3rem 3rem;
-    transform: perspective(32rem) rotateX(64deg) translateY(30vh) scale(1.8);
-  }
-
   .intro-kicker {
     width: 100%;
     line-height: 1.25;
