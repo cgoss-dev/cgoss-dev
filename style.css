@@ -250,7 +250,8 @@ a[href] {
 .site-header {
   width: var(--header-width);
   max-width: 100%;
-  margin: 0;
+  margin: var(--home-grid-gap) 0
+    calc(var(--home-grid-gap) - var(--universalPadding));
   padding: 0;
   position: relative;
   top: auto;
