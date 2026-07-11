@@ -814,10 +814,14 @@ a[href] {
 .project-description {
   max-width: 42rem;
   margin: 0;
-  color: var(--color-white);
+  color: var(--color-gray3);
   font-size: var(--font-size-sm);
   line-height: 1.5;
   opacity: 1;
+}
+
+.project-description-lede {
+  color: var(--color-white);
 }
 
 /* ==================================================================================================== */
