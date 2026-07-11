@@ -182,10 +182,6 @@ a[href] {
   text-decoration: none;
 }
 
-a[href]:is(:hover, :focus-visible) {
-  animation: linkRainbowColor 3s steps(1, end) infinite;
-}
-
 .text-link-bounce-letter {
   display: inline-block;
   animation: textLinkLetterBounce var(--link-letter-bounce-duration, 4.5s)
@@ -208,69 +204,6 @@ a[href]:is(:hover, :focus-visible) {
 
   92% {
     transform: translateY(0);
-  }
-}
-
-@keyframes linkRainbowColor {
-  0% {
-    color: var(--tertiary-01);
-    -webkit-text-fill-color: var(--tertiary-01);
-  }
-
-  8.33% {
-    color: var(--tertiary-02);
-    -webkit-text-fill-color: var(--tertiary-02);
-  }
-
-  16.66% {
-    color: var(--tertiary-03);
-    -webkit-text-fill-color: var(--tertiary-03);
-  }
-
-  25% {
-    color: var(--tertiary-04);
-    -webkit-text-fill-color: var(--tertiary-04);
-  }
-
-  33.33% {
-    color: var(--tertiary-05);
-    -webkit-text-fill-color: var(--tertiary-05);
-  }
-
-  41.66% {
-    color: var(--tertiary-06);
-    -webkit-text-fill-color: var(--tertiary-06);
-  }
-
-  50% {
-    color: var(--tertiary-07);
-    -webkit-text-fill-color: var(--tertiary-07);
-  }
-
-  58.33% {
-    color: var(--tertiary-08);
-    -webkit-text-fill-color: var(--tertiary-08);
-  }
-
-  66.66% {
-    color: var(--tertiary-09);
-    -webkit-text-fill-color: var(--tertiary-09);
-  }
-
-  75% {
-    color: var(--tertiary-10);
-    -webkit-text-fill-color: var(--tertiary-10);
-  }
-
-  83.33% {
-    color: var(--tertiary-11);
-    -webkit-text-fill-color: var(--tertiary-11);
-  }
-
-  91.66%,
-  100% {
-    color: var(--tertiary-12);
-    -webkit-text-fill-color: var(--tertiary-12);
   }
 }
 
