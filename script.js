@@ -841,6 +841,8 @@ function setupTextLinkBounce() {
 
     if (
       link.dataset.textLinkBounceReady === "true" ||
+      link.classList.contains("landing-titlebar") ||
+      link.classList.contains("project-titlebar") ||
       link.querySelector("img, svg, canvas")
     ) {
       continue;
