@@ -1053,6 +1053,7 @@ a.scroll-top-button[hidden] {
   }
 
   .site-title {
+    line-height: 1.05;
     text-align: left;
   }
 
