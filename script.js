@@ -833,6 +833,64 @@ function syncHomeCardHeights() {
   }
 }
 
+function setupTextLinkBounce() {
+  const links = Array.from(document.querySelectorAll("a[href]"));
+
+  for (let linkIndex = 0; linkIndex < links.length; linkIndex += 1) {
+    const link = links[linkIndex];
+
+    if (
+      link.dataset.textLinkBounceReady === "true" ||
+      link.querySelector("img, svg, canvas")
+    ) {
+      continue;
+    }
+
+    const textNodes = Array.from(link.childNodes).filter(
+      (node) => node.nodeType === Node.TEXT_NODE && node.textContent,
+    );
+
+    if (textNodes.length === 0) {
+      continue;
+    }
+
+    for (let nodeIndex = 0; nodeIndex < textNodes.length; nodeIndex += 1) {
+      const textNode = textNodes[nodeIndex];
+      const fragment = document.createDocumentFragment();
+      const text = textNode.textContent;
+
+      for (let letterIndex = 0; letterIndex < text.length; letterIndex += 1) {
+        const character = text[letterIndex];
+
+        if (character === " ") {
+          fragment.appendChild(document.createTextNode(character));
+          continue;
+        }
+
+        const letter = document.createElement("span");
+        const duration = randomNumber(3.2, 6.4);
+        const delay = randomNumber(-duration, 0);
+
+        letter.className = "text-link-bounce-letter";
+        letter.style.setProperty(
+          "--link-letter-bounce-duration",
+          `${duration.toFixed(2)}s`,
+        );
+        letter.style.setProperty(
+          "--link-letter-bounce-delay",
+          `${delay.toFixed(2)}s`,
+        );
+        letter.textContent = character;
+        fragment.appendChild(letter);
+      }
+
+      textNode.replaceWith(fragment);
+    }
+
+    link.dataset.textLinkBounceReady = "true";
+  }
+}
+
 function getDevLogIsoDate(post) {
   return post.date || post.published || "";
 }
@@ -982,6 +1040,7 @@ syncNavButtonGlow();
 setupHomePanelToggles();
 setupDevLog();
 setupScrollTopButton();
+setupTextLinkBounce();
 syncHomeCardHeights();
 closeMenu();
 
