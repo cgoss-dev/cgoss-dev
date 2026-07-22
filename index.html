@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;600&family=Bungee+Shade&family=Dancing+Script:wght@400..700&display=swap"
     />
 
-    <link rel="stylesheet" href="style.css?v=header-gap-20260710" />
+    <link rel="stylesheet" href="style.css?v=marquee-top-gap-20260722" />
   </head>
   <body id="top" class="home-page">
     <canvas
@@ -35,11 +35,31 @@
           </button>
           <div class="box-body">
             <p class="box-text box-text-primary">
-              i'm chris, a junior developer in Seattle.
+              hello world. i'm chris, a junior developer in Seattle.
             </p>
             <p class="box-text box-text-secondary">
-              i use AI daily to rapidly explore ideas, debug quickly, and
-              accelerate production.
+              i learn by building and use AI daily to rapidly explore ideas. i'm
+              not shy about pestering it with hundreds of questions until i
+              understand why a solution works.
+            </p>
+            <p class="box-text box-text-secondary">
+              my biggest roadblock isn't persistence — it's recognizing my own
+              blind spots and building the judgment to know what to tackle next.
+            </p>
+            <p class="box-text box-text-secondary">
+              my
+              <a
+                href="https://github.com/cgoss-dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                >GitHub history</a
+              >
+              documents deployed projects and the steady iteration behind
+              them—from initial builds through fixes, refinements, and release.
+            </p>
+            <p class="box-text box-text-secondary">
+              i'm looking for a team that values my drive to contribute, offers
+              direct, actionable feedback, and empowers people to keep learning.
             </p>
             <p class="box-text box-text-secondary about-link-row">
               <a
@@ -74,6 +94,9 @@
             >dev.log</a
           >
           <div class="box-body dev-log" data-dev-log>
+            <p class="box-text dev-log-intro">
+              i keep a dev log of my learning journey:
+            </p>
             <div class="dev-log-latest" data-dev-log-latest>
               <p class="box-text">loading dev.log...</p>
             </div>
@@ -94,56 +117,106 @@
           class="projects-panel home-grid-projects"
           aria-label="Projects"
         >
-          <ul class="projects-list">
-            <li class="project-item" data-title="pretty.planner">
-              <a
-                class="project-titlebar"
-                href="https://cgoss-dev.github.io/pretty-planner/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open pretty.planner in a new tab"
-                >pretty.planner</a
-              >
+          <div class="projects-carousel">
+            <button
+              class="projects-scroll-button projects-scroll-previous"
+              type="button"
+              aria-label="Scroll to previous projects"
+              data-projects-scroll="previous"
+            >
+              <span aria-hidden="true">&#8249;</span>
+            </button>
+            <div class="projects-viewport" data-projects-viewport>
+              <ul class="projects-list">
+                <li class="project-item" data-title="star.shower">
+                  <a
+                    class="project-titlebar"
+                    href="https://cgoss-dev.github.io/star-shower/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open star.shower in a new tab"
+                    >star.shower</a
+                  >
 
-              <div class="project-copy">
-                <p class="project-description">
-                  A two-page planner builder with draggable widgets, storage,
-                  and print-ready layouts.
-                </p>
-                <p class="project-tech">JavaScript / CSS Grid / LocalStorage</p>
-              </div>
-            </li>
-            <li class="project-item" data-title="star.shower">
-              <a
-                class="project-titlebar"
-                href="https://cgoss-dev.github.io/star-shower/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open star.shower in a new tab"
-                >star.shower</a
-              >
+                  <div class="project-copy">
+                    <p class="project-description">
+                      A browser arcade game with powerups, collision logic, and
+                      responsive rendering.
+                    </p>
+                    <p class="project-tech">
+                      Canvas API / ES Modules / JavaScript
+                    </p>
+                  </div>
+                </li>
+                <li class="project-item" data-title="pretty.planner">
+                  <a
+                    class="project-titlebar"
+                    href="https://cgoss-dev.github.io/pretty-planner/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open pretty.planner in a new tab"
+                    >pretty.planner</a
+                  >
 
-              <div class="project-copy">
-                <p class="project-description">
-                  A browser arcade game with powerups, collision logic, and
-                  responsive rendering.
-                </p>
-                <p class="project-tech">Canvas API / ES Modules / JavaScript</p>
-              </div>
-            </li>
+                  <div class="project-copy">
+                    <p class="project-description">
+                      A two-page planner builder with draggable widgets,
+                      storage, and print-ready layouts.
+                    </p>
+                    <p class="project-tech">
+                      JavaScript / CSS Grid / LocalStorage
+                    </p>
+                  </div>
+                </li>
+                <li class="project-item" data-title="client.codex">
+                  <a
+                    class="project-titlebar"
+                    href="https://cgoss-dev.github.io/client-codex/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open client.codex in a new tab"
+                    >client.codex</a
+                  >
 
-            <li class="project-item" data-title="client.codex">
-              <div class="project-titlebar">client.codex</div>
+                  <div class="project-copy">
+                    <p class="project-description">
+                      A CRM concept for client records, scheduling, route logic,
+                      and follow-up tasks.
+                    </p>
+                    <p class="project-tech">C# / Python / SQL / Bootstrap</p>
+                  </div>
+                </li>
+                <li class="project-item" data-title="hex.box">
+                  <a
+                    class="project-titlebar"
+                    href="https://cgoss-dev.github.io/hex-box/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open hex.box in a new tab"
+                    >hex.box</a
+                  >
 
-              <div class="project-copy">
-                <p class="project-description">
-                  A CRM concept for client records, scheduling, route logic, and
-                  follow-up tasks.
-                </p>
-                <p class="project-tech">C# / Python / SQL / Bootstrap</p>
-              </div>
-            </li>
-          </ul>
+                  <div class="project-copy">
+                    <p class="project-description">
+                      A browser-based color workspace for building, evaluating,
+                      and saving hexadecimal swatch sets and palettes.
+                    </p>
+                    <p class="project-tech">
+                      JavaScript / Bootstrap / LocalStorage
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <button
+              class="projects-scroll-button projects-scroll-next"
+              type="button"
+              aria-label="Scroll to next projects"
+              data-projects-scroll="next"
+            >
+              <span aria-hidden="true">&#8250;</span>
+            </button>
+          </div>
         </section>
       </main>
     </div>
@@ -151,7 +224,7 @@
     <a class="scroll-top-button" href="#top" aria-label="Back to top" hidden
       >Back to Top</a
     >
-    <script src="shared-header.js"></script>
-    <script src="script.js?v=titlebar-bounce-20260710"></script>
+    <script src="shared-header.js?v=chris-goss-marquee-20260722"></script>
+    <script src="script.js?v=dev-log-first-sentence-20260722"></script>
   </body>
 </html>

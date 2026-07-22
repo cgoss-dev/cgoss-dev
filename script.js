@@ -719,6 +719,62 @@ function setupScrollTopButton() {
   window.addEventListener("resize", updateScrollTopVisibility);
 }
 
+function setupProjectsCarousel() {
+  const viewport = document.querySelector("[data-projects-viewport]");
+  const previousButton = document.querySelector(
+    '[data-projects-scroll="previous"]',
+  );
+  const nextButton = document.querySelector('[data-projects-scroll="next"]');
+
+  if (!viewport || !previousButton || !nextButton) {
+    return;
+  }
+
+  function updateButtons() {
+    const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
+    const hasOverflow = maxScrollLeft > 1;
+
+    previousButton.disabled = !hasOverflow;
+    nextButton.disabled = !hasOverflow;
+  }
+
+  function scrollProjects(direction) {
+    const firstCard = viewport.querySelector(".project-item");
+    const list = viewport.querySelector(".projects-list");
+    const gap = list ? parseFloat(getComputedStyle(list).columnGap) || 0 : 0;
+    const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 0;
+    const step = cardWidth + gap;
+    const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
+    const remainingScroll = maxScrollLeft - viewport.scrollLeft;
+    let targetScrollLeft = viewport.scrollLeft + direction * step;
+
+    if (direction > 0 && remainingScroll <= 1) {
+      targetScrollLeft = 0;
+    } else if (direction < 0 && viewport.scrollLeft <= 1) {
+      targetScrollLeft = maxScrollLeft;
+    } else if (direction > 0 && remainingScroll <= step * 1.5) {
+      targetScrollLeft = maxScrollLeft;
+    } else if (direction < 0 && viewport.scrollLeft <= step * 1.5) {
+      targetScrollLeft = 0;
+    }
+
+    viewport.scrollTo({
+      left: targetScrollLeft,
+      behavior: "smooth",
+    });
+  }
+
+  previousButton.addEventListener("click", function () {
+    scrollProjects(-1);
+  });
+  nextButton.addEventListener("click", function () {
+    scrollProjects(1);
+  });
+  viewport.addEventListener("scroll", updateButtons, { passive: true });
+  window.addEventListener("resize", updateButtons);
+  updateButtons();
+}
+
 function setupHomePanelToggles() {
   const panels = Array.from(
     document.querySelectorAll(".home-grid-about, .home-grid-devlog"),
@@ -802,34 +858,43 @@ function setupHomePanelToggles() {
 
 const homeCardHeightQuery = window.matchMedia("(max-width: 800px)");
 
-function getHomeCards() {
-  return Array.from(
-    document.querySelectorAll(
-      ".home-grid-about, .home-grid-devlog, .home-grid .project-item",
-    ),
-  );
-}
-
 function syncHomeCardHeights() {
   const homeGrid = document.querySelector(".home-grid");
-  const cards = getHomeCards();
+  const topCards = Array.from(
+    document.querySelectorAll(".home-grid-about, .home-grid-devlog"),
+  );
+  const projectCards = Array.from(
+    document.querySelectorAll(".home-grid .project-item"),
+  );
 
-  if (!homeGrid || cards.length === 0) {
+  if (!homeGrid || topCards.length === 0 || projectCards.length === 0) {
     return;
   }
 
-  homeGrid.style.removeProperty("--home-card-height");
+  homeGrid.style.removeProperty("--home-top-card-height");
+  homeGrid.style.removeProperty("--home-project-card-height");
 
   if (homeCardHeightQuery.matches) {
     return;
   }
 
-  const tallestHeight = cards.reduce(function (maxHeight, card) {
+  const projectCardHeight = projectCards.reduce(function (maxHeight, card) {
     return Math.max(maxHeight, Math.ceil(card.getBoundingClientRect().height));
   }, 0);
+  const naturalTopCardHeight = topCards.reduce(function (maxHeight, card) {
+    return Math.max(maxHeight, Math.ceil(card.getBoundingClientRect().height));
+  }, 0);
+  const topCardHeight = Math.max(
+    naturalTopCardHeight,
+    projectCardHeight * 2,
+  );
 
-  if (tallestHeight > 0) {
-    homeGrid.style.setProperty("--home-card-height", `${tallestHeight}px`);
+  if (projectCardHeight > 0) {
+    homeGrid.style.setProperty(
+      "--home-project-card-height",
+      `${projectCardHeight}px`,
+    );
+    homeGrid.style.setProperty("--home-top-card-height", `${topCardHeight}px`);
   }
 }
 
@@ -917,10 +982,28 @@ async function setupDevLog() {
       .replaceAll("'", "&#39;");
   }
 
+  function getFirstSentence(value) {
+    const normalizedText = String(value || "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (!normalizedText) {
+      return "";
+    }
+
+    const sentenceMatch = normalizedText.match(/^.*?[.!?](?=\s|$)/);
+
+    return sentenceMatch ? sentenceMatch[0] : normalizedText;
+  }
+
   function createPostItem(post) {
     const item = document.createElement("article");
+    const firstSentence = getFirstSentence(post.content);
     const imageMarkup = post.imageUrl
       ? `<img class="dev-log-entry-image" src="${escapeHtml(post.imageUrl)}" alt="" loading="lazy">`
+      : "";
+    const excerptMarkup = firstSentence
+      ? `<span class="dev-log-entry-excerpt">${escapeHtml(firstSentence)}</span>`
       : "";
 
     item.className = "dev-log-entry";
@@ -928,6 +1011,7 @@ async function setupDevLog() {
     item.innerHTML = `
                ${imageMarkup}
                <span class="dev-log-entry-title">${escapeHtml(post.title || "untitled")}</span>
+               ${excerptMarkup}
           `;
 
     return item;
@@ -1040,6 +1124,7 @@ syncNavButtonGlow();
 setupHomePanelToggles();
 setupDevLog();
 setupScrollTopButton();
+setupProjectsCarousel();
 setupTextLinkBounce();
 syncHomeCardHeights();
 closeMenu();
