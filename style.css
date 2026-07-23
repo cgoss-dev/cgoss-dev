@@ -529,10 +529,6 @@ a[href] {
   margin-top: auto;
 }
 
-.home-grid-about .box-text-secondary:not(.about-link-row) {
-  margin-bottom: auto;
-}
-
 .dev-log {
   display: flex;
   flex-direction: column;
@@ -1191,6 +1187,16 @@ a.scroll-top-button[hidden] {
 
   .home-grid .home-copy-panel.is-open {
     max-height: var(--home-panel-expanded-height, none);
+  }
+
+  .home-grid .home-grid-about {
+    height: min(48rem, 60dvh);
+    max-height: min(48rem, 60dvh);
+  }
+
+  .home-grid-about .box-body {
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .home-grid .projects-list {

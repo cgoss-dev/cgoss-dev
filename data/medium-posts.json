@@ -1,38 +1,26 @@
 [
   {
-    "title": "Software Development Has a Human Problem",
-    "url": "https://medium.com/@chrisiscode/software-development-has-a-human-problem-7e572ae871d2",
-    "content": "Accessible Design is Not Extra Credit USERS WILL NEVER TELL YOU YOUR UI IS INACCESSIBLE, THEY WILL SIMPLY STOP USING IT. In software development you will eventually come across “a1...",
-    "imageUrl": "https://cdn-images-1.medium.com/max/1024/0*7_D39496DJEh93jt",
-    "published": "2026-06-03",
+    "title": "AI Removes Social Friction",
+    "url": "https://medium.com/@chrisiscode/ai-removes-social-friction-eb70424aea75",
+    "content": "AI is very good at explaining things twelve different ways. One of AI’s greatest strengths as a tutor is not intelligence. It is patience. Human tutors get tired. Friends get busy....",
+    "imageUrl": "https://cdn-images-1.medium.com/max/1024/0*-a1ZrtcgFkeauf4q",
+    "published": "2026-07-23",
     "tags": [
-      "coding",
-      "a11y",
-      "junior-developer"
+      "career-pivot",
+      "hello-world",
+      "vibe-coding"
     ]
   },
   {
     "title": "Vibe-Coding is Just StackOverflow with Better PR",
     "url": "https://medium.com/@chrisiscode/vibe-coding-is-just-stackoverflow-with-better-pr-12e0b7e1417d",
-    "content": "PROGRAMMING HAS ALWAYS INVOLVED OUTSOURCING YOUR BRAIN. People talk about AI-assisted coding like some sacred act wherein developers descended from the mountains chanting perfect a...",
+    "content": "Programming has always involved outsourcing your brain. People talk about AI-assisted coding like some sacred act wherein developers descended from the mountains chanting perfect a...",
     "imageUrl": "https://cdn-images-1.medium.com/max/1024/0*y-MiW2hq1DT_P5Mj",
     "published": "2026-05-26",
     "tags": [
       "junior-developer",
       "coding",
       "devlog"
-    ]
-  },
-  {
-    "title": "I Built a CMS, then Outsourced Instead",
-    "url": "https://medium.com/@chrisiscode/i-made-a-cms-then-outsourced-instead-f6fc3a3ba847",
-    "content": "IT WAS SUPPOSED TO BE TINY. Unfortunately, I succeeded surprisingly early — which meant I now owned, and must maintain, an entire CMS. I could create posts. Save drafts. Organize e...",
-    "imageUrl": "https://cdn-images-1.medium.com/max/1024/0*gLYzZSn7lvlwE8Ur",
-    "published": "2026-05-18",
-    "tags": [
-      "devlog",
-      "my-first-article",
-      "coding"
     ]
   }
 ]
