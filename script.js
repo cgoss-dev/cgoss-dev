@@ -1005,12 +1005,15 @@ async function setupDevLog() {
     const excerptMarkup = firstSentence
       ? `<span class="dev-log-entry-excerpt">${escapeHtml(firstSentence)}</span>`
       : "";
+    const titleMarkup = `<span class="dev-log-entry-title">${escapeHtml(post.title || "untitled")}</span>`;
+    const articleLinkMarkup = post.url
+      ? `<a class="dev-log-entry-link" href="${escapeHtml(post.url)}" target="_blank" rel="noopener noreferrer" aria-label="Read ${escapeHtml(post.title || "this article")} on Medium">${imageMarkup}${titleMarkup}</a>`
+      : `${imageMarkup}${titleMarkup}`;
 
     item.className = "dev-log-entry";
 
     item.innerHTML = `
-               ${imageMarkup}
-               <span class="dev-log-entry-title">${escapeHtml(post.title || "untitled")}</span>
+               ${articleLinkMarkup}
                ${excerptMarkup}
           `;
 
@@ -1028,13 +1031,7 @@ async function setupDevLog() {
     const latestPosts = sortedPosts.slice(0, 1);
     latestContainer.replaceChildren(...latestPosts.map(createPostItem));
 
-    if (devLogLink && latestPosts[0]?.url) {
-      devLogLink.href = latestPosts[0].url;
-      devLogLink.setAttribute(
-        "aria-label",
-        `Open latest dev.log article: ${latestPosts[0].title || "untitled"}`,
-      );
-    } else if (devLogLink) {
+    if (devLogLink) {
       devLogLink.href = mediumUrl;
       devLogLink.setAttribute(
         "aria-label",

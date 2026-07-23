@@ -570,6 +570,18 @@ a[href] {
   text-decoration: none;
 }
 
+.dev-log-entry-link {
+  display: grid;
+  gap: var(--box-paragraph-gap);
+  width: 100%;
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.dev-log-entry-link:is(:visited, :hover, :active, :focus-visible) {
+  color: var(--color-white);
+}
+
 .dev-log-entry-title {
   width: 100%;
   color: var(--color-white);
