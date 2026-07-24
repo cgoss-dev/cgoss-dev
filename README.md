@@ -15,36 +15,55 @@
 </p>
 <br>
 
-## ⭐️ Featured Project: [Star Shower](https://cgoss-dev.github.io/star-shower/)
+## 👋 About Me
 
-A canvas arcade-style game with accessibility-minded UI and inclusive keyboard controls.
+I'm Chris, a junior developer in Seattle.
 
-- Tech: JavaScript, HTML Canvas, CSS
-- Focus: game interaction, animation, visual feedback, and game theory
-  <br><br><br>
+I prototype quickly, ask questions at scale, and parse rabbit holes until a
+solution presents. I revisit projects often until they feel streamlined rather
+than merely functional.
+
+Curiosity scales. I enjoy actionable feedback, thorough reviews, and
+contributing in a collaborative environment.
+
+## ⭐️ Selected Projects
+
+- [star.shower](https://cgoss-dev.github.io/star-shower/) — A browser arcade
+  game with powerups, collision logic, and responsive rendering.
+  - Tech: `Canvas API` · `ES Modules` · `JavaScript`
+- [pretty.planner](https://cgoss-dev.github.io/pretty-planner/) — A two-page
+  planner builder with draggable widgets, storage, and print-ready layouts.
+  - Tech: `JavaScript` · `CSS Grid` · `LocalStorage`
+- [client.codex](https://cgoss-dev.github.io/client-codex/) — A CRM concept for
+  client records, scheduling, route logic, and follow-up tasks.
+  - Tech: `C#` · `Python` · `SQL` · `Bootstrap`
+- [hex.box](https://cgoss-dev.github.io/hex-box/) — A browser-based color
+  workspace for building, evaluating, and saving hexadecimal palettes.
+  - Tech: `JavaScript` · `Bootstrap` · `LocalStorage`
 
 ## 📝 Currently Learning
 
-I am growing through the stack while keeping my front-end foundation strong.
+I learn by building, debugging, deploying, and returning to earlier work as my
+judgment and technical range grow. I keep a
+[dev log on Medium](https://medium.com/@chrisiscode) to document that process.
 
 - Accessible UI design
 - Python and C# fundamentals
 - Git, GitHub, and shared project documentation
-  <br><br><br>
 
 ## ♿️ Accessibility Focus
 
-I prioritize accessible design, legible interfaces, inclusive control. Resources I reference:
+I prioritize accessible design, legible interfaces, and inclusive controls.
+Resources I reference:
 
 - [Game Accessibility Guidelines](https://gameaccessibilityguidelines.com/)
 - [Designing Accessible Video Games](https://uxdesign.cc/designing-accessible-video-games-f4c9824a9182)
 - [5 Big Ideas for Designing Accessible Video Games](https://medium.com/@ruthieee/5-big-ideas-for-designing-accessible-video-games-e403a2c5d4d7)
 - [WCAG 3.0 Working Draft](https://www.w3.org/TR/wcag-3.0/)
-  <br><br><br>
 
 ## ☎️ Connect
 
 - Portfolio: [cgoss-dev.github.io/cgoss-dev](https://cgoss-dev.github.io/cgoss-dev/)
 - GitHub: [cgoss-dev](https://github.com/cgoss-dev)
 - LinkedIn: [Chris Goss](https://www.linkedin.com/in/chrisgoss206)
-  <br><br><br>
+- Medium: [@chrisiscode](https://medium.com/@chrisiscode)

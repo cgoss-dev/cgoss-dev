@@ -952,12 +952,10 @@ async function setupDevLog() {
   const devLog = document.querySelector("[data-dev-log]");
   const devLogLink = document.querySelector("[data-dev-log-link]");
   const latestContainer = document.querySelector("[data-dev-log-latest]");
-  const archiveContainer = document.querySelector("[data-dev-log-archive]");
-  const archiveTitle = document.querySelector("[data-dev-log-archive-title]");
   const devLogFeedUrl = "data/medium-posts.json";
   const mediumUrl = "https://medium.com/@chrisiscode";
 
-  if (!devLog || !latestContainer || !archiveContainer || !archiveTitle) {
+  if (!devLog || !latestContainer) {
     return;
   }
 
@@ -1036,10 +1034,6 @@ async function setupDevLog() {
                `;
       latestContainer.replaceChildren(placeholder);
     }
-
-    archiveContainer.replaceChildren();
-    archiveTitle.hidden = true;
-    archiveContainer.closest(".dev-log-archive").hidden = true;
 
     latestContainer
       .querySelectorAll("img")
