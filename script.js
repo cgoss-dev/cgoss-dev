@@ -860,18 +860,14 @@ const homeCardHeightQuery = window.matchMedia("(max-width: 800px)");
 
 function syncHomeCardHeights() {
   const homeGrid = document.querySelector(".home-grid");
-  const topCards = Array.from(
-    document.querySelectorAll(".home-grid-about, .home-grid-devlog"),
-  );
   const projectCards = Array.from(
     document.querySelectorAll(".home-grid .project-item"),
   );
 
-  if (!homeGrid || topCards.length === 0 || projectCards.length === 0) {
+  if (!homeGrid || projectCards.length === 0) {
     return;
   }
 
-  homeGrid.style.removeProperty("--home-top-card-height");
   homeGrid.style.removeProperty("--home-project-card-height");
 
   if (homeCardHeightQuery.matches) {
@@ -881,20 +877,12 @@ function syncHomeCardHeights() {
   const projectCardHeight = projectCards.reduce(function (maxHeight, card) {
     return Math.max(maxHeight, Math.ceil(card.getBoundingClientRect().height));
   }, 0);
-  const naturalTopCardHeight = topCards.reduce(function (maxHeight, card) {
-    return Math.max(maxHeight, Math.ceil(card.getBoundingClientRect().height));
-  }, 0);
-  const topCardHeight = Math.max(
-    naturalTopCardHeight,
-    projectCardHeight * 2,
-  );
 
   if (projectCardHeight > 0) {
     homeGrid.style.setProperty(
       "--home-project-card-height",
       `${projectCardHeight}px`,
     );
-    homeGrid.style.setProperty("--home-top-card-height", `${topCardHeight}px`);
   }
 }
 

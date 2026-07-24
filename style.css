@@ -525,7 +525,7 @@ a[href] {
   margin-top: 0;
 }
 
-.home-grid-about .about-link-row {
+.home-grid-about .box-text.about-link-row {
   margin-top: auto;
 }
 
@@ -548,6 +548,10 @@ a[href] {
   gap: var(--box-paragraph-gap);
 }
 
+.dev-log-archive[hidden] {
+  display: none;
+}
+
 .dev-log-section-title {
   margin: 0;
   color: var(--color-white);
@@ -566,7 +570,8 @@ a[href] {
   text-decoration: none;
 }
 
-.dev-log-entry-link {
+.dev-log-entry-link,
+.dev-log-entry-link[href] {
   display: grid;
   gap: var(--box-paragraph-gap);
   width: 100%;
@@ -1047,8 +1052,7 @@ a.scroll-top-button[hidden] {
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, var(--home-preview-card-width));
-  grid-template-rows:
-    var(--home-top-card-height, auto) var(--home-project-card-height, auto);
+  grid-template-rows: auto var(--home-project-card-height, auto);
   align-items: stretch;
   gap: var(--home-grid-gap);
   padding-bottom: 0;
@@ -1081,7 +1085,7 @@ a.scroll-top-button[hidden] {
 .home-grid .home-copy-panel {
   width: 100%;
   min-width: 0;
-  height: var(--home-top-card-height, auto);
+  height: auto;
   margin: 0;
 }
 
