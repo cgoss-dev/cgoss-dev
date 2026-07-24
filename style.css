@@ -250,7 +250,7 @@ a[href] {
 .site-header {
   width: var(--header-width);
   max-width: 100%;
-  margin: var(--universalPadding) 0 var(--home-grid-gap);
+  margin: calc(var(--universalPadding) * 2) 0;
   padding: 0;
   position: relative;
   top: auto;
@@ -822,10 +822,17 @@ a[href] {
   left: calc(100% - 2rem);
 }
 
-.projects-scroll-button:is(:hover, :focus-visible) {
+.projects-scroll-button:focus-visible {
   color: var(--color-black);
   background: var(--color-white);
   outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .projects-scroll-button:hover {
+    color: var(--color-black);
+    background: var(--color-white);
+  }
 }
 
 .projects-scroll-button:disabled {
@@ -1108,6 +1115,19 @@ a.scroll-top-button[hidden] {
   height: var(--home-project-card-height, auto);
 }
 
+@media (min-width: 801px) {
+  .home-body {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: safe center;
+  }
+
+  .home-page .main-squeeze {
+    flex: 0 0 auto;
+  }
+}
+
 @media (max-width: 800px) {
   body.home-page {
     padding-bottom: var(--universalPadding);
@@ -1196,11 +1216,18 @@ a.scroll-top-button[hidden] {
   .home-grid .home-grid-about {
     height: min(48rem, 60dvh);
     max-height: min(48rem, 60dvh);
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
-  .home-grid-about .box-body {
+  .home-grid .home-grid-about .box-body {
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
     overflow-y: auto;
-    overscroll-behavior: contain;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
 
   .home-grid .projects-list {
