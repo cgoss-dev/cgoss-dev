@@ -728,6 +728,12 @@ function setupScrollTopButton() {
 
 function setupMobileVerticalCardPaging() {
   const smallLayoutQuery = window.matchMedia("(max-width: 800px)");
+  const pageTurnDistance = 28;
+  const pageTurnVelocity = 3;
+  const snapForce = 0.18;
+  const snapFriction = 0.78;
+  const snapMinDistance = 0.35;
+  const maxVelocity = 42;
   const pageElements = [
     document.querySelector(".site-header"),
     ...document.querySelectorAll(".mobile-scroll-page"),
@@ -736,8 +742,14 @@ function setupMobileVerticalCardPaging() {
   const mainContent = document.querySelector("#main-content");
   let pagePositions = [];
   let currentPageIndex = 0;
-  let settleTimer = null;
   let isSnapping = false;
+  let animationFrame = 0;
+  let touchIdentifier = null;
+  let touchStartY = 0;
+  let touchLastY = 0;
+  let touchStartScrollY = 0;
+  let touchVelocity = 0;
+  let handlesPageDrag = false;
 
   if (pageElements.length === 0) {
     return;
@@ -772,44 +784,110 @@ function setupMobileVerticalCardPaging() {
     }, 0);
   }
 
-  function snapToPage(pageIndex) {
+  function stopSnapAnimation() {
+    window.cancelAnimationFrame(animationFrame);
+    animationFrame = 0;
+    isSnapping = false;
+  }
+
+  function snapToPage(pageIndex, immediate = false) {
     const nextPageIndex = Math.max(
       0,
       Math.min(pagePositions.length - 1, pageIndex),
     );
+    const targetPosition = pagePositions[nextPageIndex];
 
-    window.clearTimeout(settleTimer);
+    stopSnapAnimation();
     isSnapping = true;
     currentPageIndex = nextPageIndex;
-    window.scrollTo({
-      top: pagePositions[nextPageIndex],
-      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
-    });
 
-    settleTimer = window.setTimeout(function () {
+    if (immediate || reducedMotionQuery.matches) {
+      window.scrollTo(0, targetPosition);
       isSnapping = false;
-    }, reducedMotionQuery.matches ? 0 : 500);
-  }
-
-  function settleOnAdjacentPage() {
-    if (!smallLayoutQuery.matches || reducedMotionQuery.matches || isSnapping) {
       return;
     }
 
-    const currentPagePosition = pagePositions[currentPageIndex];
-    const distance = window.scrollY - currentPagePosition;
-    const direction = Math.abs(distance) >= 28 ? Math.sign(distance) : 0;
+    let velocity = touchVelocity;
 
+    function settle() {
+      const distance = targetPosition - window.scrollY;
+
+      if (Math.abs(distance) <= snapMinDistance) {
+        window.scrollTo(0, targetPosition);
+        isSnapping = false;
+        animationFrame = 0;
+        return;
+      }
+
+      velocity = Math.max(
+        -maxVelocity,
+        Math.min(maxVelocity, (velocity + distance * snapForce) * snapFriction),
+      );
+      window.scrollTo(0, window.scrollY + velocity);
+      animationFrame = window.requestAnimationFrame(settle);
+    }
+
+    animationFrame = window.requestAnimationFrame(settle);
+  }
+
+  function getTrackedTouch(touches) {
+    return Array.from(touches).find(function (touch) {
+      return touch.identifier === touchIdentifier;
+    });
+  }
+
+  function handleTouchStart(event) {
+    if (!smallLayoutQuery.matches || event.touches.length !== 1) return;
+
+    const scrollableAbout = event.target.closest(
+      ".home-grid-about .box-body",
+    );
+
+    handlesPageDrag = !scrollableAbout;
+    if (!handlesPageDrag) return;
+
+    stopSnapAnimation();
+    updatePagePositions();
+    currentPageIndex = getClosestPageIndex();
+    touchIdentifier = event.touches[0].identifier;
+    touchStartY = event.touches[0].clientY;
+    touchLastY = touchStartY;
+    touchStartScrollY = window.scrollY;
+    touchVelocity = 0;
+  }
+
+  function handleTouchMove(event) {
+    if (!handlesPageDrag || touchIdentifier === null) return;
+
+    const touch = getTrackedTouch(event.touches);
+    if (!touch) return;
+
+    event.preventDefault();
+    const delta = touchLastY - touch.clientY;
+    const dragDelta = touchStartY - touch.clientY;
+    touchLastY = touch.clientY;
+    touchVelocity = Math.max(-maxVelocity, Math.min(maxVelocity, delta));
+    window.scrollTo(0, touchStartScrollY + dragDelta);
+  }
+
+  function handleTouchEnd(event) {
+    if (!handlesPageDrag || touchIdentifier === null) return;
+
+    if (getTrackedTouch(event.touches)) return;
+
+    const dragDelta = touchStartY - touchLastY;
+    const turnsPage =
+      Math.abs(dragDelta) >= pageTurnDistance ||
+      Math.abs(touchVelocity) >= pageTurnVelocity;
+    const direction = turnsPage
+      ? Math.sign(
+          Math.abs(dragDelta) >= pageTurnDistance ? dragDelta : touchVelocity,
+        )
+      : 0;
+
+    touchIdentifier = null;
+    handlesPageDrag = false;
     snapToPage(currentPageIndex + direction);
-  }
-
-  function handleDocumentScroll() {
-    if (!smallLayoutQuery.matches || reducedMotionQuery.matches || isSnapping) {
-      return;
-    }
-
-    window.clearTimeout(settleTimer);
-    settleTimer = window.setTimeout(settleOnAdjacentPage, 100);
   }
 
   function syncPagingLayout() {
@@ -817,7 +895,10 @@ function setupMobileVerticalCardPaging() {
     currentPageIndex = getClosestPageIndex();
   }
 
-  window.addEventListener("scroll", handleDocumentScroll, { passive: true });
+  document.addEventListener("touchstart", handleTouchStart, { passive: true });
+  document.addEventListener("touchmove", handleTouchMove, { passive: false });
+  document.addEventListener("touchend", handleTouchEnd, { passive: true });
+  document.addEventListener("touchcancel", handleTouchEnd, { passive: true });
   window.addEventListener("resize", syncPagingLayout);
   window.addEventListener("load", syncPagingLayout);
   window.addEventListener("mobile-card-page-request", function (event) {

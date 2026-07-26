@@ -1153,8 +1153,9 @@ a.scroll-top-button[hidden] {
 
 @media (max-width: 800px) {
   html {
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: none;
     scroll-padding-block: 0;
+    overscroll-behavior-y: none;
   }
 
   body.home-page {
@@ -1224,13 +1225,10 @@ a.scroll-top-button[hidden] {
     padding: 0;
     display: flex;
     align-items: center;
-    scroll-snap-align: center;
-    scroll-snap-stop: always;
   }
 
   .site-header {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+    overscroll-behavior-y: none;
   }
 
   .home-grid .home-copy-panel {
