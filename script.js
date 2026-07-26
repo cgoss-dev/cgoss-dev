@@ -708,6 +708,13 @@ function setupScrollTopButton() {
   scrollTopButton.addEventListener("click", function (event) {
     event.preventDefault();
 
+    if (window.matchMedia("(max-width: 800px)").matches) {
+      window.dispatchEvent(
+        new CustomEvent("mobile-card-page-request", { detail: 0 }),
+      );
+      return;
+    }
+
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -717,6 +724,124 @@ function setupScrollTopButton() {
   updateScrollTopVisibility();
   window.addEventListener("load", updateScrollTopVisibility);
   window.addEventListener("resize", updateScrollTopVisibility);
+}
+
+function setupMobileVerticalCardPaging() {
+  const smallLayoutQuery = window.matchMedia("(max-width: 800px)");
+  const pageElements = [
+    document.querySelector(".site-header"),
+    ...document.querySelectorAll(".mobile-scroll-page"),
+  ].filter(Boolean);
+  const skipLink = document.querySelector('.skip-link[href="#main-content"]');
+  const mainContent = document.querySelector("#main-content");
+  let pagePositions = [];
+  let currentPageIndex = 0;
+  let settleTimer = null;
+  let isSnapping = false;
+
+  if (pageElements.length === 0) {
+    return;
+  }
+
+  function getScrollPaddingTop() {
+    return parseFloat(
+      getComputedStyle(document.documentElement).scrollPaddingTop,
+    ) || 0;
+  }
+
+  function updatePagePositions() {
+    const scrollPaddingTop = getScrollPaddingTop();
+
+    pagePositions = pageElements.map(function (element, index) {
+      if (index === 0) {
+        return 0;
+      }
+
+      return Math.max(
+        0,
+        Math.round(
+          element.getBoundingClientRect().top +
+            window.scrollY -
+            scrollPaddingTop,
+        ),
+      );
+    });
+  }
+
+  function getClosestPageIndex(scrollPosition = window.scrollY) {
+    return pagePositions.reduce(function (closestIndex, position, index) {
+      return Math.abs(position - scrollPosition) <
+        Math.abs(pagePositions[closestIndex] - scrollPosition)
+        ? index
+        : closestIndex;
+    }, 0);
+  }
+
+  function snapToPage(pageIndex) {
+    const nextPageIndex = Math.max(
+      0,
+      Math.min(pagePositions.length - 1, pageIndex),
+    );
+
+    window.clearTimeout(settleTimer);
+    isSnapping = true;
+    currentPageIndex = nextPageIndex;
+    window.scrollTo({
+      top: pagePositions[nextPageIndex],
+      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+    });
+
+    settleTimer = window.setTimeout(function () {
+      isSnapping = false;
+    }, reducedMotionQuery.matches ? 0 : 500);
+  }
+
+  function settleOnAdjacentPage() {
+    if (!smallLayoutQuery.matches || reducedMotionQuery.matches || isSnapping) {
+      return;
+    }
+
+    const currentPagePosition = pagePositions[currentPageIndex];
+    const distance = window.scrollY - currentPagePosition;
+    const direction = Math.abs(distance) >= 28 ? Math.sign(distance) : 0;
+
+    snapToPage(currentPageIndex + direction);
+  }
+
+  function handleDocumentScroll() {
+    if (!smallLayoutQuery.matches || reducedMotionQuery.matches || isSnapping) {
+      return;
+    }
+
+    window.clearTimeout(settleTimer);
+    settleTimer = window.setTimeout(settleOnAdjacentPage, 100);
+  }
+
+  function syncPagingLayout() {
+    updatePagePositions();
+    currentPageIndex = getClosestPageIndex();
+  }
+
+  window.addEventListener("scroll", handleDocumentScroll, { passive: true });
+  window.addEventListener("resize", syncPagingLayout);
+  window.addEventListener("load", syncPagingLayout);
+  window.addEventListener("mobile-card-page-request", function (event) {
+    if (smallLayoutQuery.matches) {
+      snapToPage(Number(event.detail) || 0);
+    }
+  });
+
+  skipLink?.addEventListener("click", function (event) {
+    if (!smallLayoutQuery.matches) {
+      return;
+    }
+
+    event.preventDefault();
+    snapToPage(1);
+    mainContent?.focus({ preventScroll: true });
+  });
+
+  syncPagingLayout();
 }
 
 function setupProjectsCarousel() {
@@ -1169,6 +1294,7 @@ setMarqueeTextToSolidColor(getCssColor("--color-gray3", "gray"));
 syncNavButtonGlow();
 setupDevLog();
 setupScrollTopButton();
+setupMobileVerticalCardPaging();
 setupProjectsCarousel();
 setupTextLinkBounce();
 syncHomeCardHeights();
