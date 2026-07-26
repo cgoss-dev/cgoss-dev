@@ -1154,7 +1154,7 @@ a.scroll-top-button[hidden] {
 @media (max-width: 800px) {
   html {
     scroll-snap-type: y mandatory;
-    scroll-padding-block: var(--home-grid-gap);
+    scroll-padding-block: 0;
   }
 
   body.home-page {
@@ -1177,7 +1177,8 @@ a.scroll-top-button[hidden] {
     width: calc(100vw - (var(--home-grid-gap) * 2));
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    gap: 0;
+    gap: var(--home-grid-gap);
+    padding-bottom: 50dvh;
   }
 
   .site-header {
@@ -1219,11 +1220,11 @@ a.scroll-top-button[hidden] {
     width: 100%;
     min-width: 0;
     max-width: 100%;
-    min-height: 100dvh;
-    padding-block: var(--home-grid-gap);
+    min-height: 0;
+    padding: 0;
     display: flex;
     align-items: center;
-    scroll-snap-align: start;
+    scroll-snap-align: center;
     scroll-snap-stop: always;
   }
 

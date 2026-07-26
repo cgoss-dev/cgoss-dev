@@ -743,26 +743,21 @@ function setupMobileVerticalCardPaging() {
     return;
   }
 
-  function getScrollPaddingTop() {
-    return parseFloat(
-      getComputedStyle(document.documentElement).scrollPaddingTop,
-    ) || 0;
-  }
-
   function updatePagePositions() {
-    const scrollPaddingTop = getScrollPaddingTop();
-
     pagePositions = pageElements.map(function (element, index) {
       if (index === 0) {
         return 0;
       }
 
+      const elementRect = element.getBoundingClientRect();
+
       return Math.max(
         0,
         Math.round(
-          element.getBoundingClientRect().top +
-            window.scrollY -
-            scrollPaddingTop,
+          elementRect.top +
+            window.scrollY +
+            elementRect.height / 2 -
+            window.innerHeight / 2,
         ),
       );
     });
