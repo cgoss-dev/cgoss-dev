@@ -731,8 +731,8 @@ function setupMobileVerticalCardPaging() {
   const track = document.querySelector(".mobile-page-track");
   const pageTurnDistance = 28;
   const pageTurnVelocity = 3;
-  const snapForce = 0.18;
-  const snapFriction = 0.78;
+  const snapForce = 0.16;
+  const snapFriction = 0.68;
   const snapMinDistance = 0.35;
   const maxVelocity = 42;
   const pageElements = [
@@ -793,7 +793,7 @@ function setupMobileVerticalCardPaging() {
       return;
     }
 
-    let velocity = touchVelocity;
+    let velocity = 0;
 
     function settle() {
       const distance = targetOffset - offset;
@@ -810,8 +810,20 @@ function setupMobileVerticalCardPaging() {
         -maxVelocity,
         Math.min(maxVelocity, (velocity + distance * snapForce) * snapFriction),
       );
-      offset = clampOffset(offset + velocity);
+      const nextOffset = offset + velocity;
+      const crossesTarget =
+        Math.sign(targetOffset - offset) !==
+        Math.sign(targetOffset - nextOffset);
+
+      offset = crossesTarget ? targetOffset : clampOffset(nextOffset);
       renderOffset();
+
+      if (crossesTarget) {
+        animationFrame = 0;
+        wheelLocked = false;
+        return;
+      }
+
       animationFrame = window.requestAnimationFrame(settle);
     }
 

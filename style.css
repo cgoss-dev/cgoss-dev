@@ -1197,10 +1197,10 @@ a.scroll-top-button[hidden] {
   }
 
   .site-header {
-    width: calc(100vw - (var(--home-grid-gap) * 2));
+    width: var(--header-width);
     height: 100dvh;
     min-height: 100dvh;
-    margin: 0 auto;
+    margin: 0;
     flex: 0 0 100dvh;
     display: flex;
     align-items: center;
