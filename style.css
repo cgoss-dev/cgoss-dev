@@ -131,6 +131,30 @@
   --sparkle-respawn-offset-bottom: 24;
 }
 
+.skip-link {
+  position: fixed;
+  top: var(--universalPadding);
+  left: var(--universalPadding);
+  z-index: calc(var(--z-menu) + 1);
+  padding: var(--universalPadding);
+  transform: translateY(calc(-100% - (var(--universalPadding) * 2)));
+  color: var(--color-black);
+  background: var(--color-white);
+  font-family: var(--font-noto);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+:where(a[href], button, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: var(--border-sm) solid var(--color-white);
+  outline-offset: var(--border-sm);
+  box-shadow: 0 0 0 var(--border-md) var(--color-black);
+}
+
 /* ==================================================================================================== */
 /* NON-ROOT CORE */
 /* ==================================================================================================== */
@@ -807,7 +831,9 @@ a[href] {
 .projects-scroll-button:focus-visible {
   color: var(--color-black);
   background: var(--color-white);
-  outline: none;
+  outline: var(--border-sm) solid var(--color-white);
+  outline-offset: var(--border-sm);
+  box-shadow: 0 0 0 var(--border-md) var(--color-black);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -972,6 +998,10 @@ a.landing-titlebar {
   border-bottom: var(--border-md) solid var(--color-white);
   cursor: default;
   pointer-events: auto;
+}
+
+.landing-titlebar:is(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
 }
 
 .landing-panel > :not(.landing-titlebar) {
@@ -1182,7 +1212,6 @@ a.scroll-top-button[hidden] {
     min-height: 0;
     max-height: none;
     overflow: visible;
-    transition: max-height 0.24s ease-in-out;
   }
 
   .home-grid-about .box-body,
@@ -1192,14 +1221,6 @@ a.scroll-top-button[hidden] {
     overflow-y: visible;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-  }
-
-  .home-grid .landing-titlebar {
-    cursor: pointer;
-  }
-
-  .home-grid .home-copy-panel.is-open {
-    max-height: var(--home-panel-expanded-height, none);
   }
 
   .home-grid .home-grid-about {
@@ -1224,10 +1245,15 @@ a.scroll-top-button[hidden] {
     height: auto;
   }
 
+  .projects-viewport {
+    touch-action: pan-y;
+  }
+
   .home-grid .project-item {
     min-width: calc(100vw - (var(--home-grid-gap) * 2));
     flex-basis: calc(100vw - (var(--home-grid-gap) * 2));
     height: auto;
+    scroll-snap-stop: always;
   }
 
   .projects-carousel {

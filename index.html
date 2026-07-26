@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello World</title>
+    <title>Chris Goss</title>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,6 +20,7 @@
     />
   </head>
   <body id="top" class="home-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <canvas
       id="siteBgCanvas"
       class="site-bg-canvas"
@@ -27,18 +28,16 @@
     ></canvas>
     <div class="body-ody home-body">
       <header class="site-header" data-site-header data-base-path=""></header>
-      <main class="main-squeeze home-grid">
+      <main id="main-content" class="main-squeeze home-grid" tabindex="-1">
         <section
           class="home-copy-panel landing-panel home-grid-about"
-          tabindex="0"
-          aria-label="About me"
+          aria-labelledby="about-heading"
         >
-          <button class="landing-titlebar" type="button" aria-expanded="false">
-            about.me
-          </button>
-          <div class="box-body">
+          <h2 id="about-heading" class="landing-titlebar">about.me</h2>
+          <div id="about-content" class="box-body">
             <p class="box-text box-text-primary">
-              i'm chris, a junior developer in Seattle.
+              i'm chris, a seattle developer building accessible projects that
+              are both playful and practical.
             </p>
             <p class="box-text box-text-secondary">
               i prototype quickly, ask questions at scale, and parse
@@ -72,9 +71,9 @@
 
         <section
           class="home-copy-panel landing-panel home-grid-devlog"
-          tabindex="0"
-          aria-label="Dev log"
+          aria-labelledby="dev-log-heading"
         >
+          <h2 id="dev-log-heading" class="visually-hidden">Dev log</h2>
           <a
             class="landing-titlebar"
             href="https://medium.com/@chrisiscode"
@@ -93,8 +92,16 @@
 
         <section
           class="projects-panel home-grid-projects"
-          aria-label="Projects"
+          aria-labelledby="projects-heading"
+          aria-describedby="projects-instructions"
         >
+          <h2 id="projects-heading" class="visually-hidden">
+            Selected projects
+          </h2>
+          <p id="projects-instructions" class="visually-hidden">
+            Use the previous and next buttons, or the Left and Right Arrow
+            keys while focused on a project, to browse the projects.
+          </p>
           <div class="projects-carousel">
             <button
               class="projects-scroll-button projects-scroll-previous"
@@ -112,7 +119,7 @@
                     href="https://cgoss-dev.github.io/star-shower/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Open star.shower in a new tab"
+                    aria-label="Open star.shower, project 1 of 4, in a new tab"
                     >star.shower</a
                   >
 
@@ -132,7 +139,7 @@
                     href="https://cgoss-dev.github.io/pretty-planner/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Open pretty.planner in a new tab"
+                    aria-label="Open pretty.planner, project 2 of 4, in a new tab"
                     >pretty.planner</a
                   >
 
@@ -152,7 +159,7 @@
                     href="https://cgoss-dev.github.io/client-codex/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Open client.codex in a new tab"
+                    aria-label="Open client.codex, project 3 of 4, in a new tab"
                     >client.codex</a
                   >
 
@@ -170,7 +177,7 @@
                     href="https://cgoss-dev.github.io/hex-box/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Open hex.box in a new tab"
+                    aria-label="Open hex.box, project 4 of 4, in a new tab"
                     >hex.box</a
                   >
 

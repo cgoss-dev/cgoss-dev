@@ -17,6 +17,9 @@ const marqueeRainbowPalette = [
 
 const marqueeRainbowCycleMs = 240;
 const marqueeRainbowLinks = [];
+const marqueeReducedMotionQuery = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+);
 let marqueeRainbowTimer = null;
 const renderedHeaders = [];
 let navCompactFrame = null;
@@ -70,7 +73,11 @@ function updateMarqueeRainbow() {
 }
 
 function startMarqueeRainbow() {
-  if (!marqueeRainbowLinks.length || marqueeRainbowTimer) {
+  if (
+    !marqueeRainbowLinks.length ||
+    marqueeRainbowTimer ||
+    marqueeReducedMotionQuery.matches
+  ) {
     return;
   }
 
@@ -79,6 +86,28 @@ function startMarqueeRainbow() {
     updateMarqueeRainbow,
     marqueeRainbowCycleMs,
   );
+}
+
+function stopMarqueeRainbow() {
+  if (marqueeRainbowTimer) {
+    window.clearInterval(marqueeRainbowTimer);
+    marqueeRainbowTimer = null;
+  }
+
+  marqueeRainbowLinks.forEach(function (marquee) {
+    marquee.querySelectorAll(".site-title-letter").forEach(function (letter) {
+      letter.style.removeProperty("color");
+    });
+  });
+}
+
+function syncMarqueeRainbowMotionPreference() {
+  if (marqueeReducedMotionQuery.matches) {
+    stopMarqueeRainbow();
+    return;
+  }
+
+  startMarqueeRainbow();
 }
 
 function getCssRemValue(value, fallback = 0) {
@@ -222,14 +251,14 @@ function renderSiteHeader(header, index) {
   // MARQUEE TEXT ACTUAL
 
   header.innerHTML = `
-     <div class="header-top">
-     <div class="header-brand">
-     <h1 class="site-title">
-                         <span class="site-title-marquee" aria-label="Chris Goss">Chris Goss</span>
-                    </h1>
-               </div>
-          </div>
-     `;
+    <div class="header-top">
+      <div class="header-brand">
+        <h1 class="site-title">
+          <span class="site-title-marquee" aria-label="Function first. Delight included.">Function first. Delight included.</span>
+        </h1>
+      </div>
+    </div>
+  `;
 
   const siteTitleMarquee = header.querySelector(".site-title-marquee");
 
@@ -243,7 +272,16 @@ function renderSiteHeader(header, index) {
 }
 
 document.querySelectorAll("[data-site-header]").forEach(renderSiteHeader);
-startMarqueeRainbow();
+syncMarqueeRainbowMotionPreference();
+
+if (typeof marqueeReducedMotionQuery.addEventListener === "function") {
+  marqueeReducedMotionQuery.addEventListener(
+    "change",
+    syncMarqueeRainbowMotionPreference,
+  );
+} else if (typeof marqueeReducedMotionQuery.addListener === "function") {
+  marqueeReducedMotionQuery.addListener(syncMarqueeRainbowMotionPreference);
+}
 
 window.addEventListener("resize", scheduleHeaderCompactCheck);
 

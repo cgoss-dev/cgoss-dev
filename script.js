@@ -734,8 +734,9 @@ function setupProjectsCarousel() {
     const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
     const hasOverflow = maxScrollLeft > 1;
 
-    previousButton.disabled = !hasOverflow;
-    nextButton.disabled = !hasOverflow;
+    previousButton.disabled = !hasOverflow || viewport.scrollLeft <= 1;
+    nextButton.disabled =
+      !hasOverflow || maxScrollLeft - viewport.scrollLeft <= 1;
   }
 
   function scrollProjects(direction) {
@@ -745,24 +746,156 @@ function setupProjectsCarousel() {
     const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 0;
     const step = cardWidth + gap;
     const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
-    const remainingScroll = maxScrollLeft - viewport.scrollLeft;
-    let targetScrollLeft = viewport.scrollLeft + direction * step;
-
-    if (direction > 0 && remainingScroll <= 1) {
-      targetScrollLeft = 0;
-    } else if (direction < 0 && viewport.scrollLeft <= 1) {
-      targetScrollLeft = maxScrollLeft;
-    } else if (direction > 0 && remainingScroll <= step * 1.5) {
-      targetScrollLeft = maxScrollLeft;
-    } else if (direction < 0 && viewport.scrollLeft <= step * 1.5) {
-      targetScrollLeft = 0;
-    }
+    const targetScrollLeft = Math.max(
+      0,
+      Math.min(maxScrollLeft, viewport.scrollLeft + direction * step),
+    );
 
     viewport.scrollTo({
       left: targetScrollLeft,
       behavior: "smooth",
     });
   }
+
+  viewport
+    .closest(".projects-carousel")
+    ?.addEventListener("keydown", function (event) {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+        return;
+      }
+
+      const direction = event.key === "ArrowRight" ? 1 : -1;
+      const projectLinks = Array.from(
+        viewport.querySelectorAll(".project-titlebar[href]"),
+      );
+      const activeLinkIndex = projectLinks.indexOf(document.activeElement);
+
+      event.preventDefault();
+
+      if (activeLinkIndex >= 0) {
+        const nextLinkIndex = Math.max(
+          0,
+          Math.min(projectLinks.length - 1, activeLinkIndex + direction),
+        );
+
+        projectLinks[nextLinkIndex].focus({ preventScroll: true });
+        projectLinks[nextLinkIndex].closest(".project-item")?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "start",
+        });
+        return;
+      }
+
+      scrollProjects(direction);
+    });
+
+  const smallLayoutQuery = window.matchMedia("(max-width: 800px)");
+  const swipe = {
+    pointerId: null,
+    startX: 0,
+    startY: 0,
+    startScrollLeft: 0,
+    isHorizontal: false,
+    moved: false,
+  };
+
+  function getProjectStep() {
+    const firstCard = viewport.querySelector(".project-item");
+    const list = viewport.querySelector(".projects-list");
+    const gap = list ? parseFloat(getComputedStyle(list).columnGap) || 0 : 0;
+    const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 0;
+
+    return cardWidth + gap;
+  }
+
+  function resetProjectSwipe() {
+    swipe.pointerId = null;
+    swipe.isHorizontal = false;
+  }
+
+  viewport.addEventListener("pointerdown", function (event) {
+    if (!smallLayoutQuery.matches || event.pointerType === "mouse") {
+      return;
+    }
+
+    swipe.pointerId = event.pointerId;
+    swipe.startX = event.clientX;
+    swipe.startY = event.clientY;
+    swipe.startScrollLeft = viewport.scrollLeft;
+    swipe.isHorizontal = false;
+    swipe.moved = false;
+  });
+
+  viewport.addEventListener(
+    "pointermove",
+    function (event) {
+      if (swipe.pointerId !== event.pointerId) {
+        return;
+      }
+
+      const deltaX = event.clientX - swipe.startX;
+      const deltaY = event.clientY - swipe.startY;
+
+      if (!swipe.isHorizontal) {
+        if (Math.abs(deltaX) < 4) {
+          return;
+        }
+
+        if (Math.abs(deltaX) <= Math.abs(deltaY)) {
+          resetProjectSwipe();
+          return;
+        }
+
+        swipe.isHorizontal = true;
+        viewport.setPointerCapture?.(event.pointerId);
+      }
+
+      event.preventDefault();
+      swipe.moved = swipe.moved || Math.abs(deltaX) >= 4;
+      viewport.scrollLeft = swipe.startScrollLeft - deltaX;
+    },
+    { passive: false },
+  );
+
+  function finishProjectSwipe(event) {
+    if (swipe.pointerId !== event.pointerId) {
+      return;
+    }
+
+    const step = getProjectStep();
+    const deltaX = event.clientX - swipe.startX;
+    const startPage = step > 0 ? Math.round(swipe.startScrollLeft / step) : 0;
+    const direction = Math.abs(deltaX) >= 28 ? -Math.sign(deltaX) : 0;
+    const maxPage = step > 0 ? Math.round(
+      (viewport.scrollWidth - viewport.clientWidth) / step,
+    ) : 0;
+    const targetPage = Math.max(0, Math.min(maxPage, startPage + direction));
+
+    viewport.scrollTo({
+      left: targetPage * step,
+      behavior: "smooth",
+    });
+    resetProjectSwipe();
+  }
+
+  viewport.addEventListener("pointerup", finishProjectSwipe);
+  viewport.addEventListener("pointercancel", function (event) {
+    if (swipe.pointerId === event.pointerId) {
+      resetProjectSwipe();
+    }
+  });
+  viewport.addEventListener(
+    "click",
+    function (event) {
+      if (swipe.moved) {
+        event.preventDefault();
+        event.stopPropagation();
+        swipe.moved = false;
+      }
+    },
+    true,
+  );
 
   previousButton.addEventListener("click", function () {
     scrollProjects(-1);
@@ -773,87 +906,6 @@ function setupProjectsCarousel() {
   viewport.addEventListener("scroll", updateButtons, { passive: true });
   window.addEventListener("resize", updateButtons);
   updateButtons();
-}
-
-function setupHomePanelToggles() {
-  const panels = Array.from(
-    document.querySelectorAll(".home-grid-about, .home-grid-devlog"),
-  );
-  const smallLayoutQuery = window.matchMedia("(max-width: 800px)");
-
-  if (panels.length === 0) {
-    return;
-  }
-
-  function setExpandedHeight(panel) {
-    panel.style.setProperty(
-      "--home-panel-expanded-height",
-      `${panel.scrollHeight}px`,
-    );
-  }
-
-  function updatePanelHeights() {
-    for (let i = 0; i < panels.length; i += 1) {
-      setExpandedHeight(panels[i]);
-    }
-  }
-
-  function closePanelsOutsideSmallLayout() {
-    if (smallLayoutQuery.matches) {
-      updatePanelHeights();
-      return;
-    }
-
-    for (let i = 0; i < panels.length; i += 1) {
-      const titlebar = panels[i].querySelector(".landing-titlebar");
-
-      panels[i].classList.remove("is-open");
-
-      if (titlebar) {
-        titlebar.setAttribute("aria-expanded", "false");
-      }
-    }
-  }
-
-  for (let i = 0; i < panels.length; i += 1) {
-    const panel = panels[i];
-    const titlebar = panel.querySelector(".landing-titlebar");
-
-    setExpandedHeight(panel);
-
-    if (!titlebar || titlebar.tagName.toLowerCase() === "a") {
-      continue;
-    }
-
-    titlebar.addEventListener("click", function () {
-      if (!smallLayoutQuery.matches) {
-        return;
-      }
-
-      setExpandedHeight(panel);
-      panel.classList.toggle("is-open");
-      titlebar.setAttribute(
-        "aria-expanded",
-        String(panel.classList.contains("is-open")),
-      );
-      window.dispatchEvent(new Event("resize"));
-    });
-
-    panel.addEventListener("transitionend", function (event) {
-      if (event.propertyName === "max-height") {
-        window.dispatchEvent(new Event("resize"));
-      }
-    });
-  }
-
-  window.addEventListener("load", updatePanelHeights);
-  window.addEventListener("resize", updatePanelHeights);
-
-  if (typeof smallLayoutQuery.addEventListener === "function") {
-    smallLayoutQuery.addEventListener("change", closePanelsOutsideSmallLayout);
-  } else if (typeof smallLayoutQuery.addListener === "function") {
-    smallLayoutQuery.addListener(closePanelsOutsideSmallLayout);
-  }
 }
 
 const homeCardHeightQuery = window.matchMedia("(max-width: 800px)");
@@ -907,6 +959,13 @@ function setupTextLinkBounce() {
       continue;
     }
 
+    if (!link.hasAttribute("aria-label")) {
+      link.setAttribute(
+        "aria-label",
+        link.textContent.replace(/\s+/g, " ").trim(),
+      );
+    }
+
     for (let nodeIndex = 0; nodeIndex < textNodes.length; nodeIndex += 1) {
       const textNode = textNodes[nodeIndex];
       const fragment = document.createDocumentFragment();
@@ -925,6 +984,7 @@ function setupTextLinkBounce() {
         const delay = randomNumber(-duration, 0);
 
         letter.className = "text-link-bounce-letter";
+        letter.setAttribute("aria-hidden", "true");
         letter.style.setProperty(
           "--link-letter-bounce-duration",
           `${duration.toFixed(2)}s`,
@@ -1100,7 +1160,6 @@ for (let i = 0; i < marqueeItems.length; i += 1) {
 fitAllMarquees();
 setMarqueeTextToSolidColor(getCssColor("--color-gray3", "gray"));
 syncNavButtonGlow();
-setupHomePanelToggles();
 setupDevLog();
 setupScrollTopButton();
 setupProjectsCarousel();
