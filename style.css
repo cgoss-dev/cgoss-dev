@@ -1077,6 +1077,10 @@ a.scroll-top-button[hidden] {
   padding-bottom: 0;
 }
 
+.mobile-scroll-page {
+  display: contents;
+}
+
 .home-grid-about {
   grid-column: 1 / 3;
   grid-row: 1 / 2;
@@ -1148,6 +1152,11 @@ a.scroll-top-button[hidden] {
 }
 
 @media (max-width: 800px) {
+  html {
+    scroll-snap-type: y mandatory;
+    scroll-padding-block: var(--home-grid-gap);
+  }
+
   body.home-page {
     padding-bottom: var(--universalPadding);
   }
@@ -1168,11 +1177,15 @@ a.scroll-top-button[hidden] {
     width: calc(100vw - (var(--home-grid-gap) * 2));
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    gap: var(--home-grid-gap);
+    gap: 0;
   }
 
   .site-header {
     width: calc(100vw - (var(--home-grid-gap) * 2));
+    min-height: calc(100dvh - (var(--home-grid-gap) * 2));
+    margin-block: var(--home-grid-gap);
+    display: flex;
+    align-items: center;
   }
 
   .header-top {
@@ -1200,11 +1213,23 @@ a.scroll-top-button[hidden] {
     display: none;
   }
 
-  .home-grid-about,
-  .home-grid-devlog,
-  .home-grid-projects {
+  .mobile-scroll-page {
     grid-column: 1 / -1;
     grid-row: auto;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 100dvh;
+    padding-block: var(--home-grid-gap);
+    display: flex;
+    align-items: center;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .site-header {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   .home-grid .home-copy-panel {
@@ -1223,21 +1248,10 @@ a.scroll-top-button[hidden] {
     overscroll-behavior: contain;
   }
 
-  .home-grid .home-grid-about {
-    height: min(42rem, 52dvh);
-    max-height: min(42rem, 52dvh);
-    box-sizing: border-box;
-    overflow: hidden;
-  }
-
   .home-grid .home-grid-about .box-body {
-    height: 100%;
-    min-height: 0;
-    max-height: 100%;
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+    height: auto;
+    max-height: none;
+    overflow-y: visible;
   }
 
   .home-grid .projects-list {
@@ -1289,5 +1303,9 @@ a.scroll-top-button[hidden] {
 
   .site-title-marquee {
     animation: none !important;
+  }
+
+  html {
+    scroll-snap-type: none !important;
   }
 }

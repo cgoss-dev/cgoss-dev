@@ -734,9 +734,8 @@ function setupProjectsCarousel() {
     const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
     const hasOverflow = maxScrollLeft > 1;
 
-    previousButton.disabled = !hasOverflow || viewport.scrollLeft <= 1;
-    nextButton.disabled =
-      !hasOverflow || maxScrollLeft - viewport.scrollLeft <= 1;
+    previousButton.disabled = !hasOverflow;
+    nextButton.disabled = !hasOverflow;
   }
 
   function scrollProjects(direction) {
@@ -746,10 +745,18 @@ function setupProjectsCarousel() {
     const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 0;
     const step = cardWidth + gap;
     const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
-    const targetScrollLeft = Math.max(
-      0,
-      Math.min(maxScrollLeft, viewport.scrollLeft + direction * step),
-    );
+    const remainingScroll = maxScrollLeft - viewport.scrollLeft;
+    let targetScrollLeft = viewport.scrollLeft + direction * step;
+
+    if (direction > 0 && remainingScroll <= 1) {
+      targetScrollLeft = 0;
+    } else if (direction < 0 && viewport.scrollLeft <= 1) {
+      targetScrollLeft = maxScrollLeft;
+    } else if (direction > 0 && remainingScroll <= step * 1.5) {
+      targetScrollLeft = maxScrollLeft;
+    } else if (direction < 0 && viewport.scrollLeft <= step * 1.5) {
+      targetScrollLeft = 0;
+    }
 
     viewport.scrollTo({
       left: targetScrollLeft,

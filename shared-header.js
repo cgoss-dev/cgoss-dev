@@ -254,7 +254,7 @@ function renderSiteHeader(header, index) {
     <div class="header-top">
       <div class="header-brand">
         <h1 class="site-title">
-          <span class="site-title-marquee" aria-label="Function first. Delight included.">Function first. Delight included.</span>
+          <span class="site-title-marquee" aria-label="hi i'm chris">hi i'm chris</span>
         </h1>
       </div>
     </div>
