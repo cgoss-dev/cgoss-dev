@@ -1081,6 +1081,10 @@ a.scroll-top-button[hidden] {
   display: contents;
 }
 
+.mobile-page-track {
+  display: contents;
+}
+
 .home-grid-about {
   grid-column: 1 / 3;
   grid-row: 1 / 2;
@@ -1159,7 +1163,22 @@ a.scroll-top-button[hidden] {
   }
 
   body.home-page {
-    padding-bottom: var(--universalPadding);
+    height: 100dvh;
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+
+  .home-body {
+    width: 100vw;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .mobile-page-track {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
   }
 
   .intro-kicker {
@@ -1174,18 +1193,15 @@ a.scroll-top-button[hidden] {
   .home-grid {
     --home-preview-card-width: min(28rem, 82vw);
     --home-grid-gap: calc(var(--universalPadding) * 3);
-    min-height: 0;
-    width: calc(100vw - (var(--home-grid-gap) * 2));
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    gap: var(--home-grid-gap);
-    padding-bottom: 50dvh;
+    display: contents;
   }
 
   .site-header {
     width: calc(100vw - (var(--home-grid-gap) * 2));
-    min-height: calc(100dvh - (var(--home-grid-gap) * 2));
-    margin-block: var(--home-grid-gap);
+    height: 100dvh;
+    min-height: 100dvh;
+    margin: 0 auto;
+    flex: 0 0 100dvh;
     display: flex;
     align-items: center;
   }
@@ -1216,15 +1232,17 @@ a.scroll-top-button[hidden] {
   }
 
   .mobile-scroll-page {
-    grid-column: 1 / -1;
-    grid-row: auto;
-    width: 100%;
+    width: 100vw;
     min-width: 0;
-    max-width: 100%;
-    min-height: 0;
+    max-width: 100vw;
+    height: 100dvh;
+    min-height: 100dvh;
+    flex: 0 0 100dvh;
     padding: 0;
     display: flex;
+    justify-content: center;
     align-items: center;
+    overflow: hidden;
   }
 
   .site-header {
@@ -1232,6 +1250,7 @@ a.scroll-top-button[hidden] {
   }
 
   .home-grid .home-copy-panel {
+    width: calc(100vw - (var(--home-grid-gap) * 2));
     height: auto;
     min-height: 0;
     max-height: none;
@@ -1282,6 +1301,10 @@ a.scroll-top-button[hidden] {
 
   .projects-carousel {
     width: 100%;
+  }
+
+  .home-grid-projects {
+    width: calc(100vw - (var(--home-grid-gap) * 2));
   }
 
   .home-grid .project-copy {

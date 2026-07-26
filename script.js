@@ -728,6 +728,7 @@ function setupScrollTopButton() {
 
 function setupMobileVerticalCardPaging() {
   const smallLayoutQuery = window.matchMedia("(max-width: 800px)");
+  const track = document.querySelector(".mobile-page-track");
   const pageTurnDistance = 28;
   const pageTurnVelocity = 3;
   const snapForce = 0.18;
@@ -740,48 +741,33 @@ function setupMobileVerticalCardPaging() {
   ].filter(Boolean);
   const skipLink = document.querySelector('.skip-link[href="#main-content"]');
   const mainContent = document.querySelector("#main-content");
-  let pagePositions = [];
   let currentPageIndex = 0;
-  let isSnapping = false;
+  let offset = 0;
+  let targetOffset = 0;
+  let pageSize = window.innerHeight;
   let animationFrame = 0;
   let touchIdentifier = null;
   let touchStartY = 0;
   let touchLastY = 0;
-  let touchStartScrollY = 0;
+  let touchStartOffset = 0;
   let touchVelocity = 0;
   let handlesPageDrag = false;
+  let wheelLocked = false;
 
-  if (pageElements.length === 0) {
+  if (!track || pageElements.length === 0) {
     return;
   }
 
-  function updatePagePositions() {
-    pagePositions = pageElements.map(function (element, index) {
-      if (index === 0) {
-        return 0;
-      }
-
-      const elementRect = element.getBoundingClientRect();
-
-      return Math.max(
-        0,
-        Math.round(
-          elementRect.top +
-            window.scrollY +
-            elementRect.height / 2 -
-            window.innerHeight / 2,
-        ),
-      );
-    });
+  function getMaxOffset() {
+    return (pageElements.length - 1) * pageSize;
   }
 
-  function getClosestPageIndex(scrollPosition = window.scrollY) {
-    return pagePositions.reduce(function (closestIndex, position, index) {
-      return Math.abs(position - scrollPosition) <
-        Math.abs(pagePositions[closestIndex] - scrollPosition)
-        ? index
-        : closestIndex;
-    }, 0);
+  function clampOffset(value) {
+    return Math.max(0, Math.min(getMaxOffset(), value));
+  }
+
+  function renderOffset() {
+    track.style.transform = `translate3d(0, ${-offset}px, 0)`;
   }
 
   function stopSnapAnimation() {
@@ -793,29 +779,30 @@ function setupMobileVerticalCardPaging() {
   function snapToPage(pageIndex, immediate = false) {
     const nextPageIndex = Math.max(
       0,
-      Math.min(pagePositions.length - 1, pageIndex),
+      Math.min(pageElements.length - 1, pageIndex),
     );
-    const targetPosition = pagePositions[nextPageIndex];
 
     stopSnapAnimation();
-    isSnapping = true;
     currentPageIndex = nextPageIndex;
+    targetOffset = currentPageIndex * pageSize;
 
     if (immediate || reducedMotionQuery.matches) {
-      window.scrollTo(0, targetPosition);
-      isSnapping = false;
+      offset = targetOffset;
+      renderOffset();
+      wheelLocked = false;
       return;
     }
 
     let velocity = touchVelocity;
 
     function settle() {
-      const distance = targetPosition - window.scrollY;
+      const distance = targetOffset - offset;
 
       if (Math.abs(distance) <= snapMinDistance) {
-        window.scrollTo(0, targetPosition);
-        isSnapping = false;
+        offset = targetOffset;
+        renderOffset();
         animationFrame = 0;
+        wheelLocked = false;
         return;
       }
 
@@ -823,7 +810,8 @@ function setupMobileVerticalCardPaging() {
         -maxVelocity,
         Math.min(maxVelocity, (velocity + distance * snapForce) * snapFriction),
       );
-      window.scrollTo(0, window.scrollY + velocity);
+      offset = clampOffset(offset + velocity);
+      renderOffset();
       animationFrame = window.requestAnimationFrame(settle);
     }
 
@@ -847,12 +835,10 @@ function setupMobileVerticalCardPaging() {
     if (!handlesPageDrag) return;
 
     stopSnapAnimation();
-    updatePagePositions();
-    currentPageIndex = getClosestPageIndex();
     touchIdentifier = event.touches[0].identifier;
     touchStartY = event.touches[0].clientY;
     touchLastY = touchStartY;
-    touchStartScrollY = window.scrollY;
+    touchStartOffset = offset;
     touchVelocity = 0;
   }
 
@@ -867,7 +853,8 @@ function setupMobileVerticalCardPaging() {
     const dragDelta = touchStartY - touch.clientY;
     touchLastY = touch.clientY;
     touchVelocity = Math.max(-maxVelocity, Math.min(maxVelocity, delta));
-    window.scrollTo(0, touchStartScrollY + dragDelta);
+    offset = clampOffset(touchStartOffset + dragDelta);
+    renderOffset();
   }
 
   function handleTouchEnd(event) {
@@ -890,15 +877,45 @@ function setupMobileVerticalCardPaging() {
     snapToPage(currentPageIndex + direction);
   }
 
+  function handleWheel(event) {
+    if (!smallLayoutQuery.matches || wheelLocked || event.deltaY === 0) return;
+
+    event.preventDefault();
+    wheelLocked = true;
+    touchVelocity = Math.sign(event.deltaY) * pageTurnVelocity;
+    snapToPage(currentPageIndex + Math.sign(event.deltaY));
+  }
+
+  function handleKeyDown(event) {
+    if (!smallLayoutQuery.matches || event.defaultPrevented) return;
+    if (event.target.matches("input, textarea, select, [contenteditable]")) return;
+
+    const direction =
+      event.key === "ArrowDown" || event.key === "PageDown"
+        ? 1
+        : event.key === "ArrowUp" || event.key === "PageUp"
+          ? -1
+          : 0;
+
+    if (direction === 0) return;
+    event.preventDefault();
+    touchVelocity = 0;
+    snapToPage(currentPageIndex + direction);
+  }
+
   function syncPagingLayout() {
-    updatePagePositions();
-    currentPageIndex = getClosestPageIndex();
+    pageSize = window.innerHeight;
+    offset = currentPageIndex * pageSize;
+    targetOffset = offset;
+    renderOffset();
   }
 
   document.addEventListener("touchstart", handleTouchStart, { passive: true });
   document.addEventListener("touchmove", handleTouchMove, { passive: false });
   document.addEventListener("touchend", handleTouchEnd, { passive: true });
   document.addEventListener("touchcancel", handleTouchEnd, { passive: true });
+  document.addEventListener("wheel", handleWheel, { passive: false });
+  document.addEventListener("keydown", handleKeyDown);
   window.addEventListener("resize", syncPagingLayout);
   window.addEventListener("load", syncPagingLayout);
   window.addEventListener("mobile-card-page-request", function (event) {
@@ -915,6 +932,19 @@ function setupMobileVerticalCardPaging() {
     event.preventDefault();
     snapToPage(1);
     mainContent?.focus({ preventScroll: true });
+  });
+
+  document.addEventListener("focusin", function (event) {
+    if (!smallLayoutQuery.matches) return;
+
+    const pageIndex = pageElements.findIndex(function (page) {
+      return page === event.target || page.contains(event.target);
+    });
+
+    if (pageIndex >= 0 && pageIndex !== currentPageIndex) {
+      touchVelocity = 0;
+      snapToPage(pageIndex, true);
+    }
   });
 
   syncPagingLayout();
