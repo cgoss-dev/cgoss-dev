@@ -3,16 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Chris Goss</title>
-
+    <title>✨Chris Goss</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://kit.fontawesome.com/49beee2559.js" crossorigin="anonymous"></script>
   </head>
 
+
+
   <body>
-    <main>
-      <h1>Hello, I’m Chris.</h1>
-      <p>I’m rebuilding my corner of the internet.</p>
+    <header>
+      <nav>
+        <ul id="Navigation">
+          <li><a href="#About">About</a></li>
+          <li><a href="#Learning">Learning</a></li>
+          <li><a href="#Projects">Projects</a></li>
+          <li><a href="#Contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+
+    <main tabindex="-1"> <!-- tabindex="-1" does not add <main> to the normal Tab sequence. It only allows JavaScript to move focus there when exiting navigation. -->
+      <section>
+        <h1 id="About"><i class="fa-solid fa-user-astronaut" aria-hidden="true"></i> Hi, I'm Chris!</h1>
+        <ul>
+          <li><i class="fa-solid fa-seedling" aria-hidden="true"></i> Junior Developer</li>
+          <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Seattle</li>
+          <li><i class="fa-solid fa-cat" aria-label="Pet Cat"></i> BabyGirl</li>
+          <li><i class="fa-solid fa-dog" aria-label="Pet Dog"></i> Bandit</li>
+        </ul>
+        <p>Curiosity scales, and everything is figureoutable. I'm into actionable feedback, taking notes longhand like a luddite, and the Oxford comma.</p>
+      </section>
+      <section><h2 id="Learning">Learning</h2>
+        <ul>
+          <li><a href="https://www.freecodecamp.org/learn/foundational-c-sharp-with-microsoft/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Foundational C# with Microsoft</a>, freeCodeCamp (In Progress)</li>
+          <li><a href="Certificate-SofDevFundamentals-Linkedin-260802.pdf" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Software Development Fundamentals</a>, LinkedIn Learning (Aug 2026)</li>
+          <li><a href="Certificate-FrontEnd-GA-260423.pdf" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Front End Web Development</a>, General Assembly (Apr 2026)</li>
+        </ul>
+      </section>
+      <section><h2 id="Projects">Projects</h2>
+        <ul>
+          <li><a href="https://cgoss-dev.github.io/star-shower/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-star" aria-hidden="true"></i> Star Shower</a></li>
+          <li><a href="https://cgoss-dev.github.io/pretty-planner/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-book" aria-hidden="true"></i> Pretty Planner</a></li>
+          <li><a href="https://cgoss-dev.github.io/hex-box/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-paint-roller" aria-hidden="true"></i> Hex Box</a></li>
+        </ul>
+      </section>
+      <section><h2 id="Contact">Contact</h2>
+        <ul>
+          <li><a href="https://github.com/cgoss-dev" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/chrisgoss206" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+          <li><a href="https://medium.com/@chrisiscode" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-medium" aria-hidden="true"></i> Medium</a></li>
+        </ul>
+      </section>
     </main>
+
+
+
+      <footer>
+        <small>&copy; 2026 Chris Goss. All rights reserved.</small>
+      </footer>
+      <script src="script.js"></script>
   </body>
 </html>
