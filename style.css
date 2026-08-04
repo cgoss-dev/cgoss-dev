@@ -1,5 +1,5 @@
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
-/* SECTION: UNIVERSAL STYLING */
+/* SECTION: SETUP */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 :root {
@@ -28,6 +28,12 @@
   box-sizing: border-box;
 }
 
+/* !SECTION */
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: BODY */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
 body {
   font-family: "Annotation Mono", monospace;
   color: var(--text);
@@ -40,30 +46,24 @@ body {
   flex-direction: column;
 }
 
-section {
-  padding-block: 1rem;
-}
 body.Light {
   --text: #000;
   --background: #fff;
 }
 
+/* !SECTION */
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: ELEMENTS */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
 main {
   flex: 1;
 }
 
-.color-showcase p {
-  margin: 0;
-  text-align: center;
+section {
+  padding-block: 1rem;
 }
-
-/* !SECTION */
-
-
-
-/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
-/* SECTION: UNIQUE STYLING */
-/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 h1 {
   color: var(--pink);
@@ -76,14 +76,6 @@ h2 {
 a {
   color: inherit;
   text-decoration: none;
-}
-
-a:hover,
-a:focus-visible {
-  color: var(--interactive);
-  text-decoration: none;
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
 }
 
 ul {
@@ -106,15 +98,31 @@ header > a {
   justify-self: start;
 }
 
+header nav {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+footer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* !SECTION */
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: IDS */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
 #Menu {
   grid-column: 2;
   grid-row: 1;
   justify-self: center;
-}
-
-header nav {
-  grid-column: 1 / -1;
-  grid-row: 2;
 }
 
 #Theme {
@@ -132,6 +140,31 @@ header nav {
   border: 0;
   padding: 0;
   cursor: pointer;
+}
+
+/* !SECTION */
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: CLASSES */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+.color-showcase p {
+  margin: 0;
+  text-align: center;
+}
+
+/* !SECTION */
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: STATES */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+a:hover,
+a:focus-visible {
+  color: var(--interactive);
+  text-decoration: none;
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 #Menu:hover,
@@ -159,19 +192,7 @@ body.Light #Theme .fa-moon {
   display: none;
 }
 
-footer {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  text-align: center;
-}
-
-footer p {
-  margin: 0;
-}
-
 /* !SECTION */
-
-
 
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: MEDIA SIZES */

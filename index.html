@@ -25,22 +25,13 @@
         </ul>
       </nav>
 
-      <button id="Theme" type="button" aria-label="Switch color theme">
+      <button id="Theme" type="button" aria-label="Switch color theme" aria-pressed="false">
         <i class="fa-solid fa-sun" aria-hidden="true"></i>
         <i class="fa-solid fa-moon" aria-hidden="true"></i>
       </button>
     </header>
 
-<div class="color-showcase">
-  <p><span style="color: var(--red);">Red</span>
-    <span style="color: var(--orange);">Orange</span>
-    <span style="color: var(--yellow);">Yellow</span>
-    <span style="color: var(--green);">Green</span>
-    <span style="color: var(--cyan);">Cyan</span>
-    <span style="color: var(--blue);">Blue</span>
-    <span style="color: var(--violet);">Violet</span>
-    <span style="color: var(--pink);">Pink</span></p>
-</div>
+
 
     <main tabindex="-1"> <!-- tabindex="-1" does not add <main> to the normal Tab sequence. It only allows JavaScript to move focus there when exiting navigation. -->
       <section>
@@ -79,6 +70,16 @@
 
 
       <footer>
+        <div class="color-showcase">
+          <p><span style="color: var(--red);">Red</span>
+            <span style="color: var(--orange);">Orange</span>
+            <span style="color: var(--yellow);">Yellow</span>
+            <span style="color: var(--green);">Green</span>
+            <span style="color: var(--cyan);">Cyan</span>
+            <span style="color: var(--blue);">Blue</span>
+            <span style="color: var(--violet);">Violet</span>
+            <span style="color: var(--pink);">Pink</span></p>
+        </div>
         <p>&copy; 2026 Chris Goss. All rights reserved.</p>
       </footer>
       <script src="script.js"></script>
