@@ -8,80 +8,27 @@
     <script src="https://kit.fontawesome.com/49beee2559.js" crossorigin="anonymous"></script>
   </head>
 
+  <body data-root=".">
+    <div id="Header"></div>
 
-
-  <body>
-    <header>
-      <a href="#About" aria-label="Home"><i class="fa-solid fa-user-astronaut" aria-hidden="true"></i></a>
-
-      <button id="Menu" type="button" aria-expanded="false" aria-controls="Navigation">Menu</button>
-
-      <nav aria-label="Main">
-        <ul id="Navigation">
-          <li><a href="#About">About</a></li>
-          <li><a href="#Learning">Learning</a></li>
-          <li><a href="#Projects">Projects</a></li>
-          <li><a href="#Contact">Contact</a></li>
-        </ul>
-      </nav>
-
-      <button id="Theme" type="button" aria-label="Switch color theme" aria-pressed="false">
-        <i class="fa-solid fa-sun" aria-hidden="true"></i>
-        <i class="fa-solid fa-moon" aria-hidden="true"></i>
-      </button>
-    </header>
-
-
-
-    <main tabindex="-1"> <!-- tabindex="-1" does not add <main> to the normal Tab sequence. It only allows JavaScript to move focus there when exiting navigation. -->
+    <main tabindex="-1">
+      <!-- tabindex="-1" allows JavaScript to move focus here without adding main to the normal Tab sequence. -->
       <section>
-        <h1 id="About">Hi, I'm Chris!</h1>
+        <h1>Hi, I'm Chris!</h1>
+
         <ul>
           <li><i class="fa-solid fa-seedling" aria-hidden="true"></i> Junior Developer</li>
           <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Seattle</li>
           <li><i class="fa-solid fa-cat" aria-label="Pet Cat"></i> BabyGirl</li>
           <li><i class="fa-solid fa-dog" aria-label="Pet Dog"></i> Bandit</li>
         </ul>
-        <p>Curiosity scales, and everything is figureoutable. I'm into actionable feedback, taking notes longhand (like a luddite), and the Oxford comma.</p>
-      </section>
-      <section><h2 id="Learning">Learning</h2>
-        <ul>
-          <li><a href="https://www.freecodecamp.org/learn/foundational-c-sharp-with-microsoft/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Foundational C# with Microsoft</a>,<span class="meta"> freeCodeCamp (In Progress)</span></li>
-          <li><a href="documents/Certificate-SofDevFundamentals-Linkedin-260802.pdf" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Software Development Fundamentals</a>,<span class="meta"> LinkedIn Learning (Aug 2026)</span></li>
-          <li><a href="documents/Certificate-FrontEnd-GA-260423.pdf" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Front End Web Development</a>,<span class="meta"> General Assembly (Apr 2026)</span></li>
-        </ul>
-      </section>
-      <section><h2 id="Projects">Projects</h2>
-        <ul>
-          <li><a href="https://cgoss-dev.github.io/star-shower/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-star" aria-hidden="true"></i> Star Shower</a></li>
-          <li><a href="https://cgoss-dev.github.io/pretty-planner/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-book" aria-hidden="true"></i> Pretty Planner</a></li>
-          <li><a href="https://cgoss-dev.github.io/hex-box/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-paint-roller" aria-hidden="true"></i> Hex Box</a></li>
-        </ul>
-      </section>
-      <section><h2 id="Contact">Contact</h2>
-        <ul>
-          <li><a href="https://github.com/cgoss-dev" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a></li>
-          <li><a href="https://www.linkedin.com/in/chrisgoss206" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
-          <li><a href="https://medium.com/@chrisiscode" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-medium" aria-hidden="true"></i> Medium</a></li>
-        </ul>
+
+        <p>Curiosity scales, and everything is figureoutable. I'm into actionable feedback, taking notes longhand, and the Oxford comma.</p>
       </section>
     </main>
 
+    <div id="Footer"></div>
 
-
-      <footer>
-        <div class="color-showcase">
-          <p><span style="color: var(--red);">Red</span>
-            <span style="color: var(--orange);">Orange</span>
-            <span style="color: var(--yellow);">Yellow</span>
-            <span style="color: var(--green);">Green</span>
-            <span style="color: var(--cyan);">Cyan</span>
-            <span style="color: var(--blue);">Blue</span>
-            <span style="color: var(--violet);">Violet</span>
-            <span style="color: var(--pink);">Pink</span></p>
-        </div>
-        <p>&copy; 2026 Chris Goss. All rights reserved.</p>
-      </footer>
-      <script src="script.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
