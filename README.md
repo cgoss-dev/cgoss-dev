@@ -4,9 +4,9 @@ I'm Chris, a junior developer in Seattle.
 
 ## 📝 Current Learning
 
-- Foundational C#, FreeCodeCamp & Microsoft, In Progress (Sep 2026)
-- [Software Development Fundamentals](Certificate-SofDevFundamentals-Linkedin-260802.pdf), Linkedin Learning, Aug 2026
-- [Front End Web Development](Certificate-FrontEnd-GA-260423.pdf), General Assembly, Apr 2026
+- Foundational C#, FreeCodeCamp & Microsoft (In Progress)
+- [Software Development Fundamentals](documents/Certificate-SofDevFundamentals-Linkedin-260802.pdf), LinkedIn Learning (Aug 2026)
+- [Front End Web Development](documents/Certificate-FrontEnd-GA-260423.pdf), General Assembly (Apr 2026)
 
 ## ⭐️ Selected Projects
 

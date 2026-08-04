@@ -1,9 +1,38 @@
+const menu = document.querySelector("#Menu");
+const theme = document.querySelector("#Theme");
 const navigation = document.querySelector("header nav");
 const main = document.querySelector("main");
 
-/* ========== ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: MENU */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+menu.addEventListener("click", () => {
+  const isOpen = menu.getAttribute("aria-expanded") === "true";
+  menu.setAttribute("aria-expanded", String(!isOpen));
+});
+
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: THEME */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+theme.addEventListener("click", () => {
+  const isLight = document.body.classList.toggle("Light");
+  theme.setAttribute("aria-pressed", String(isLight));
+});
+
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: KEYBOARD NAV */
-/* ========== ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
 // Tab/Shift+Tab → normal browser navigation
 // Left/Right    → move within header navigation
 // Up/Down       → scroll the page normally
@@ -19,6 +48,7 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key === "Escape" && isNavigationLink) {
     event.preventDefault();
+    menu.setAttribute("aria-expanded", "false");
     main.focus();
     return;
   }
@@ -49,4 +79,5 @@ document.addEventListener("keydown", (event) => {
 
   links[nextIndex].focus();
 });
+
 /* !SECTION */

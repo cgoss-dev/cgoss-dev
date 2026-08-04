@@ -1,16 +1,20 @@
-/* ========== ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: UNIVERSAL STYLING */
-/* ========== ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 :root {
   --red: #f00;
   --orange: #f80;
   --yellow: #ff0;
   --green: #0f0;
-  --cyan: #0ff;
+  --cyan: #0dd;
   --blue: #00f;
   --violet: #80f;
   --pink: #f0f;
+
+  --text: #fff;
+  --background: #000;
+  --interactive: var(--pink);
 }
 
 @font-face {
@@ -26,19 +30,40 @@
 
 body {
   font-family: "Annotation Mono", monospace;
-  color: #fff;
-  background-color: #111;
-  max-width: 800px;
+  color: var(--text);
+  background-color: var(--background);
   margin: 0 auto;
   padding: clamp(1rem, 5vw, 3rem);
+  max-width: 800px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+section {
+  padding-block: 1rem;
+}
+body.Light {
+  --text: #000;
+  --background: #fff;
+}
+
+main {
+  flex: 1;
+}
+
+.color-showcase p {
+  margin: 0;
+  text-align: center;
+}
+
 /* !SECTION */
 
 
 
-/* ========== ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: UNIQUE STYLING */
-/* ========== ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 h1 {
   color: var(--pink);
@@ -49,15 +74,15 @@ h2 {
 }
 
 a {
-  color: var(--yellow);
+  color: inherit;
   text-decoration: none;
 }
 
 a:hover,
 a:focus-visible {
-  color: var(--pink);
+  color: var(--interactive);
   text-decoration: none;
-  outline: 2px solid;
+  outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
@@ -67,38 +92,123 @@ ul {
   padding: 0;
 }
 
+header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+header > a {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+
+#Menu {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+}
+
+header nav {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+#Theme {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+}
+
+#Menu,
+#Theme {
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+#Menu:hover,
+#Menu:focus-visible,
+#Theme:hover,
+#Theme:focus-visible {
+  color: var(--interactive);
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+#Theme .fa-sun {
+  display: none;
+}
+
+#Theme .fa-moon {
+  display: inline;
+}
+
+body.Light #Theme .fa-sun {
+  display: inline;
+}
+
+body.Light #Theme .fa-moon {
+  display: none;
+}
+
 footer {
-  margin-top: 4rem;
-  padding-top: 2rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
 }
 
 /* !SECTION */
 
 
 
-/* ========== ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: MEDIA SIZES */
-/* ========== ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
+/* NOTE: Phone and tablet. Dropdown navigation. */
+@media (max-width: 49.99rem) {
+  #Navigation {
+    display: none;
+  }
 
+  #Menu[aria-expanded="true"] + nav #Navigation {
+    display: block;
+  }
 
-/* NOTE: Phone. Hamburger menu dropdown. Footer icons, no text. */
-@media (min-width: 48rem) {
-
+  .meta {
+    display: block;
+    margin-bottom: 0.75rem;
+  }
 }
 
-/* NOTE: Tablet. */
-@media (min-width: 64rem) {
+/* NOTE: Desktop. Centered horizontal navigation. */
+@media (min-width: 50rem) {
+  #Menu {
+    display: none;
+  }
 
+  header nav {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  #Navigation {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+  }
 }
 
-/* NOTE: Halfscreen */
-@media (min-width: 75rem) {
-
-}
-
-/* NOTE: Desktop */
-@media (min-width: 90rem) {
-
-}
 /* !SECTION */
