@@ -57,7 +57,7 @@ function initializeRainbow() {
     window.setInterval(() => {
       cycle += 1;
       updateRainbow();
-    }, 240);
+    }, 500);
   }
 }
 

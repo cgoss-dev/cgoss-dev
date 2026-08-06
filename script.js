@@ -11,6 +11,8 @@ async function loadComponent(selector, file) {
 async function initializeSite() {
   const root = document.body.dataset.root;
 
+  restorePreferences();
+
   await Promise.all([
     loadComponent("#Header", `${root}/components/header.html`),
     loadComponent("#Footer", `${root}/components/footer.html`)
@@ -20,13 +22,67 @@ async function initializeSite() {
     link.href = `${root}/${link.dataset.path}`;
   });
 
+
+  initializeCurrentPage();
   initializeMenu();
+  initializeText();
   initializeTheme();
+  initializeGrayscale();
   initializePreviews();
   initializeKeyboardNavigation();
 }
 
 initializeSite();
+
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: PREFERENCES */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+function restorePreferences() {
+  const savedTheme = localStorage.getItem("Theme");
+  const savedGrayscale = localStorage.getItem("Grayscale");
+  const savedText = localStorage.getItem("Text");
+
+  if (savedTheme === "Light") {
+    document.body.classList.add("Light");
+  }
+
+  if (savedGrayscale === "true") {
+    document.documentElement.classList.add("Grayscale");
+  }
+
+  if (savedText === "Small" || savedText === "Large") {
+    document.documentElement.classList.add(savedText);
+  }
+}
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: CURRENT PAGE */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+function initializeCurrentPage() {
+  function normalizePath(path) {
+    return path.endsWith("/") ? `${path}index.html` : path;
+  }
+
+  const currentPath = normalizePath(window.location.pathname);
+  const pageLinks = document.querySelectorAll("[data-path]");
+
+  pageLinks.forEach((link) => {
+    const linkPath = normalizePath(new URL(link.href).pathname);
+
+    if (linkPath === currentPath) {
+      link.setAttribute("aria-current", "page");
+    }
+  });
+}
 
 /* !SECTION */
 
@@ -50,15 +106,93 @@ function initializeMenu() {
 
 
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: TEXT */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+function initializeText() {
+  const text = document.querySelector("#Text");
+  const sizes = ["Small", "Medium", "Large"];
+
+  let currentSize = localStorage.getItem("Text");
+
+  if (!sizes.includes(currentSize)) {
+    currentSize = "Medium";
+  }
+
+  function updateLabel() {
+    const currentIndex = sizes.indexOf(currentSize);
+    const nextIndex = (currentIndex + 1) % sizes.length;
+    const nextSize = sizes[nextIndex];
+
+    text.setAttribute(
+      "aria-label",
+      `Text size: ${currentSize}. Change to ${nextSize}`
+    );
+  }
+
+  updateLabel();
+
+  text.addEventListener("click", () => {
+    const currentIndex = sizes.indexOf(currentSize);
+    const nextIndex = (currentIndex + 1) % sizes.length;
+
+    currentSize = sizes[nextIndex];
+
+    document.documentElement.classList.remove("Small", "Large");
+
+    if (currentSize !== "Medium") {
+      document.documentElement.classList.add(currentSize);
+    }
+
+    localStorage.setItem("Text", currentSize);
+    updateLabel();
+  });
+}
+
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: GRAYSCALE */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+function initializeGrayscale() {
+  const grayscale = document.querySelector("#Grayscale");
+
+  const isGrayscale =
+    document.documentElement.classList.contains("Grayscale");
+
+  grayscale.setAttribute("aria-pressed", String(isGrayscale));
+
+  grayscale.addEventListener("click", () => {
+    const isGrayscale =
+      document.documentElement.classList.toggle("Grayscale");
+
+    grayscale.setAttribute("aria-pressed", String(isGrayscale));
+    localStorage.setItem("Grayscale", String(isGrayscale));
+  });
+}
+
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: THEME */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 function initializeTheme() {
   const theme = document.querySelector("#Theme");
 
+  const isLight = document.body.classList.contains("Light");
+  theme.setAttribute("aria-pressed", String(isLight));
+
   theme.addEventListener("click", () => {
     const isLight = document.body.classList.toggle("Light");
+
     theme.setAttribute("aria-pressed", String(isLight));
+    localStorage.setItem("Theme", isLight ? "Light" : "Dark");
   });
 }
 
