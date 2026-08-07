@@ -3,7 +3,7 @@
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 :root {
-  --universalSpacing: 1rem;
+  --universalSpacing: 2rem;
 
   --red: #f00;
   --orange: #fa0;
@@ -70,12 +70,12 @@ body.Light {
 
 main {
   flex: 1;
+  margin-top: var(--universalSpacing);
 }
 
 section {
   display: flex;
   flex-direction: column;
-  gap: var(--universalSpacing);
 }
 
 h1 {
@@ -83,16 +83,22 @@ h1 {
   font-size: clamp(2rem, 8vw, 4rem);
   line-height: 1;
   color: var(--text);
-  margin: 0 0 calc(var(--universalSpacing) * 2);
+  margin: 0 0 var(--universalSpacing);
 }
 
 h2 {
   font-size: clamp(1.5rem, 6vw, 3rem);
   color: var(--text);
+  margin: 0 0 var(--universalSpacing);
 }
 
 p {
   margin: 0;
+}
+
+main p,
+main ul {
+  margin: 0 0 var(--universalSpacing);
 }
 
 a {
@@ -137,20 +143,6 @@ footer {
 /* SECTION: IDS */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
-#Header {
-  margin-bottom: calc(var(--universalSpacing) * 2);
-}
-
-#Footer {
-  margin-top: calc(var(--universalSpacing) * 2);
-}
-
-#Menu {
-  grid-column: 2;
-  grid-row: 1;
-  justify-self: center;
-}
-
 #Menu,
 #Text,
 #Grayscale,
@@ -183,7 +175,21 @@ footer {
   grid-row: 1;
   justify-self: end;
   display: flex;
-  gap: var(--universalSpacing);
+  gap: 1rem;
+}
+
+.details {
+  list-style: disc;
+  padding-left: calc(var(--universalSpacing) * 2);
+}
+
+.details li {
+  margin-top: calc(var(--universalSpacing) * 0.5);
+  text-wrap: pretty;
+}
+
+.entry {
+  margin-bottom: 0;
 }
 
 /* !SECTION */
@@ -199,6 +205,41 @@ footer {
 
   to {
     background-position: 200% center;
+  }
+}
+
+@keyframes cycleRainbow {
+  0%,
+  100% {
+    color: var(--red);
+  }
+
+  12.5% {
+    color: var(--orange);
+  }
+
+  25% {
+    color: var(--yellow);
+  }
+
+  37.5% {
+    color: var(--green);
+  }
+
+  50% {
+    color: var(--cyan);
+  }
+
+  62.5% {
+    color: var(--blue);
+  }
+
+  75% {
+    color: var(--violet);
+  }
+
+  87.5% {
+    color: var(--pink);
   }
 }
 
@@ -219,7 +260,9 @@ footer {
 }
 
 a:hover,
-a:focus-visible {
+a:focus-visible,
+#Menu:hover,
+#Menu:focus-visible {
   color: transparent;
   background-image: linear-gradient(
     90deg,
@@ -248,22 +291,33 @@ a:focus-visible svg {
   -webkit-text-fill-color: var(--text);
 }
 
+header a:hover i,
+header a:focus-visible i,
+header a:hover svg,
+header a:focus-visible svg {
+  -webkit-text-fill-color: currentColor;
+  animation: cycleRainbow 3s linear infinite;
+}
+
 header > a[aria-current="page"] span,
 #Navigation a[aria-current="page"] {
   color: var(--interactive);
 }
 
-#Menu:hover,
-#Menu:focus-visible,
+#Menu[aria-expanded="true"] {
+  color: var(--interactive);
+  background-image: none;
+  -webkit-text-fill-color: var(--interactive);
+  animation: none;
+}
+
 #Text:hover,
 #Text:focus-visible,
 #Grayscale:hover,
 #Grayscale:focus-visible,
 #Theme:hover,
 #Theme:focus-visible {
-  color: var(--interactive);
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
+  animation: cycleRainbow 3s linear infinite;
 }
 
 #Theme .fa-sun {
@@ -297,10 +351,34 @@ html.Large {
 @media (prefers-reduced-motion: reduce) {
   .typing-cursor,
   a:hover,
-  a:focus-visible {
+  a:focus-visible,
+  #Menu:hover,
+  #Menu:focus-visible,
+  #Text:hover,
+  #Text:focus-visible,
+  #Grayscale:hover,
+  #Grayscale:focus-visible,
+  #Theme:hover,
+  #Theme:focus-visible,
+  header a:hover i,
+  header a:focus-visible i,
+  header a:hover svg,
+  header a:focus-visible svg {
     animation: none;
   }
 
+  #Text:hover,
+  #Text:focus-visible,
+  #Grayscale:hover,
+  #Grayscale:focus-visible,
+  #Theme:hover,
+  #Theme:focus-visible,
+  header a:hover i,
+  header a:focus-visible i,
+  header a:hover svg,
+  header a:focus-visible svg {
+    color: var(--interactive);
+  }
 }
 
 /* !SECTION */
@@ -311,18 +389,87 @@ html.Large {
 
 /* NOTE: Phone and tablet. Dropdown navigation. */
 @media (max-width: 49.99rem) {
+  header {
+    position: relative;
+  }
+
+  body.MenuOpen::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-color: rgb(0 0 0 / 60%);
+    z-index: 1;
+  }
+
+  body.MenuOpen header {
+    z-index: 2;
+  }
+
+  header nav {
+    position: absolute;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    top: -1rem;
+    left: 50%;
+    width: max-content;
+    max-width: calc(100vw - var(--universalSpacing) * 2);
+    color: var(--text);
+    background-color: var(--background);
+    border: 0.25rem double var(--text);
+    border-radius: 1rem;
+    padding: 0.25rem var(--universalSpacing);
+    text-align: center;
+    transform: translateX(-50%);
+    transition: padding-bottom 0.2s ease;
+    z-index: 3;
+  }
+
   #Navigation {
-    display: none;
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: max-height 0.2s ease, opacity 0.2s ease;
   }
 
-  #Menu[aria-expanded="true"] + nav #Navigation {
-    display: block;
+  #Menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% + var(--universalSpacing) * 2);
+    min-height: 2.75rem;
+    margin: -0.25rem calc(var(--universalSpacing) * -1);
+    padding: 0.25rem var(--universalSpacing);
+    text-align: center;
   }
 
-  .meta {
-    display: block;
-    margin-bottom: var(--universalSpacing);
+  body.MenuOpen #Navigation {
+    max-height: 20rem;
+    margin-top: var(--universalSpacing);
+    opacity: 1;
+    visibility: visible;
   }
+
+  body.MenuOpen header nav {
+    padding-bottom: var(--universalSpacing);
+  }
+
+  body.MenuOpen #Navigation a[aria-current="page"] {
+    color: var(--text);
+  }
+
+  #Navigation li + li {
+    margin-top: var(--universalSpacing);
+  }
+
+  #Navigation a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+  }
+
 }
 
 /* NOTE: Desktop. Centered horizontal navigation. */
@@ -344,3 +491,10 @@ html.Large {
 }
 
 /* !SECTION */
+
+@media (max-width: 49.99rem) and (prefers-reduced-motion: reduce) {
+  header nav,
+  #Navigation {
+    transition: none;
+  }
+}

@@ -92,12 +92,33 @@ function initializeCurrentPage() {
 /* SECTION: MENU */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
+function setMenuOpen(menu, isOpen) {
+  menu.setAttribute("aria-expanded", String(isOpen));
+  document.body.classList.toggle("MenuOpen", isOpen);
+}
+
 function initializeMenu() {
   const menu = document.querySelector("#Menu");
+  const header = document.querySelector("header");
+  const desktop = window.matchMedia("(min-width: 50rem)");
 
   menu.addEventListener("click", () => {
     const isOpen = menu.getAttribute("aria-expanded") === "true";
-    menu.setAttribute("aria-expanded", String(!isOpen));
+    setMenuOpen(menu, !isOpen);
+  });
+
+  document.addEventListener("click", (event) => {
+    const isOpen = menu.getAttribute("aria-expanded") === "true";
+
+    if (isOpen && !header.contains(event.target)) {
+      setMenuOpen(menu, false);
+    }
+  });
+
+  desktop.addEventListener("change", (event) => {
+    if (event.matches) {
+      setMenuOpen(menu, false);
+    }
   });
 }
 
@@ -271,10 +292,18 @@ function initializeKeyboardNavigation() {
       currentLink instanceof HTMLAnchorElement &&
       navigation.contains(currentLink);
 
-    if (event.key === "Escape" && isNavigationLink) {
+    const isMenuOpen = menu.getAttribute("aria-expanded") === "true";
+
+    if (event.key === "Escape" && (isNavigationLink || isMenuOpen)) {
       event.preventDefault();
-      menu.setAttribute("aria-expanded", "false");
-      main.focus();
+      setMenuOpen(menu, false);
+
+      if (isNavigationLink) {
+        main.focus();
+      } else {
+        menu.focus();
+      }
+
       return;
     }
 
