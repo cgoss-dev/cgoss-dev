@@ -1,0 +1,40 @@
+name: Update GitHub activity
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "43 8 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-github-activity:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch GitHub activity
+        run: node github/update-github-activity.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit updated GitHub activity
+        run: |
+          if git diff --quiet -- github/activity.json; then
+            echo "No GitHub activity updates."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add github/activity.json
+          git commit -m "Update GitHub activity"
+          git push

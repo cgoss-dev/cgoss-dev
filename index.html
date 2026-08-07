@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>✨Chris Goss</title>
+    <title>Chris Goss</title>
+    <link rel="icon" href="images/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="images/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="window.css" />
     <script src="https://kit.fontawesome.com/49beee2559.js" crossorigin="anonymous"></script>
   </head>
 
@@ -15,21 +18,37 @@
       <!-- tabindex="-1" allows JavaScript to move focus here without adding main to the normal Tab sequence. -->
       <section>
         <h1 id="Typing">Hi, I'm Chris_</h1>
-
-        <ul>
-          <li><i class="fa-solid fa-seedling" aria-hidden="true"></i> Junior Developer</li>
-          <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Seattle</li>
-          <li><i class="fa-solid fa-cat" aria-label="Pet Cat"></i> BabyGirl</li>
-          <li><i class="fa-solid fa-dog" aria-label="Pet Dog"></i> Bandit</li>
-        </ul>
-
-        <p>Curiosity scales, and everything is figureoutable.</p>
-        <!-- <p>I'm into actionable feedback, taking notes longhand, and the Oxford comma.</p> -->
       </section>
+
+      <div class="windows">
+        <div class="window-column">
+          <article class="window">
+            <h2 class="window-title">about.me</h2>
+
+            <div class="window-content">
+              <ul>
+                <li><i class="fa-solid fa-seedling" aria-hidden="true"></i> Junior Developer</li>
+                <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Seattle</li>
+                <li><i class="fa fa-clock-o" aria-hidden="true"></i> <time id="Time"></time></li>
+              </ul>
+
+              <p>Curiosity scales, and everything is figureoutable.
+                <br>I'm into actionable feedback, taking notes longhand, and the Oxford comma.</p>
+            </div>
+          </article>
+
+          <div id="Github"></div>
+        </div>
+
+        <div id="Devlog"></div>
+      </div>
     </main>
 
     <div id="Footer"></div>
     <script src="script.js"></script>
+    <script src="github/activity.js"></script>
+    <script src="medium/devlog.js"></script>
+    <script src="time.js"></script>
     <script src="typing.js"></script>
     <script src="rainburst.js"></script>
   </body>
