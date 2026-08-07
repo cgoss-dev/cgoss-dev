@@ -13,6 +13,7 @@ function initializeTyping() {
   );
 
   heading.textContent = "";
+  // Preserve the complete heading for screen readers while animating its visual text.
   heading.setAttribute("aria-label", text);
 
   typedText.setAttribute("aria-hidden", "true");
@@ -22,13 +23,16 @@ function initializeTyping() {
 
   heading.append(typedText, cursor);
 
+  // Show the complete heading immediately when reduced motion is requested.
   if (reducedMotion.matches) {
     typedText.textContent = text;
     return;
   }
 
   let characterIndex = 0;
+  let hasPaused = false;
 
+  // Use recursive timeouts so the first word break can have a longer pause.
   function typeNextCharacter() {
     const character = text[characterIndex];
 
@@ -39,7 +43,12 @@ function initializeTyping() {
       return;
     }
 
-    const delay = character === " " ? 600 : 100;
+    let delay = 100;
+
+    if (character === " " && !hasPaused) {
+      delay = 600;
+      hasPaused = true;
+    }
 
     window.setTimeout(typeNextCharacter, delay);
   }

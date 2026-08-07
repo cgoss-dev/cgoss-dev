@@ -40,6 +40,8 @@
 
 /* !SECTION */
 
+
+
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: BODY */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
@@ -63,6 +65,8 @@ body.Light {
 }
 
 /* !SECTION */
+
+
 
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: ELEMENTS */
@@ -139,6 +143,8 @@ footer {
 
 /* !SECTION */
 
+
+
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: IDS */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
@@ -160,11 +166,16 @@ footer {
   position: fixed;
   width: 200px;
   height: auto;
+  border: 0.5rem double var(--text);
+  border-radius: .5rem;
   pointer-events: none;
   transform: translate(-50%, -110%);
+  z-index: 4;
 }
 
 /* !SECTION */
+
+
 
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: CLASSES */
@@ -193,6 +204,8 @@ footer {
 }
 
 /* !SECTION */
+
+
 
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: STATES */
@@ -383,6 +396,8 @@ html.Large {
 
 /* !SECTION */
 
+
+
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: MEDIA SIZES */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
@@ -415,8 +430,8 @@ html.Large {
     max-width: calc(100vw - var(--universalSpacing) * 2);
     color: var(--text);
     background-color: var(--background);
-    border: 0.25rem double var(--text);
-    border-radius: 1rem;
+    border: 0.5rem double var(--text);
+    border-radius: .5rem;
     padding: 0.25rem var(--universalSpacing);
     text-align: center;
     transform: translateX(-50%);
@@ -440,27 +455,17 @@ html.Large {
     width: calc(100% + var(--universalSpacing) * 2);
     min-height: 2.75rem;
     margin: -0.25rem calc(var(--universalSpacing) * -1);
-    padding: 0.25rem var(--universalSpacing);
     text-align: center;
   }
 
   body.MenuOpen #Navigation {
     max-height: 20rem;
-    margin-top: var(--universalSpacing);
     opacity: 1;
     visibility: visible;
   }
 
-  body.MenuOpen header nav {
-    padding-bottom: var(--universalSpacing);
-  }
-
   body.MenuOpen #Navigation a[aria-current="page"] {
     color: var(--text);
-  }
-
-  #Navigation li + li {
-    margin-top: var(--universalSpacing);
   }
 
   #Navigation a {
@@ -468,11 +473,11 @@ html.Large {
     align-items: center;
     justify-content: center;
     min-height: 2.75rem;
+    margin-block: calc(var(--universalSpacing) * 0.5);
   }
 
 }
 
-/* NOTE: Desktop. Centered horizontal navigation. */
 @media (min-width: 50rem) {
   #Menu {
     display: none;
@@ -490,11 +495,11 @@ html.Large {
   }
 }
 
-/* !SECTION */
-
 @media (max-width: 49.99rem) and (prefers-reduced-motion: reduce) {
   header nav,
   #Navigation {
     transition: none;
   }
 }
+
+/* !SECTION */

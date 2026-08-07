@@ -13,6 +13,7 @@ async function initializeSite() {
 
   restorePreferences();
 
+  // Load both shared components before initializing controls that depend on them.
   await Promise.all([
     loadComponent("#Header", `${root}/components/header.html`),
     loadComponent("#Footer", `${root}/components/footer.html`)
@@ -68,6 +69,7 @@ function restorePreferences() {
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 function initializeCurrentPage() {
+  // Normalize directory URLs so they match links ending in index.html.
   function normalizePath(path) {
     return path.endsWith("/") ? `${path}index.html` : path;
   }
@@ -142,6 +144,7 @@ function initializeText() {
 
   function updateLabel() {
     const currentIndex = sizes.indexOf(currentSize);
+    // Wrap from the final text size back to the first.
     const nextIndex = (currentIndex + 1) % sizes.length;
     const nextSize = sizes[nextIndex];
 
@@ -329,6 +332,7 @@ function initializeKeyboardNavigation() {
 
     const links = Array.from(navigation.querySelectorAll("a[href]"));
     const currentIndex = links.indexOf(currentLink);
+    // Wrap keyboard navigation between the first and last links.
     const nextIndex = (currentIndex + direction + links.length) % links.length;
 
     links[nextIndex].focus();

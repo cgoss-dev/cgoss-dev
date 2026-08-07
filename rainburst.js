@@ -1,3 +1,7 @@
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: CANVAS */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
 const canvas = document.createElement("canvas");
 const context = canvas.getContext("2d");
 
@@ -10,6 +14,7 @@ canvas.style.pointerEvents = "none";
 document.body.appendChild(canvas);
 
 function resizeCanvas() {
+  // Scale the drawing buffer so particles remain sharp on high-density screens.
   const scale = window.devicePixelRatio || 1;
 
   canvas.width = window.innerWidth * scale;
@@ -20,6 +25,14 @@ function resizeCanvas() {
 
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
+
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: PARTICLES */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 const particles = [];
 
@@ -36,8 +49,17 @@ const colors = [
 
 const symbols = ["✦", "✧", "·", "•"];
 
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: STORAGE */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
 const storageKey = "Rainburst";
 
+// Save unfinished particles so the burst can continue after page navigation.
 function saveRainburst() {
   if (particles.length === 0) {
     return;
@@ -74,6 +96,14 @@ function restoreRainburst() {
 
 window.addEventListener("pagehide", saveRainburst);
 
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: CREATION */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
 function getColors() {
   const styles = getComputedStyle(document.documentElement);
 
@@ -100,9 +130,18 @@ function createRainburst(x, y) {
   }
 }
 
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: ANIMATION */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
 function animateRainburst() {
   context.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
+  // Iterate backward so expired particles can be removed without skipping others.
   for (let index = particles.length - 1; index >= 0; index--) {
     const particle = particles[index];
 
@@ -134,6 +173,14 @@ function animateRainburst() {
   }
 }
 
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: INPUT */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
 const reducedMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)"
 );
@@ -143,6 +190,7 @@ document.addEventListener("pointerdown", (event) => {
     return;
   }
 
+  // Start one animation loop instead of creating another loop for every click.
   const animationWasStopped = particles.length === 0;
 
   createRainburst(event.clientX, event.clientY);
@@ -153,3 +201,5 @@ document.addEventListener("pointerdown", (event) => {
 });
 
 restoreRainburst();
+
+/* !SECTION */
