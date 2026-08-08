@@ -7,35 +7,47 @@
     <link rel="icon" href="../images/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="../images/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
     <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../rainglow.css" />
+    <link rel="stylesheet" href="../card.css" />
     <script src="https://kit.fontawesome.com/49beee2559.js" crossorigin="anonymous"></script>
   </head>
 
   <body data-root="..">
     <div id="Header"></div>
 
-    <main tabindex="-1">
-      <section>
-        <h1>Learning</h1>
+    <main class="learning" tabindex="-1">
+      <h1>Learning</h1>
 
-        <p class="entry"><a href="https://www.freecodecamp.org/learn/foundational-c-sharp-with-microsoft/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Foundational C# with Microsoft</a></p>
-        <ul class="details">
-          <li>freeCodeCamp (In Progress)</li>
-        </ul>
+      <div class="cards">
+        <article class="card">
+          <h2 class="card-title">cert.list</h2>
 
-        <p class="entry"><a href="../documents/Certificate-SofDevFundamentals-Linkedin-260802.pdf" data-preview="images/cert_software.png" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Software Development Fundamentals</a></p>
-        <ul class="details">
-          <li>LinkedIn Learning (Aug 2026)</li>
-        </ul>
+          <div class="card-content">
+            <div class="card-group">
+              <p><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Foundational C# with Microsoft</p>
+              <p>freeCodeCamp (In Progress)<br>35+ hours</p>
+            </div>
 
-        <p class="entry"><a href="../documents/Certificate-FrontEnd-GA-260423.pdf" data-preview="images/cert_frontend.png" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Front End Web Development</a></p>
-        <ul class="details">
-          <li>General Assembly (Apr 2026)</li>
-        </ul>
-      </section>
+            <div class="card-group">
+              <p><a href="../documents/Certificate-SofDevFundamentals-Linkedin-260802.pdf" data-preview="images/cert_software.png" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Software Development Fundamentals</a></p>
+              <p>LinkedIn Learning (Aug 2026)<br>23 hours</p>
+            </div>
+
+            <div class="card-group">
+              <p><a href="../documents/Certificate-FrontEnd-GA-260423.pdf" data-preview="images/cert_frontend.png" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Front End Web Development</a></p>
+              <p>General Assembly (Apr 2026)<br>60 hours</p>
+            </div>
+          </div>
+        </article>
+
+        <div id="FreeCodeCamp"></div>
+      </div>
     </main>
 
     <div id="Footer"></div>
     <script src="../script.js"></script>
+    <script src="../datetime.js"></script>
+    <script src="../learning/activity.js"></script>
     <script src="../rainburst.js"></script>
   </body>
 </html>

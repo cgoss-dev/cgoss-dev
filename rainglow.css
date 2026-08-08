@@ -1,0 +1,155 @@
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: ANIMATIONS */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+@keyframes moveRainbow {
+  from {
+    background-position: 0% center;
+  }
+
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes cycleRainbow {
+  0%,
+  100% {
+    color: var(--red);
+  }
+
+  12.5% {
+    color: var(--orange);
+  }
+
+  25% {
+    color: var(--yellow);
+  }
+
+  37.5% {
+    color: var(--green);
+  }
+
+  50% {
+    color: var(--cyan);
+  }
+
+  62.5% {
+    color: var(--blue);
+  }
+
+  75% {
+    color: var(--violet);
+  }
+
+  87.5% {
+    color: var(--pink);
+  }
+}
+
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: LINKS */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+a:hover,
+a:focus-visible,
+#Menu:hover,
+#Menu:focus-visible {
+  color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    var(--red),
+    var(--orange),
+    var(--yellow),
+    var(--green),
+    var(--cyan),
+    var(--blue),
+    var(--violet),
+    var(--pink),
+    var(--red)
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: moveRainbow 3s linear infinite;
+}
+
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: ICONS */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+a:hover i,
+a:focus-visible i,
+a:hover svg,
+a:focus-visible svg {
+  color: var(--text);
+  -webkit-text-fill-color: var(--text);
+}
+
+header a:hover i,
+header a:focus-visible i,
+header a:hover svg,
+header a:focus-visible svg {
+  -webkit-text-fill-color: currentColor;
+  animation: cycleRainbow 3s linear infinite;
+}
+
+#Text:hover,
+#Text:focus-visible,
+#Grayscale:hover,
+#Grayscale:focus-visible,
+#Theme:hover,
+#Theme:focus-visible {
+  animation: cycleRainbow 3s linear infinite;
+}
+
+/* !SECTION */
+
+
+
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+/* SECTION: ACCESSIBILITY */
+/* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+@media (prefers-reduced-motion: reduce) {
+  a:hover,
+  a:focus-visible,
+  #Menu:hover,
+  #Menu:focus-visible,
+  #Text:hover,
+  #Text:focus-visible,
+  #Grayscale:hover,
+  #Grayscale:focus-visible,
+  #Theme:hover,
+  #Theme:focus-visible,
+  header a:hover i,
+  header a:focus-visible i,
+  header a:hover svg,
+  header a:focus-visible svg {
+    animation: none;
+  }
+
+  #Text:hover,
+  #Text:focus-visible,
+  #Grayscale:hover,
+  #Grayscale:focus-visible,
+  #Theme:hover,
+  #Theme:focus-visible,
+  header a:hover i,
+  header a:focus-visible i,
+  header a:hover svg,
+  header a:focus-visible svg {
+    color: var(--interactive);
+  }
+}
+
+/* !SECTION */

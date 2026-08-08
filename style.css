@@ -86,6 +86,7 @@ h1 {
   font-family: "Bungee Shade", sans-serif;
   font-size: clamp(2rem, 8vw, 4rem);
   line-height: 1;
+  text-align: center;
   color: var(--text);
   margin: 0 0 var(--universalSpacing);
 }
@@ -107,6 +108,7 @@ main ul {
 
 a {
   color: inherit;
+  font-weight: bold;
   text-decoration: none;
 }
 
@@ -190,8 +192,16 @@ footer {
 }
 
 .details {
-  list-style: disc;
-  padding-left: calc(var(--universalSpacing) * 2);
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+ul.details {
+  list-style-type: disc;
+}
+
+ol.details {
+  list-style-type: decimal;
 }
 
 .details li {
@@ -199,8 +209,16 @@ footer {
   text-wrap: pretty;
 }
 
-.entry {
-  margin-bottom: 0;
+.detail-label {
+  text-decoration: underline;
+}
+
+.case-study li {
+  margin-top: 0;
+}
+
+.case-study li + li {
+  margin-top: var(--universalSpacing);
 }
 
 /* !SECTION */
@@ -210,51 +228,6 @@ footer {
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: STATES */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
-
-@keyframes moveRainbow {
-  from {
-    background-position: 0% center;
-  }
-
-  to {
-    background-position: 200% center;
-  }
-}
-
-@keyframes cycleRainbow {
-  0%,
-  100% {
-    color: var(--red);
-  }
-
-  12.5% {
-    color: var(--orange);
-  }
-
-  25% {
-    color: var(--yellow);
-  }
-
-  37.5% {
-    color: var(--green);
-  }
-
-  50% {
-    color: var(--cyan);
-  }
-
-  62.5% {
-    color: var(--blue);
-  }
-
-  75% {
-    color: var(--violet);
-  }
-
-  87.5% {
-    color: var(--pink);
-  }
-}
 
 @keyframes blinkCursor {
   0%,
@@ -272,46 +245,6 @@ footer {
   animation: blinkCursor 1s step-end infinite;
 }
 
-a:hover,
-a:focus-visible,
-#Menu:hover,
-#Menu:focus-visible {
-  color: transparent;
-  background-image: linear-gradient(
-    90deg,
-    var(--red),
-    var(--orange),
-    var(--yellow),
-    var(--green),
-    var(--cyan),
-    var(--blue),
-    var(--violet),
-    var(--pink),
-    var(--red)
-  );
-  background-size: 200% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: moveRainbow 3s linear infinite;
-}
-
-a:hover i,
-a:focus-visible i,
-a:hover svg,
-a:focus-visible svg {
-  color: var(--text);
-  -webkit-text-fill-color: var(--text);
-}
-
-header a:hover i,
-header a:focus-visible i,
-header a:hover svg,
-header a:focus-visible svg {
-  -webkit-text-fill-color: currentColor;
-  animation: cycleRainbow 3s linear infinite;
-}
-
 header > a[aria-current="page"] span,
 #Navigation a[aria-current="page"] {
   color: var(--interactive);
@@ -322,15 +255,6 @@ header > a[aria-current="page"] span,
   background-image: none;
   -webkit-text-fill-color: var(--interactive);
   animation: none;
-}
-
-#Text:hover,
-#Text:focus-visible,
-#Grayscale:hover,
-#Grayscale:focus-visible,
-#Theme:hover,
-#Theme:focus-visible {
-  animation: cycleRainbow 3s linear infinite;
 }
 
 #Theme .fa-sun {
@@ -362,35 +286,8 @@ html.Large {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .typing-cursor,
-  a:hover,
-  a:focus-visible,
-  #Menu:hover,
-  #Menu:focus-visible,
-  #Text:hover,
-  #Text:focus-visible,
-  #Grayscale:hover,
-  #Grayscale:focus-visible,
-  #Theme:hover,
-  #Theme:focus-visible,
-  header a:hover i,
-  header a:focus-visible i,
-  header a:hover svg,
-  header a:focus-visible svg {
+  .typing-cursor {
     animation: none;
-  }
-
-  #Text:hover,
-  #Text:focus-visible,
-  #Grayscale:hover,
-  #Grayscale:focus-visible,
-  #Theme:hover,
-  #Theme:focus-visible,
-  header a:hover i,
-  header a:focus-visible i,
-  header a:hover svg,
-  header a:focus-visible svg {
-    color: var(--interactive);
   }
 }
 

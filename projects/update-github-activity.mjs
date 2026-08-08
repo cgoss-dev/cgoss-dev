@@ -5,10 +5,11 @@
 import { writeFile } from "node:fs/promises";
 
 const username = "cgoss-dev";
-const outputPath = "github/activity.json";
+const outputPath = "projects/activity.json";
 const eventsPerPage = 100;
 const maximumPages = 3;
 const thirtyDaysInMilliseconds = 30 * 24 * 60 * 60 * 1000;
+const heatmapWeeks = 12;
 
 /* !SECTION */
 
@@ -64,6 +65,54 @@ async function fetchEvents() {
   }
 
   return events;
+}
+
+async function fetchContributionWeeks() {
+  const response = await fetch("https://api.github.com/graphql", {
+    method: "POST",
+    headers: {
+      ...getHeaders(),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      query: `
+        query ContributionCalendar($username: String!) {
+          user(login: $username) {
+            contributionsCollection {
+              contributionCalendar {
+                weeks {
+                  contributionDays {
+                    contributionCount
+                    contributionLevel
+                    date
+                    weekday
+                  }
+                }
+              }
+            }
+          }
+        }
+      `,
+      variables: { username }
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `GitHub contribution request failed: ${response.status} ${response.statusText}`
+    );
+  }
+
+  const result = await response.json();
+
+  if (result.errors || !result.data?.user) {
+    throw new Error("GitHub contribution data could not be loaded.");
+  }
+
+  const weeks =
+    result.data.user.contributionsCollection.contributionCalendar.weeks;
+
+  return weeks.slice(-heatmapWeeks);
 }
 
 /* !SECTION */
@@ -127,8 +176,14 @@ async function summarizeActivity(events) {
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 async function updateGithubActivity() {
-  const events = await fetchEvents();
-  const activity = await summarizeActivity(events);
+  const [events, contributionWeeks] = await Promise.all([
+    fetchEvents(),
+    fetchContributionWeeks()
+  ]);
+  const activity = {
+    ...await summarizeActivity(events),
+    contributionWeeks
+  };
 
   await writeFile(outputPath, `${JSON.stringify(activity, null, 2)}\n`);
 }

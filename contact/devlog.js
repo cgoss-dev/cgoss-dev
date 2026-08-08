@@ -35,18 +35,13 @@ function createArticle(post) {
   article.append(heading);
 
   if (post.content) {
-    const content = document.createElement("p");
     const sentences = getFirstSentences(post.content, 3);
 
-    sentences.forEach((sentence, index) => {
-      content.append(sentence);
-
-      if (index < sentences.length - 1) {
-        content.append(document.createElement("br"));
-      }
+    sentences.forEach((sentence) => {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = sentence;
+      article.append(paragraph);
     });
-
-    article.append(content);
   }
 
   return article;
@@ -54,11 +49,12 @@ function createArticle(post) {
 
 async function initializeDevlog() {
   const devlog = document.querySelector("#Devlog");
+  const root = document.body.dataset.root;
 
   try {
     const [componentResponse, postsResponse] = await Promise.all([
-      fetch("medium/devlog.html"),
-      fetch("medium/medium-posts.json")
+      fetch(`${root}/contact/devlog.html`),
+      fetch(`${root}/contact/medium-posts.json`)
     ]);
 
     if (!componentResponse.ok || !postsResponse.ok) {
@@ -87,8 +83,12 @@ async function initializeDevlog() {
     profile.href = "https://medium.com/@chrisiscode";
     profile.target = "_blank";
     profile.rel = "noopener noreferrer";
-    profile.textContent = "View all on Medium →";
-    articles.append(profile);
+    profile.textContent = "View Medium →";
+
+    const action = document.createElement("p");
+    action.className = "card-action";
+    action.append(profile);
+    articles.append(action);
   } catch (error) {
     devlog.textContent = "The dev.log is temporarily unavailable.";
   }

@@ -6,7 +6,7 @@ import { writeFile } from "node:fs/promises";
 
 const feedUrl = "https://medium.com/feed/@chrisiscode";
 const mediumProfileUrl = "https://medium.com/@chrisiscode";
-const outputPath = "medium/medium-posts.json";
+const outputPath = "contact/medium-posts.json";
 const maxPosts = 8;
 const excerptLength = 180;
 
