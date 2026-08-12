@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | Chris Goss</title>
+    <link rel="icon" href="../images/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="../images/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../rainglow.css" />
+    <link rel="stylesheet" href="../card.css" />
+    <script src="https://kit.fontawesome.com/49beee2559.js" crossorigin="anonymous"></script>
+  </head>
+
+  <body data-root="..">
+    <div id="Header"></div>
+
+    <main tabindex="-1">
+      <h1>Projects</h1>
+
+      <div class="cards">
+        <article class="card card-image">
+          <h2 class="card-title">dev.png</h2>
+
+          <a class="card-image-link" href="https://cgoss-dev.github.io/star-shower/" target="_blank" rel="noopener noreferrer">
+            <img src="../images/project_starShower.png" alt="Play Star Shower" />
+          </a>
+        </article>
+
+        <div id="Github"></div>
+
+        <article class="card card-wide">
+          <h2 class="card-title">dev.exe</h2>
+
+          <div class="card-content">
+            <p><a href="https://cgoss-dev.github.io/star-shower/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-star" aria-hidden="true"></i> Star Shower</a></p>
+            <ol class="details case-study">
+              <li><span class="detail-label">Purpose</span>:<br>Create a standalone browser game where players collect falling stars, survive hazards, manage temporary effects, and reach level 10.</li>
+              <li><span class="detail-label">Challenge</span>:<br>Keep movement, object density, collision feedback, and difficulty balanced across different canvas and screen sizes.</li>
+              <li><span class="detail-label">Solution</span>:<br>Scale gameplay values from canvas dimensions, replace a laggy multi-ribbon trail with one optimized trail, and separate input, state, drawing, and entity behavior into native JavaScript modules.</li>
+              <li><span class="detail-label">Accessibility</span>:<br>Support WASD and arrow keys, pointer and touch movement, optional joystick controls, keyboard-navigable menus, and visible focus feedback.</li>
+              <li><span class="detail-label">Lesson</span>:<br>Treat responsiveness as part of gameplay—not just layout—and favor shared scaling rules, clear module ownership, and repeated testing over isolated visual fixes.</li>
+            </ol>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <div id="Footer"></div>
+    <script src="../script.js"></script>
+    <script src="../datetime.js"></script>
+    <script src="../projects/activity.js"></script>
+    <script src="../rainburst.js"></script>
+  </body>
+</html>

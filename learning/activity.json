@@ -1,0 +1,13 @@
+{
+  "course": "Foundational C# with Microsoft",
+  "chapters": [
+    { "chapter": 1, "completedLessons": 1, "totalLessons": 7 },
+    { "chapter": 2, "completedLessons": 0, "totalLessons": 8 },
+    { "chapter": 3, "completedLessons": 0, "totalLessons": 8 },
+    { "chapter": 4, "completedLessons": 0, "totalLessons": 8 },
+    { "chapter": 5, "completedLessons": 0, "totalLessons": 6 },
+    { "chapter": 6, "completedLessons": 0, "totalLessons": 7 }
+  ],
+  "goalDate": "2026-09-30",
+  "lastActivity": "2026-08-08T03:10:02Z"
+}
