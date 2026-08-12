@@ -56,11 +56,10 @@ function createFccProgress(chapters) {
   return block;
 }
 
-function createFccGoal(chapters, startedAt, goalDate) {
+function createFccGoal(chapters, goalDate) {
   const block = document.createElement("p");
   const heading = document.createElement("strong");
   const statusText = document.createElement("span");
-  const start = new Date(`${startedAt}T00:00:00Z`);
   const goal = new Date(`${goalDate}T00:00:00Z`);
   const localDateParts = new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/Los_Angeles",
@@ -83,16 +82,14 @@ function createFccGoal(chapters, startedAt, goalDate) {
     0
   );
   const millisecondsPerDay = 1000 * 60 * 60 * 24;
-  const elapsedDays = Math.max(
-    1,
-    Math.floor((today - start) / millisecondsPerDay) + 1
-  );
-  const lessonsPerDay = completedLessons / elapsedDays;
+  const remainingLessons = totalLessons - completedLessons;
+  const remainingDays = Math.floor((goal - today) / millisecondsPerDay) + 1;
+  const lessonsPerDay = remainingLessons / remainingDays;
   const status = completedLessons >= totalLessons
     ? "COMPLETE"
-    : lessonsPerDay < 2
+    : remainingDays <= 0 || lessonsPerDay > 3
       ? "BEHIND"
-      : lessonsPerDay < 3
+      : lessonsPerDay > 2
         ? "ON TRACK"
         : "AHEAD";
   const formattedGoal = new Intl.DateTimeFormat("en-US", {
@@ -144,7 +141,7 @@ async function initializeFccActivity() {
     activity.append(
       createFccBlock("CURRENT", data.course),
       createFccProgress(data.chapters),
-      createFccGoal(data.chapters, data.startedAt, data.goalDate),
+      createFccGoal(data.chapters, data.goalDate),
       createFccBlock(
         "LATEST",
         formatDateTime(data.lastActivity)
