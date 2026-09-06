@@ -2,54 +2,8 @@
   "lastPush": "2026-08-12T13:25:42Z",
   "lastRepository": "cgoss-dev/cgoss-dev",
   "repositoriesThirtyDays": 1,
-  "commitsThirtyDays": 9,
+  "commitsThirtyDays": 8,
   "contributionWeeks": [
-    {
-      "contributionDays": [
-        {
-          "contributionCount": 0,
-          "contributionLevel": "NONE",
-          "date": "2026-06-14",
-          "weekday": 0
-        },
-        {
-          "contributionCount": 0,
-          "contributionLevel": "NONE",
-          "date": "2026-06-15",
-          "weekday": 1
-        },
-        {
-          "contributionCount": 0,
-          "contributionLevel": "NONE",
-          "date": "2026-06-16",
-          "weekday": 2
-        },
-        {
-          "contributionCount": 0,
-          "contributionLevel": "NONE",
-          "date": "2026-06-17",
-          "weekday": 3
-        },
-        {
-          "contributionCount": 3,
-          "contributionLevel": "FIRST_QUARTILE",
-          "date": "2026-06-18",
-          "weekday": 4
-        },
-        {
-          "contributionCount": 0,
-          "contributionLevel": "NONE",
-          "date": "2026-06-19",
-          "weekday": 5
-        },
-        {
-          "contributionCount": 7,
-          "contributionLevel": "SECOND_QUARTILE",
-          "date": "2026-06-20",
-          "weekday": 6
-        }
-      ]
-    },
     {
       "contributionDays": [
         {
@@ -553,6 +507,16 @@
           "contributionLevel": "NONE",
           "date": "2026-09-05",
           "weekday": 6
+        }
+      ]
+    },
+    {
+      "contributionDays": [
+        {
+          "contributionCount": 0,
+          "contributionLevel": "NONE",
+          "date": "2026-09-06",
+          "weekday": 0
         }
       ]
     }
