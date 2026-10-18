@@ -7,52 +7,6 @@
     {
       "contributionDays": [
         {
-          "contributionCount": 10,
-          "contributionLevel": "SECOND_QUARTILE",
-          "date": "2026-07-26",
-          "weekday": 0
-        },
-        {
-          "contributionCount": 0,
-          "contributionLevel": "NONE",
-          "date": "2026-07-27",
-          "weekday": 1
-        },
-        {
-          "contributionCount": 0,
-          "contributionLevel": "NONE",
-          "date": "2026-07-28",
-          "weekday": 2
-        },
-        {
-          "contributionCount": 0,
-          "contributionLevel": "NONE",
-          "date": "2026-07-29",
-          "weekday": 3
-        },
-        {
-          "contributionCount": 0,
-          "contributionLevel": "NONE",
-          "date": "2026-07-30",
-          "weekday": 4
-        },
-        {
-          "contributionCount": 0,
-          "contributionLevel": "NONE",
-          "date": "2026-07-31",
-          "weekday": 5
-        },
-        {
-          "contributionCount": 0,
-          "contributionLevel": "NONE",
-          "date": "2026-08-01",
-          "weekday": 6
-        }
-      ]
-    },
-    {
-      "contributionDays": [
-        {
           "contributionCount": 0,
           "contributionLevel": "NONE",
           "date": "2026-08-02",
@@ -553,6 +507,16 @@
           "contributionLevel": "NONE",
           "date": "2026-10-17",
           "weekday": 6
+        }
+      ]
+    },
+    {
+      "contributionDays": [
+        {
+          "contributionCount": 0,
+          "contributionLevel": "NONE",
+          "date": "2026-10-18",
+          "weekday": 0
         }
       ]
     }
