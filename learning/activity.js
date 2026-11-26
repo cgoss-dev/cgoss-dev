@@ -12,9 +12,12 @@ function createFccBlock(label, value) {
   return block;
 }
 
-function createFccProgress(chapters) {
+function createFccProgress(chapters, course) {
   const block = document.createElement("section");
-  const heading = document.createElement("strong");
+  const heading = document.createElement("a");
+  heading.href = "https://www.freecodecamp.org/chrisiscode";
+  heading.target = "_blank";
+  heading.rel = "noopener noreferrer";
   const summary = document.createElement("span");
   const segments = document.createElement("div");
   const currentChapterIndex = chapters.findIndex(
@@ -27,7 +30,7 @@ function createFccProgress(chapters) {
   const currentLesson = Math.max(1, currentChapterData.completedLessons);
 
   block.className = "fcc-progress";
-  heading.textContent = "PROGRESS";
+  heading.textContent = course;
   summary.textContent = `Chapter ${currentChapter}, Lesson ${currentLesson}`;
   segments.className = "progress-segments";
 
@@ -37,6 +40,9 @@ function createFccProgress(chapters) {
     const count = document.createElement("small");
 
     segment.className = "progress-chapter";
+      if (chapter.completedLessons >= chapter.totalLessons) {
+        segment.classList.add("is-complete");
+      }
     segment.style.flexGrow = chapter.totalLessons;
     progress.value = chapter.completedLessons;
     progress.max = chapter.totalLessons;
@@ -90,8 +96,8 @@ function createFccGoal(chapters, goalDate) {
     : remainingDays <= 0 || lessonsPerDay > 3
       ? "BEHIND"
       : lessonsPerDay > 2
-        ? "ON TRACK"
-        : "AHEAD";
+        ? "BEHIND"
+        : "ON TRACK";
   const formattedGoal = new Intl.DateTimeFormat("en-US", {
     timeZone: "UTC",
     year: "2-digit",
@@ -138,26 +144,18 @@ async function initializeFccActivity() {
     const data = await activityResponse.json();
 
     activity.textContent = "";
-    activity.append(
-      createFccBlock("CURRENT", data.course),
-      createFccProgress(data.chapters),
-      createFccGoal(data.chapters, data.goalDate),
-      createFccBlock(
-        "LATEST",
-        formatDateTime(data.lastActivity)
-      )
-    );
 
-    const profile = document.createElement("a");
-    profile.href = "https://www.freecodecamp.org/chrisiscode";
-    profile.target = "_blank";
-    profile.rel = "noopener noreferrer";
-    profile.textContent = "View freeCodeCamp →";
+    data.certificates.forEach((certificate) => {
+      activity.append(
+        createFccProgress(certificate.chapters, certificate.course),
+        createFccGoal(certificate.chapters, certificate.goalDate),
+        createFccBlock(
+          "LATEST",
+          formatDateTime(certificate.lastActivity)
+        )
+      );
+    });
 
-    const action = document.createElement("p");
-    action.className = "card-action";
-    action.append(profile);
-    activity.append(action);
   } catch (error) {
     freeCodeCamp.textContent = "freeCodeCamp activity is temporarily unavailable.";
   }
