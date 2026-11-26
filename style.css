@@ -14,6 +14,19 @@
   --violet: #80f;
   --pink: #c0c;
 
+  --rainglow: linear-gradient(
+    90deg,
+    var(--red),
+    var(--orange),
+    var(--yellow),
+    var(--green),
+    var(--cyan),
+    var(--blue),
+    var(--violet),
+    var(--pink),
+    var(--red)
+  );
+
   --text: #fff;
   --background: #000;
   --interactive: var(--pink);
@@ -48,6 +61,7 @@
 
 body {
   font-family: "Annotation Mono", monospace;
+  font-size: 0.75rem;
   color: var(--text);
   background-color: var(--background);
   margin: 0 auto;
@@ -84,7 +98,7 @@ section {
 
 h1 {
   font-family: "Bungee Shade", sans-serif;
-  font-size: clamp(2rem, 8vw, 4rem);
+  font-size: 4rem;
   line-height: 1;
   text-align: center;
   color: var(--text);
@@ -92,7 +106,7 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(1.5rem, 6vw, 3rem);
+  font-size: 2rem;
   color: var(--text);
   margin: 0 0 var(--universalSpacing);
 }
@@ -133,10 +147,6 @@ header > a {
 header nav {
   grid-column: 1 / -1;
   grid-row: 2;
-}
-
-small {
-  font-size: 0.75rem;
 }
 
 footer {
@@ -242,7 +252,7 @@ ol.details {
 }
 
 .typing-cursor {
-  animation: blinkCursor 1s step-end infinite;
+  animation: blinkCursor 1.5s step-end infinite;
 }
 
 header > a[aria-current="page"] span,
@@ -278,11 +288,11 @@ html.Grayscale {
 }
 
 html.Small {
-  font-size: 87.5%;
+  font-size: 80%;
 }
 
 html.Large {
-  font-size: 112.5%;
+  font-size: 120%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -327,7 +337,6 @@ html.Large {
     max-width: calc(100vw - var(--universalSpacing) * 2);
     color: var(--text);
     background-color: var(--background);
-    border: 0.5rem double var(--text);
     border-radius: .5rem;
     padding: 0.25rem var(--universalSpacing);
     text-align: center;

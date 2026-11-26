@@ -73,7 +73,11 @@
   gap: 0;
 }
 
-.card-content h3 {
+.card-group.is-complete {
+  color: var(--green);
+}
+
+.card-content  {
   margin: 0 0 var(--universalSpacing);
 }
 
@@ -113,7 +117,6 @@
   color: var(--green);
 }
 
-.fcc-status-ahead,
 .fcc-status-complete {
   color: var(--pink);
 }
@@ -150,6 +153,14 @@
 .progress-chapter progress::-moz-progress-bar {
   background-color: var(--interactive);
   border-radius: 0;
+}
+
+.progress-chapter.is-complete progress::-webkit-progress-value {
+  background-color: var(--green);
+}
+
+.progress-chapter.is-complete progress::-moz-progress-bar {
+  background-color: var(--green);
 }
 
 .progress-chapter small {
