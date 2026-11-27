@@ -22,12 +22,18 @@ function pluralize(number, singular, plural = `${singular}s`) {
 function createHeatmap(weeks) {
   const section = document.createElement("section");
   const heading = document.createElement("strong");
-  const heatmap = document.createElement("div");
+
+  const heatmap = document.createElement("a");
+  heatmap.href = "https://github.com/cgoss-dev";
+  heatmap.target = "_blank";
+  heatmap.rel = "noopener noreferrer";
 
   heading.textContent = "12 WEEKS";
   heatmap.className = "heatmap";
-  heatmap.setAttribute("role", "group");
-  heatmap.setAttribute("aria-label", "GitHub contributions during the last 12 weeks");
+  heatmap.setAttribute(
+    "aria-label",
+    "View my GitHub profile: contributions during the last 12 weeks (opens in a new tab)"
+  );
 
   weeks.forEach((week, weekIndex) => {
     week.contributionDays.forEach((day) => {
@@ -80,16 +86,6 @@ async function initializeGithubActivity() {
       activity.append(createHeatmap(data.contributionWeeks));
     }
 
-    const profile = document.createElement("a");
-    profile.href = "https://github.com/cgoss-dev";
-    profile.target = "_blank";
-    profile.rel = "noopener noreferrer";
-    profile.textContent = "View GitHub →";
-
-    const action = document.createElement("p");
-    action.className = "card-action";
-    action.append(profile);
-    activity.append(action);
   } catch (error) {
     github.textContent = "GitHub activity is temporarily unavailable.";
   }

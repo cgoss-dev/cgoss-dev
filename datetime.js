@@ -5,24 +5,21 @@ function formatDateTime(value) {
     return null;
   }
 
-  function getParts(timeZone) {
-    const parts = new Intl.DateTimeFormat("en-US", {
-      timeZone: timeZone,
-      year: "2-digit",
-      month: "short",
-      day: "2-digit",
-      weekday: "short",
-      hour: "2-digit",
-      minute: "2-digit",
-      hourCycle: "h23"
-    }).formatToParts(date);
+  const isDateOnly =
+    typeof value === "string" &&
+    /^\d{4}-\d{2}-\d{2}$/.test(value);
 
-    return Object.fromEntries(parts.map((part) => [part.type, part.value]));
-  }
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: isDateOnly ? "UTC" : "America/Los_Angeles",
+    year: "2-digit",
+    month: "short",
+    day: "2-digit",
+    weekday: "short"
+  }).formatToParts(date);
 
-  const local = getParts("America/Los_Angeles");
-  const zulu = getParts("UTC");
-  const localDate = `${local.year}${local.month}${local.day}${local.weekday}`.toUpperCase();
+  const local = Object.fromEntries(
+    parts.map((part) => [part.type, part.value])
+  );
 
-  return `${localDate} @ ${local.hour}:${local.minute}L/${zulu.hour}:${zulu.minute}Z`;
+  return `${local.weekday}-${local.day}-${local.month}-${local.year}`.toUpperCase();
 }

@@ -19,7 +19,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;
   gap: var(--universalSpacing);
-  margin: var(--universalSpacing) 0;
+  margin: 0 0 var(--universalSpacing);
 }
 
 .card-column {
@@ -38,9 +38,7 @@
   min-height: 0;
 }
 
-#Github > .card,
-#Devlog > .card,
-#FreeCodeCamp > .card {
+#Devlog > .card {
   height: 100%;
 }
 
@@ -73,14 +71,6 @@
   gap: 0;
 }
 
-.card-group.is-complete {
-  color: var(--green);
-}
-
-.card-content  {
-  margin: 0 0 var(--universalSpacing);
-}
-
 .card-group li {
   margin: 0;
 }
@@ -98,27 +88,39 @@
 
 .card-content progress {
   width: 100%;
-  accent-color: var(--interactive);
+  accent-color: var(--status-color, var(--accent));
 }
 
-.fcc-progress > span {
-  display: block;
+#FccActivity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--universalSpacing);
+}
+
+.certificate {
+  display: flex;
+  flex-direction: column;
+}
+
+.certificate > * {
+  margin: 0;
 }
 
 .fcc-status {
   font-weight: bold;
+  color: var(--status-color);
 }
 
-.fcc-status-behind {
-  color: var(--red);
+.certificate:has(.fcc-status-behind) {
+  --status-color: var(--red);
 }
 
-.fcc-status-on-track {
-  color: var(--green);
+.certificate:has(.fcc-status-on-track) {
+  --status-color: var(--green);
 }
 
-.fcc-status-complete {
-  color: var(--pink);
+.certificate:has(.fcc-status-complete) {
+  --status-color: var(--pink);
 }
 
 .progress-segments {
@@ -146,21 +148,13 @@
 }
 
 .progress-chapter progress::-webkit-progress-value {
-  background-color: var(--interactive);
+  background-color: var(--status-color);
   border-radius: 0;
 }
 
 .progress-chapter progress::-moz-progress-bar {
-  background-color: var(--interactive);
+  background-color: var(--status-color);
   border-radius: 0;
-}
-
-.progress-chapter.is-complete progress::-webkit-progress-value {
-  background-color: var(--green);
-}
-
-.progress-chapter.is-complete progress::-moz-progress-bar {
-  background-color: var(--green);
 }
 
 .progress-chapter small {
@@ -174,7 +168,7 @@
 }
 
 .card-image-link:focus-visible {
-  outline: 0.25rem solid var(--interactive);
+  outline: 0.25rem solid var(--accent);
   outline-offset: -0.25rem;
 }
 
@@ -183,6 +177,17 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+@media (min-width: 50rem) {
+  .card-image-link {
+    position: relative;
+  }
+
+  .card-image-link img {
+    position: absolute;
+    inset: 0;
+  }
 }
 
 .heatmap {
@@ -200,19 +205,19 @@
 }
 
 .heatmap-day[data-level="FIRST_QUARTILE"] {
-  background-color: color-mix(in srgb, var(--interactive) 25%, var(--background));
+  background-color: color-mix(in srgb, var(--green) 25%, var(--background));
 }
 
 .heatmap-day[data-level="SECOND_QUARTILE"] {
-  background-color: color-mix(in srgb, var(--interactive) 50%, var(--background));
+  background-color: color-mix(in srgb, var(--green) 50%, var(--background));
 }
 
 .heatmap-day[data-level="THIRD_QUARTILE"] {
-  background-color: color-mix(in srgb, var(--interactive) 75%, var(--background));
+  background-color: color-mix(in srgb, var(--green) 75%, var(--background));
 }
 
 .heatmap-day[data-level="FOURTH_QUARTILE"] {
-  background-color: var(--interactive);
+  background-color: var(--green);
 }
 
 @media (max-width: 49.99rem) {
