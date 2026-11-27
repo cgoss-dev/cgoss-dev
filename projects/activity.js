@@ -2,33 +2,28 @@
 /* SECTION: GIT ACT */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
-function createActivityBlock(label, lines) {
-  const block = document.createElement("p");
-  const heading = document.createElement("strong");
-  heading.textContent = label;
-  block.append(heading);
-
-  lines.forEach((line) => {
-    block.append(document.createElement("br"), line);
-  });
-
-  return block;
-}
-
 function pluralize(number, singular, plural = `${singular}s`) {
   return `${number} ${number === 1 ? singular : plural}`;
 }
 
-function createHeatmap(weeks) {
+function createHeatmap(weeks, latestActivityDate) {
   const section = document.createElement("section");
-  const heading = document.createElement("strong");
+  const heading = document.createElement("h3");
 
   const heatmap = document.createElement("a");
   heatmap.href = "https://github.com/cgoss-dev";
   heatmap.target = "_blank";
   heatmap.rel = "noopener noreferrer";
 
-  heading.textContent = "12 WEEKS";
+  const icon = document.createElement("i");
+  icon.className = "fa-brands fa-github";
+  icon.setAttribute("aria-hidden", "true");
+  const headingLink = document.createElement("a");
+  headingLink.href = heatmap.href;
+  headingLink.target = "_blank";
+  headingLink.rel = "noopener noreferrer";
+  headingLink.append(icon, " Latest Activity ", latestActivityDate || "No recent public pushes");
+  heading.append(headingLink);
   heatmap.className = "heatmap";
   heatmap.setAttribute(
     "aria-label",
@@ -76,14 +71,8 @@ async function initializeGithubActivity() {
     const pushTime = formatDateTime(data.lastPush);
 
     activity.textContent = "";
-    const latestLines = pushTime
-      ? [pushTime]
-      : ["No recent public pushes"];
-
-    activity.append(createActivityBlock("LATEST", latestLines));
-
     if (data.contributionWeeks?.length) {
-      activity.append(createHeatmap(data.contributionWeeks));
+      activity.append(createHeatmap(data.contributionWeeks, pushTime));
     }
 
   } catch (error) {

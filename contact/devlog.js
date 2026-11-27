@@ -25,12 +25,14 @@ function createArticle(post) {
 
   const heading = document.createElement("h3");
   const link = document.createElement("a");
-  link.classList.add("accent");
 
   link.href = post.url;
   link.target = "_blank";
   link.rel = "noopener noreferrer";
-  link.textContent = post.title;
+  const icon = document.createElement("i");
+  icon.className = "fa-brands fa-medium";
+  icon.setAttribute("aria-hidden", "true");
+  link.append(icon, " ", post.title);
 
   heading.append(link);
   article.append(heading);

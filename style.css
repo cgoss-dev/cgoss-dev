@@ -128,9 +128,15 @@ a {
   text-decoration: none;
 }
 
-.accent{
+.accent {
   color: var(--accent);
-  font-weight: bold;
+}
+
+strong,
+b,
+.detail-label,
+.case-study li::marker {
+  font-weight: 700;
 }
 
 ul {
@@ -154,7 +160,7 @@ header > a {
 }
 
 header > a span {
-  color: var(--pink);
+  color: var(--accent);
 }
 
 header nav {
@@ -234,10 +240,6 @@ ol.details {
 .details li {
   margin-top: calc(var(--universalSpacing) * 0.5);
   text-wrap: pretty;
-}
-
-.detail-label {
-  text-decoration: underline;
 }
 
 .case-study li {
@@ -349,6 +351,7 @@ html.Large {
     max-width: calc(100vw - var(--universalSpacing) * 2);
     color: var(--text);
     background-color: var(--background);
+    border: 0.5rem double var(--text);
     border-radius: .5rem;
     padding: 0.25rem var(--universalSpacing);
     text-align: center;

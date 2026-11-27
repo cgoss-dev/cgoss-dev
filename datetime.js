@@ -21,5 +21,5 @@ function formatDateTime(value) {
     parts.map((part) => [part.type, part.value])
   );
 
-  return `${local.weekday}-${local.day}-${local.month}-${local.year}`.toUpperCase();
+  return `${local.weekday}${local.day}${local.month}${local.year}`;
 }

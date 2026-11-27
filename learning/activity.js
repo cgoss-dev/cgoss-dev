@@ -114,15 +114,13 @@ function createCertificateCard(certificate) {
   heading.href = certificate.url;
   heading.target = "_blank";
   heading.rel = "noopener noreferrer";
-  heading.textContent = certificate.course;
+  const icon = document.createElement("i");
+  icon.className = "fa-solid fa-book-open";
+  icon.setAttribute("aria-hidden", "true");
+  heading.append(icon, " ", certificate.course);
 
   section.append(
     heading,
-    createFccGoal(certificate.chapters, certificate.goalDate),
-    createFccBlock(
-      "LATEST",
-      formatDateTime(certificate.lastActivity)
-    ),
     createFccProgress(certificate)
   );
 

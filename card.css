@@ -14,9 +14,33 @@
     inset 0 0 0 0.25rem var(--background);
 }
 
+.card,
+.card :where(*) {
+  font-size: inherit;
+}
+
+.card a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.card.web-refs a {
+  color: var(--text);
+}
+
+.card .certificate > a {
+  color: var(--text);
+}
+
+.cards .card :is(i, svg) {
+  color: var(--text);
+  -webkit-text-fill-color: currentColor;
+  animation: none;
+}
+
 .cards {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
   gap: var(--universalSpacing);
   margin: 0 0 var(--universalSpacing);
@@ -32,19 +56,23 @@
   grid-column: 1 / -1;
 }
 
+.card-span-two {
+  grid-column: span 2;
+}
+
 .card-image {
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
-#Devlog > .card {
-  height: 100%;
+.cards > #Devlog,
+.cards > #Github {
+  display: grid;
 }
 
 .card-title {
   font-family: "Annotation Mono", monospace;
-  font-size: 1rem;
   line-height: 1;
   color: var(--background);
   background-color: var(--text);
@@ -75,8 +103,27 @@
   margin: 0;
 }
 
+#Articles h3,
+#Activity h3 {
+  margin-bottom: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+#Activity h3 {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+}
+
 #Articles section p {
   margin-bottom: 0;
+}
+
+#Articles img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2/1;
+  object-fit: cover;
 }
 
 .card-content img {
@@ -88,7 +135,7 @@
 
 .card-content progress {
   width: 100%;
-  accent-color: var(--status-color, var(--accent));
+  accent-color: var(--green);
 }
 
 #FccActivity {
@@ -148,23 +195,26 @@
 }
 
 .progress-chapter progress::-webkit-progress-value {
-  background-color: var(--status-color);
+  background-color: var(--green);
   border-radius: 0;
 }
 
 .progress-chapter progress::-moz-progress-bar {
-  background-color: var(--status-color);
+  background-color: var(--green);
   border-radius: 0;
 }
 
 .progress-chapter small {
   display: block;
+  font-size: smaller;
 }
 
 .card-image-link {
   display: block;
+  position: relative;
   flex: 1;
-  min-height: 0;
+  min-height: 2.5in;
+  overflow: hidden;
 }
 
 .card-image-link:focus-visible {
@@ -174,24 +224,18 @@
 
 .card-image-link img {
   display: block;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-@media (min-width: 50rem) {
-  .card-image-link {
-    position: relative;
-  }
-
-  .card-image-link img {
-    position: absolute;
-    inset: 0;
-  }
+  object-position: center;
 }
 
 .heatmap {
   display: grid;
+  /* width: 100%;
+  max-width: 3in; */
   grid-template-columns: repeat(12, minmax(0, 1fr));
   grid-template-rows: repeat(7, 1fr);
   gap: 0.25rem;
@@ -223,6 +267,10 @@
 @media (max-width: 49.99rem) {
   .cards {
     grid-template-columns: 1fr;
+  }
+
+  .card-span-two {
+    grid-column: auto;
   }
 }
 

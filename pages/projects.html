@@ -27,21 +27,19 @@
           </a>
         </article>
 
-        <div id="Github"></div>
-
-        <article class="card card-wide">
+        <article class="card card-span-two">
           <h2 class="card-title">dev.case</h2>
 
           <div class="card-content">
-            <p class="featured-project"><a class="accent" href="https://cgoss-dev.github.io/star-shower/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-star" aria-hidden="true"></i> Star Shower</a></p>
-
-            <ol class="details case-study">
-              <li><span class="detail-label">Purpose</span>:<br>Create a standalone browser game where players collect falling stars, survive hazards, manage temporary effects, and reach level 10.</li>
-              <li><span class="detail-label">Challenge</span>:<br>Keep movement, object density, collision feedback, and difficulty balanced across different canvas and screen sizes.</li>
-              <li><span class="detail-label">Solution</span>:<br>Scale gameplay values from canvas dimensions, replace a laggy multi-ribbon trail with one optimized trail, and separate input, state, drawing, and entity behavior into native JavaScript modules.</li>
-              <li><span class="detail-label">Accessibility</span>:<br>Support WASD and arrow keys, pointer and touch movement, optional joystick controls, keyboard-navigable menus, and visible focus feedback.</li>
-              <li><span class="detail-label">Lesson</span>:<br>Treat responsiveness as part of gameplay—not just layout—and favor shared scaling rules, clear module ownership, and repeated testing over isolated visual fixes.</li>
-            </ol>
+            <div class="card-group">
+              <p><span class="detail-label"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Problem</span><br>Star Shower needed consistent gameplay across desktop and mobile screens, with controls that let players collect stars and avoid hazards using their preferred input method.</p>
+            </div>
+            <div class="card-group">
+              <p><span class="detail-label"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i> Approach</span><br>I scaled gameplay to the canvas size, separated input and game behavior into JavaScript modules, and added keyboard, pointer, and touch controls. I chose colors and element sizes to accommodate accessibility needs and replaced a laggy multi-ribbon trail with a single optimized trail.</p>
+            </div>
+            <div class="card-group">
+              <p><span class="detail-label"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Outcome</span><br>The browser game supports desktop and mobile play through 10 levels, with multiple control options and keyboard-navigable menus. Shared scaling rules and modular code made it easier to refine gameplay across screen sizes.</p>
+            </div>
           </div>
         </article>
       </div>
@@ -50,7 +48,6 @@
     <div id="Footer"></div>
     <script src="../script.js"></script>
     <script src="../datetime.js"></script>
-    <script src="../projects/activity.js"></script>
     <script src="../rainburst.js"></script>
   </body>
 </html>
