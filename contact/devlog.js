@@ -25,6 +25,7 @@ function createArticle(post) {
 
   const heading = document.createElement("h3");
   const link = document.createElement("a");
+  link.classList.add("accent");
 
   link.href = post.url;
   link.target = "_blank";
@@ -37,11 +38,9 @@ function createArticle(post) {
   if (post.content) {
     const sentences = getFirstSentences(post.content, 3);
 
-    sentences.forEach((sentence) => {
-      const paragraph = document.createElement("p");
-      paragraph.textContent = sentence;
-      article.append(paragraph);
-    });
+    const paragraph = document.createElement("p");
+    paragraph.textContent = sentences.join(" ");
+    article.append(paragraph);
   }
 
   return article;
@@ -79,16 +78,6 @@ async function initializeDevlog() {
       articles.append(createArticle(post));
     });
 
-    const profile = document.createElement("a");
-    profile.href = "https://medium.com/@chrisiscode";
-    profile.target = "_blank";
-    profile.rel = "noopener noreferrer";
-    profile.textContent = "View Medium →";
-
-    const action = document.createElement("p");
-    action.className = "card-action";
-    action.append(profile);
-    articles.append(action);
   } catch (error) {
     devlog.textContent = "The dev.log is temporarily unavailable.";
   }

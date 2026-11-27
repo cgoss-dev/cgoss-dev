@@ -8,11 +8,11 @@
   --red: #f00;
   --orange: #fa0;
   --yellow: #ff0;
-  --green: #0f0;
+  --green: #080;
   --cyan: #0dd;
   --blue: #08f;
   --violet: #80f;
-  --pink: #c0c;
+  --pink: #c1c;
 
   --rainglow: linear-gradient(
     90deg,
@@ -29,7 +29,8 @@
 
   --text: #fff;
   --background: #000;
-  --interactive: var(--pink);
+  --accent: var(--pink);
+  --success: var(--green);
 }
 
 @font-face {
@@ -61,12 +62,12 @@
 
 body {
   font-family: "Annotation Mono", monospace;
-  font-size: 0.75rem;
+  font-size: 1rem;
   color: var(--text);
   background-color: var(--background);
   margin: 0 auto;
   padding: var(--universalSpacing);
-  max-width: 800px;
+  max-width: 1200px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -88,7 +89,8 @@ body.Light {
 
 main {
   flex: 1;
-  margin-top: var(--universalSpacing);
+  display: flex;
+  flex-direction: column;
 }
 
 section {
@@ -126,6 +128,11 @@ a {
   text-decoration: none;
 }
 
+.accent{
+  color: var(--accent);
+  font-weight: bold;
+}
+
 ul {
   list-style: none;
   margin: 0;
@@ -133,15 +140,21 @@ ul {
 }
 
 header {
+  font-size: 1rem;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  text-transform: uppercase;
 }
 
 header > a {
   grid-column: 1;
   grid-row: 1;
   justify-self: start;
+}
+
+header > a span {
+  color: var(--pink);
 }
 
 header nav {
@@ -192,6 +205,10 @@ footer {
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: CLASSES */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+.featured-project {
+  font-size: 1rem;
+}
 
 .controls {
   grid-column: 3;
@@ -255,15 +272,10 @@ ol.details {
   animation: blinkCursor 1.5s step-end infinite;
 }
 
-header > a[aria-current="page"] span,
-#Navigation a[aria-current="page"] {
-  color: var(--interactive);
-}
-
 #Menu[aria-expanded="true"] {
-  color: var(--interactive);
+  color: var(--accent);
   background-image: none;
-  -webkit-text-fill-color: var(--interactive);
+  -webkit-text-fill-color: var(--accent);
   animation: none;
 }
 
@@ -368,10 +380,6 @@ html.Large {
     max-height: 20rem;
     opacity: 1;
     visibility: visible;
-  }
-
-  body.MenuOpen #Navigation a[aria-current="page"] {
-    color: var(--text);
   }
 
   #Navigation a {

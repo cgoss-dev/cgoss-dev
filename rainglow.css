@@ -77,18 +77,12 @@ a:focus-visible,
 /* SECTION: ICONS */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
+.rainglow i,
+.rainglow svg,
 a:hover i,
 a:focus-visible i,
 a:hover svg,
 a:focus-visible svg {
-  color: var(--text);
-  -webkit-text-fill-color: var(--text);
-}
-
-header a:hover i,
-header a:focus-visible i,
-header a:hover svg,
-header a:focus-visible svg {
   -webkit-text-fill-color: currentColor;
   animation: cycleRainbow 3s linear infinite;
 }
@@ -111,6 +105,7 @@ header a:focus-visible svg {
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 @media (prefers-reduced-motion: reduce) {
+  .rainglow,
   a:hover,
   a:focus-visible,
   #Menu:hover,
@@ -121,10 +116,12 @@ header a:focus-visible svg {
   #Grayscale:focus-visible,
   #Theme:hover,
   #Theme:focus-visible,
-  header a:hover i,
-  header a:focus-visible i,
-  header a:hover svg,
-  header a:focus-visible svg {
+  .rainglow i,
+  .rainglow svg,
+  a:hover i,
+  a:focus-visible i,
+  a:hover svg,
+  a:focus-visible svg {
     animation: none;
   }
 
@@ -134,11 +131,13 @@ header a:focus-visible svg {
   #Grayscale:focus-visible,
   #Theme:hover,
   #Theme:focus-visible,
-  header a:hover i,
-  header a:focus-visible i,
-  header a:hover svg,
-  header a:focus-visible svg {
-    color: var(--interactive);
+  .rainglow i,
+  .rainglow svg,
+  a:hover i,
+  a:focus-visible i,
+  a:hover svg,
+  a:focus-visible svg {
+    color: var(--accent);
   }
 }
 
