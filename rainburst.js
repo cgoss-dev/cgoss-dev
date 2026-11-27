@@ -105,7 +105,7 @@ window.addEventListener("pagehide", saveRainburst);
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 function getColors() {
-  const styles = getComputedStyle(document.documentElement);
+  const styles = getComputedStyle(document.body);
 
   return colors.map((color) => styles.getPropertyValue(color).trim());
 }
@@ -140,6 +140,9 @@ function createRainburst(x, y) {
 
 function animateRainburst() {
   context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  const textColor = document.documentElement.classList.contains("Grayscale")
+    ? getComputedStyle(document.body).getPropertyValue("--text").trim()
+    : null;
 
   // Iterate backward so expired particles can be removed without skipping others.
   for (let index = particles.length - 1; index >= 0; index--) {
@@ -158,8 +161,8 @@ function animateRainburst() {
 
     context.save();
     context.globalAlpha = particle.life;
-    context.fillStyle = particle.color;
-    context.shadowColor = particle.color;
+    context.fillStyle = textColor || particle.color;
+    context.shadowColor = textColor || particle.color;
     context.shadowBlur = 10;
     context.font = `${particle.size}px Annotation Mono`;
     context.textAlign = "center";

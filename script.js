@@ -29,6 +29,7 @@ async function initializeSite() {
   initializeText();
   initializeTheme();
   initializeGrayscale();
+  initializeStars();
   initializePreviews();
   initializeKeyboardNavigation();
 }
@@ -180,6 +181,31 @@ function initializeText() {
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 /* SECTION: GRAYSCALE */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
+
+function initializeStars() {
+  const button = document.querySelector("#Stars");
+  const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function updateButton() {
+    const enabled = localStorage.getItem("Stars") !== "false";
+    button.setAttribute("aria-pressed", String(enabled && !motion.matches));
+    button.disabled = motion.matches;
+    button.title = motion.matches
+      ? "Background stars are off because reduced motion is enabled"
+      : "Show background stars";
+  }
+
+  button.addEventListener("click", () => {
+    const enabled = localStorage.getItem("Stars") !== "false";
+    localStorage.setItem("Stars", String(!enabled));
+    updateButton();
+    window.dispatchEvent(new Event("starschange"));
+  });
+  motion.addEventListener("change", updateButton);
+  window.addEventListener("pageshow", updateButton);
+  window.addEventListener("storage", updateButton);
+  updateButton();
+}
 
 function initializeGrayscale() {
   const grayscale = document.querySelector("#Grayscale");
