@@ -57,9 +57,7 @@
 
 .rainglow,
 a:hover,
-a:focus-visible,
-#Menu:hover,
-#Menu:focus-visible {
+a:focus-visible {
   color: transparent;
   background-image: var(--rainglow);
   background-size: 200% 100%;
@@ -110,8 +108,6 @@ a:focus-visible svg {
   .rainglow,
   a:hover,
   a:focus-visible,
-  #Menu:hover,
-  #Menu:focus-visible,
   #Text:hover,
   #Text:focus-visible,
   #Stars:hover,

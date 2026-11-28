@@ -9,7 +9,7 @@ const outputPath = "projects/activity.json";
 const eventsPerPage = 100;
 const maximumPages = 3;
 const thirtyDaysInMilliseconds = 30 * 24 * 60 * 60 * 1000;
-const heatmapWeeks = 12;
+const heatmapWeeks = 26; // Approximately six months.
 
 /* !SECTION */
 

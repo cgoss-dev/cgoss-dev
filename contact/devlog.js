@@ -23,7 +23,8 @@ function createArticle(post) {
     article.append(image);
   }
 
-  const heading = document.createElement("h3");
+  const heading = document.createElement("p");
+  heading.className = "content-heading";
   const link = document.createElement("a");
 
   link.href = post.url;
@@ -43,6 +44,15 @@ function createArticle(post) {
     const paragraph = document.createElement("p");
     paragraph.textContent = sentences.join(" ");
     article.append(paragraph);
+  }
+
+  const publishedDate = post.published && formatDateTime(post.published);
+  if (publishedDate) {
+    const date = document.createElement("time");
+    date.className = "article-date";
+    date.dateTime = post.published;
+    date.textContent = publishedDate;
+    article.append(date);
   }
 
   return article;

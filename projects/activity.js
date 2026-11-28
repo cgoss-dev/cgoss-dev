@@ -8,7 +8,8 @@ function pluralize(number, singular, plural = `${singular}s`) {
 
 function createHeatmap(weeks, latestActivityDate) {
   const section = document.createElement("section");
-  const heading = document.createElement("h3");
+  const heading = document.createElement("p");
+  heading.className = "content-heading";
 
   const heatmap = document.createElement("a");
   heatmap.href = "https://github.com/cgoss-dev";
@@ -22,12 +23,13 @@ function createHeatmap(weeks, latestActivityDate) {
   headingLink.href = heatmap.href;
   headingLink.target = "_blank";
   headingLink.rel = "noopener noreferrer";
-  headingLink.append(icon, " Latest Activity ", latestActivityDate || "No recent public pushes");
+  headingLink.append(icon, " ", latestActivityDate || "No recent public pushes");
   heading.append(headingLink);
   heatmap.className = "heatmap";
+  heatmap.style.setProperty("--heatmap-weeks", weeks.length);
   heatmap.setAttribute(
     "aria-label",
-    "View my GitHub profile: contributions during the last 12 weeks (opens in a new tab)"
+    `View my GitHub profile: contributions during the last ${weeks.length} weeks (opens in a new tab)`
   );
 
   weeks.forEach((week, weekIndex) => {

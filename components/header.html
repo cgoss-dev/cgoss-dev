@@ -1,34 +1,32 @@
 <header>
-  <a href="index.html" data-path="index.html" aria-label="Chris, Home"><i class="fa-solid fa-user-astronaut" aria-hidden="true"></i>
-  <span>Chris</span></a>
-
-  <nav aria-label="Main">
-    <button id="Menu" type="button" aria-expanded="false" aria-controls="Navigation">MENU</button>
-
-    <ul id="Navigation">
-      <li><a href="index.html" data-path="index.html">Home</a></li>
-      <li><a href="pages/learning.html" data-path="pages/learning.html">Learning</a></li>
-      <li><a href="pages/projects.html" data-path="pages/projects.html">Projects</a></li>
-    </ul>
+  <nav class="title-navigation" aria-label="Page navigation">
+    <a id="PreviousPage" href="pages/projects.html" aria-label="Previous: Projects" title="Previous: Projects">
+      <i class="fa-solid fa-circle-left" aria-hidden="true"></i>
+    </a>
+    <a id="NextPage" href="pages/learning.html" aria-label="Next: Certifications" title="Next: Certifications">
+      <i class="fa-solid fa-circle-right" aria-hidden="true"></i>
+    </a>
   </nav>
+  <nav class="controls" id="HeaderControls" aria-label="Home and display settings">
+    <a href="index.html" data-path="index.html" aria-label="Home" title="Home">
+      <i class="fa-solid fa-house" aria-hidden="true"></i>
+    </a>
 
-  <div class="controls">
-    
-    <button id="Text" type="button" aria-label="Text size: Medium. Change to Large">
+    <button id="Text" type="button" aria-label="Use large text">
       <i class="fa-solid fa-text-height" aria-hidden="true"></i>
     </button>
 
-    <button id="Theme" type="button" aria-label="Switch color theme" aria-pressed="false">
+    <button id="Stars" type="button" aria-label="Background off" aria-pressed="true">
+      <i class="fa-solid fa-star" aria-hidden="true"></i>
+    </button>
+
+    <button id="Grayscale" type="button" aria-label="Colors off" aria-pressed="false">
+      <i class="fa-solid fa-palette" aria-hidden="true"></i>
+    </button>
+    <button id="Theme" type="button" aria-label="Day mode" aria-pressed="false">
       <i class="fa-solid fa-sun" aria-hidden="true"></i>
       <i class="fa-solid fa-moon" aria-hidden="true"></i>
     </button>
 
-    <button id="Stars" type="button" aria-label="Show background stars" aria-pressed="true">
-      <i class="fa-solid fa-star" aria-hidden="true"></i>
-    </button>
-
-    <button id="Grayscale" type="button" aria-label="Use text colors only" aria-pressed="false">
-      <i class="fa-solid fa-palette" aria-hidden="true"></i>
-    </button>
-  </div>
+  </nav>
 </header>
