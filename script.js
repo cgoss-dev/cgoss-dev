@@ -74,12 +74,12 @@ function restorePreferences() {
 /* SECTION: CURRENT PAGE */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
-function initializeCurrentPage() {
-  // Normalize directory URLs so they match links ending in index.html.
-  function normalizePath(path) {
-    return path.endsWith("/") ? `${path}index.html` : path;
-  }
+// Normalize directory URLs so they match links ending in index.html.
+function normalizePath(path) {
+  return path.endsWith("/") ? `${path}index.html` : path;
+}
 
+function initializeCurrentPage() {
   const currentPath = normalizePath(window.location.pathname);
   const pageLinks = document.querySelectorAll("[data-path]");
 
@@ -105,9 +105,9 @@ function initializePageNavigation() {
   const pages = [
     { path: "index.html", title: "Home" },
     { path: "pages/learning.html", title: "Certifications" },
-    { path: "pages/projects.html", title: "Projects" }
+    { path: "pages/projects.html", title: "Builds" }
   ];
-  const currentPath = window.location.pathname.replace(/\/$/, "/index.html");
+  const currentPath = normalizePath(window.location.pathname);
   const currentIndex = pages.findIndex((page) =>
     new URL(`${root}/${page.path}`, window.location.href).pathname === currentPath
   );
@@ -158,7 +158,7 @@ function initializeText() {
 
 
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
-/* SECTION: GRAYSCALE */
+/* SECTION: DISPLAY CONTROLS */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 function initializeStars() {
@@ -189,19 +189,17 @@ function initializeStars() {
 function initializeGrayscale() {
   const grayscale = document.querySelector("#Grayscale");
 
-  const isGrayscale =
-    document.documentElement.classList.contains("Grayscale");
-
-  grayscale.setAttribute("aria-pressed", String(isGrayscale));
-  grayscale.setAttribute("aria-label", isGrayscale ? "Colors on" : "Colors off");
-
-  grayscale.addEventListener("click", () => {
-    const isGrayscale =
-      document.documentElement.classList.toggle("Grayscale");
-
+  function updateButton() {
+    const isGrayscale = document.documentElement.classList.contains("Grayscale");
     grayscale.setAttribute("aria-pressed", String(isGrayscale));
     grayscale.setAttribute("aria-label", isGrayscale ? "Colors on" : "Colors off");
+  }
+
+  updateButton();
+  grayscale.addEventListener("click", () => {
+    const isGrayscale = document.documentElement.classList.toggle("Grayscale");
     localStorage.setItem("Grayscale", String(isGrayscale));
+    updateButton();
   });
 }
 
@@ -216,16 +214,17 @@ function initializeGrayscale() {
 function initializeTheme() {
   const theme = document.querySelector("#Theme");
 
-  const isLight = document.body.classList.contains("Light");
-  theme.setAttribute("aria-pressed", String(isLight));
-  theme.setAttribute("aria-label", isLight ? "Night mode" : "Day mode");
-
-  theme.addEventListener("click", () => {
-    const isLight = document.body.classList.toggle("Light");
-
+  function updateButton() {
+    const isLight = document.body.classList.contains("Light");
     theme.setAttribute("aria-pressed", String(isLight));
     theme.setAttribute("aria-label", isLight ? "Night mode" : "Day mode");
+  }
+
+  updateButton();
+  theme.addEventListener("click", () => {
+    const isLight = document.body.classList.toggle("Light");
     localStorage.setItem("Theme", isLight ? "Light" : "Dark");
+    updateButton();
   });
 }
 

@@ -16,56 +16,29 @@
     <div id="Header"></div>
 
     <main class="learning" tabindex="-1">
-      <h1>Certifications</h1>
+      <h1 aria-label="Certifications"><span class="title-full" aria-hidden="true">Certifications</span><span class="title-short" aria-hidden="true">Certs</span></h1>
       
       <div class="cards">
         <article class="card card-text-icons">
-          <p class="card-title">cert.list</p><div class="card-content">
+          <p class="card-title">cert.earned</p>
+          <div class="card-content">
 
-          <div class="card-group is-complete">
-            <p><a href="../documents/Certificate-SofDevFundamentals-Linkedin-260802.pdf" data-preview="images/cert_software.png" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Software Dev Fundamentals</a></p>
-          </div>
-          
-          <div class="card-group  is-complete">
-            <p><a href="../documents/Certificate-FrontEnd-GA-260423.pdf" data-preview="images/cert_frontend.png" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Front End Web Dev</a></p>
-          </div>
+            <div class="card-group">
+              <p><a href="../images/cert_software.png" data-preview="images/cert_software.png" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Software Dev Fundamentals</a></p>
+            </div>
 
-          <div id="FccActivity">
+            <div class="card-group">
+              <p><a href="../images/cert_frontend.png" data-preview="images/cert_frontend.png" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-file-contract" aria-hidden="true"></i> Front End Web Dev</a></p>
+            </div>
+
+          </div>
+        </article>
+
+        <article class="card card-span-two">
+          <p class="card-title">cert.queue</p>
+          <div class="card-content" id="CertificateQueue">
             <p>Loading certificate activity...</p>
           </div>
-        </div>
-      </article>
-
-        <article class="card card-span-two web-refs">
-          <p class="card-title">web.refs</p>
-
-          <div class="card-content">
-            <div class="card-group">
-              <p><a href="https://www.professormesser.com/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Professor Messer</a></p>
-              <p>CompTIA certification videos and study resources.</p>
-            </div>
-
-            <div class="card-group">
-              <p><a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-code" aria-hidden="true"></i> MDN Web Docs</a></p>
-              <p>HTML, CSS, and JavaScript reference.</p>
-            </div>
-
-            <div class="card-group">
-              <p><a href="https://learn.microsoft.com/en-us/dotnet/csharp/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-microsoft" aria-hidden="true"></i> Microsoft Learn</a></p>
-              <p>C# documentation, tutorials, and examples.</p>
-            </div>
-
-            <div class="card-group">
-              <p><a href="https://designsystem.digital.gov/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-landmark" aria-hidden="true"></i> US Web Design System</a></p>
-              <p>Components and accessible design guidance.</p>
-            </div>
-
-            <div class="card-group">
-              <p><a href="https://cheatsheetseries.owasp.org/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> OWASP Cheat Sheets</a></p>
-              <p>Practical security guidance for building safer apps.</p>
-            </div>
-          </div>
-
         </article>
 
       </div>
@@ -73,7 +46,6 @@
 
     <div id="Footer"></div>
     <script src="../script.js"></script>
-    <script src="../datetime.js"></script>
     <script src="../learning/activity.js"></script>
     <script src="../stars.js"></script>
     <script src="../rainburst.js"></script>

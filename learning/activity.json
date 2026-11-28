@@ -2,21 +2,8 @@
   "certificates": [
 
     {
-      "course": "Security+ V8",
-      "url": "https://www.comptia.org/en-us/certifications/security/v8/",
-      "chapters": [
-        { "chapter": 1, "completedLessons": 1, "totalLessons": 4 },
-        { "chapter": 2, "completedLessons": 0, "totalLessons": 5 },
-        { "chapter": 3, "completedLessons": 0, "totalLessons": 4 },
-        { "chapter": 4, "completedLessons": 0, "totalLessons": 9 },
-        { "chapter": 5, "completedLessons": 0, "totalLessons": 6 }
-      ],
-      "goalDate": "2027-01-31",
-      "lastActivity": "2026-11-26"
-    },
-
-    {
-      "course": "Foundational C# with MS",
+      "course": "Foundational C#",
+      "icon": "fa-brands fa-microsoft",
       "url": "https://www.freecodecamp.org/chrisiscode",
       "chapters": [
         { "chapter": 1, "completedLessons": 1, "totalLessons": 7 },
@@ -25,9 +12,37 @@
         { "chapter": 4, "completedLessons": 0, "totalLessons": 8 },
         { "chapter": 5, "completedLessons": 0, "totalLessons": 6 },
         { "chapter": 6, "completedLessons": 0, "totalLessons": 7 }
-      ],
-      "goalDate": "2027-01-31",
-      "lastActivity": "2026-08-08"
+      ]
+    },
+
+    {
+      "course": "Security+ V8",
+      "url": "https://www.comptia.org/en-us/certifications/security/v8/",
+      "chapters": [
+        { "chapter": 1, "completedLessons": 1, "totalLessons": 4 },
+        { "chapter": 2, "completedLessons": 0, "totalLessons": 5 },
+        { "chapter": 3, "completedLessons": 0, "totalLessons": 4 },
+        { "chapter": 4, "completedLessons": 0, "totalLessons": 9 },
+        { "chapter": 5, "completedLessons": 0, "totalLessons": 6 }
+      ]
+    },
+
+    {
+      "course": "RHCSA EX200",
+      "icon": "fa-brands fa-redhat",
+      "url": "https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam",
+      "chapters": [
+        { "chapter": 1, "completedLessons": 0, "totalLessons": 11 },
+        { "chapter": 2, "completedLessons": 0, "totalLessons": 4 },
+        { "chapter": 3, "completedLessons": 0, "totalLessons": 4 },
+        { "chapter": 4, "completedLessons": 0, "totalLessons": 10 },
+        { "chapter": 5, "completedLessons": 0, "totalLessons": 6 },
+        { "chapter": 6, "completedLessons": 0, "totalLessons": 5 },
+        { "chapter": 7, "completedLessons": 0, "totalLessons": 6 },
+        { "chapter": 8, "completedLessons": 0, "totalLessons": 4 },
+        { "chapter": 9, "completedLessons": 0, "totalLessons": 4 },
+        { "chapter": 10, "completedLessons": 0, "totalLessons": 8 }
+      ]
     }
 
   ]

@@ -9,7 +9,7 @@ const outputPath = "projects/activity.json";
 const eventsPerPage = 100;
 const maximumPages = 3;
 const thirtyDaysInMilliseconds = 30 * 24 * 60 * 60 * 1000;
-const heatmapWeeks = 26; // Approximately six months.
+const heatmapWeeks = 12;
 
 /* !SECTION */
 
@@ -123,48 +123,9 @@ async function fetchContributionWeeks() {
 /* SECTION: SUMMARY */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
-async function getCommitCount(cutoff) {
-  const cutoffDate = new Date(cutoff).toISOString().slice(0, 10);
-  const url = new URL("https://api.github.com/search/commits");
-  url.searchParams.set(
-    "q",
-    `author:${username} author-date:>=${cutoffDate}`
-  );
-  url.searchParams.set("per_page", 1);
-
-  const response = await fetch(url, { headers: getHeaders() });
-
-  if (!response.ok) {
-    throw new Error(
-      `GitHub commit search failed: ${response.status} ${response.statusText}`
-    );
-  }
-
-  const results = await response.json();
-  return results.total_count || 0;
-}
-
-async function summarizeActivity(events) {
-  const cutoff = Date.now() - thirtyDaysInMilliseconds;
-  const pushEvents = events.filter((event) => event.type === "PushEvent");
-  const latestPush = pushEvents[0];
-  const recentPushes = pushEvents.filter(
-    (event) => new Date(event.created_at).getTime() >= cutoff
-  );
-
-  const repositories = new Set(
-    recentPushes.map((event) => event.repo.name)
-  );
-
-  // Search once for public commits authored by this account during the same period.
-  const commitsThirtyDays = await getCommitCount(cutoff);
-
-  return {
-    lastPush: latestPush?.created_at || null,
-    lastRepository: latestPush?.repo.name || null,
-    repositoriesThirtyDays: repositories.size,
-    commitsThirtyDays
-  };
+function summarizeActivity(events) {
+  const latestPush = events.find((event) => event.type === "PushEvent");
+  return { lastPush: latestPush?.created_at || null };
 }
 
 /* !SECTION */
@@ -181,7 +142,7 @@ async function updateGithubActivity() {
     fetchContributionWeeks()
   ]);
   const activity = {
-    ...await summarizeActivity(events),
+    ...summarizeActivity(events),
     contributionWeeks
   };
 

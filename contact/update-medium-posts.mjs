@@ -19,11 +19,7 @@ const excerptLength = 180;
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 function getTagValue(xml, tagName) {
-  const match = xml.match(
-    new RegExp(`<${tagName}[^>]*>([\\s\\S]*?)<\\/${tagName}>`, "i")
-  );
-
-  return match ? cleanText(match[1]) : "";
+  return cleanText(getRawTagValue(xml, tagName));
 }
 
 function getRawTagValue(xml, tagName) {
@@ -31,13 +27,7 @@ function getRawTagValue(xml, tagName) {
     new RegExp(`<${tagName}[^>]*>([\\s\\S]*?)<\\/${tagName}>`, "i")
   );
 
-  return match ? decodeEntities(match[1]) : "";
-}
-
-function getCategoryValues(xml) {
-  return [...xml.matchAll(/<category[^>]*>([\s\S]*?)<\/category>/gi)]
-    .map((match) => cleanText(match[1]))
-    .filter(Boolean);
+  return match ? match[1] : "";
 }
 
 /* !SECTION */
@@ -151,22 +141,19 @@ async function updateMediumPosts() {
       const title = getTagValue(item, "title");
       const url = cleanUrl(getTagValue(item, "link"));
       const published = toIsoDate(getTagValue(item, "pubDate"));
-      const rawContent = getRawTagValue(item, "content:encoded");
+      const rawContent = decodeEntities(getRawTagValue(item, "content:encoded"));
       const content = truncate(
         cleanText(rawContent) || getTagValue(item, "description"),
         excerptLength
       );
       const imageUrl = getFirstImageUrl(rawContent);
-      const categories = getCategoryValues(item);
-      const tags = categories.length > 0 ? categories.slice(0, 3) : ["medium"];
 
       return {
         title,
         url,
         content,
         imageUrl,
-        published,
-        tags
+        published
       };
     })
     .filter((post) => post.title && post.url && post.published);

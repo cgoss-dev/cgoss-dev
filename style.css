@@ -4,7 +4,7 @@
 
 :root {
   --universalSpacing: 2rem;
-  --page-title-size: 4em;
+  --page-title-size: 5em;
 
   --red: #f00;
   --orange: #fa0;
@@ -31,7 +31,6 @@
   --text: #fff;
   --background: #000;
   --accent: var(--pink);
-  --success: var(--green);
 }
 
 @font-face {
@@ -142,14 +141,9 @@ a {
   text-decoration: none;
 }
 
-.accent {
-  color: var(--accent);
-}
-
 strong,
 b,
-.detail-label,
-.case-study li::marker {
+.detail-label {
   font-weight: 700;
 }
 
@@ -169,6 +163,8 @@ header {
 }
 
 header h1 {
+  min-width: 0;
+  overflow-wrap: anywhere;
   margin: 0;
   max-width: 100%;
   text-align: center;
@@ -179,17 +175,16 @@ header h1 {
   padding-inline: calc(3em + 0.5rem);
 }
 
+.title-short {
+  display: none;
+}
+
 .title-navigation > a {
   position: absolute;
   /* Midpoint between the page top and cards, relative to the header. */
   top: calc((100% + var(--header-bottom-gap) - var(--universalSpacing)) / 2);
   transform: translateY(-50%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   font-size: 3em;
-  min-width: 40px;
-  min-height: 40px;
 }
 
 #PreviousPage { left: 0; }
@@ -252,13 +247,11 @@ footer {
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
 .controls {
-  grid-column: 3;
-  grid-row: 1;
-  justify-self: end;
   display: flex;
   gap: 0.25rem;
 }
 
+.title-navigation > a,
 .controls > :is(button, a) {
   display: inline-flex;
   align-items: center;
@@ -269,32 +262,6 @@ footer {
 
 .controls :is(i, svg) {
   font-size: 1.5em;
-}
-
-.details {
-  list-style-position: inside;
-  padding-left: 0;
-}
-
-ul.details {
-  list-style-type: disc;
-}
-
-ol.details {
-  list-style-type: decimal;
-}
-
-.details li {
-  margin-top: calc(var(--universalSpacing) * 0.5);
-  text-wrap: pretty;
-}
-
-.case-study li {
-  margin-top: 0;
-}
-
-.case-study li + li {
-  margin-top: var(--universalSpacing);
 }
 
 /* !SECTION */
@@ -331,7 +298,6 @@ html.Grayscale body {
   --violet: var(--text);
   --pink: var(--text);
   --accent: var(--text);
-  --success: var(--text);
   --rainglow: linear-gradient(var(--text), var(--text));
 }
 
@@ -347,14 +313,19 @@ html.Large {
 /* SECTION: MEDIA SIZES */
 /* ========== ========== ========== ========== ========== ========== ========== ========== ========== */
 
-header h1 {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
 header > .controls {
   flex-shrink: 0;
   align-self: center;
+}
+
+@media (max-width: 64rem) {
+  .title-full {
+    display: none;
+  }
+
+  .title-short {
+    display: inline;
+  }
 }
 
 @media (max-width: 49.99rem) {
@@ -373,11 +344,20 @@ header > .controls {
     gap: clamp(0px, 1vw, 0.25rem);
     overflow-x: auto;
   }
+
 }
 
 @media (max-width: 30rem) {
   header h1 {
-    font-size: 3em;
+    font-size: 2em;
+  }
+
+  .title-navigation {
+    padding-inline: calc(max(40px, 2em) + 0.25rem);
+  }
+
+  .title-navigation > a {
+    font-size: 2em;
   }
 }
 
